@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">material-intro</string>
+
+    <string name="label_options">Options:</string>
+    <string name="label_option_fullscreen">Enable fullscreen</string>
+    <string name="label_option_custom_fragments">Enable custom fragments</string>
+    <string name="label_start_intro">Start intro</string>
+
+    <string name="title_material_metaphor">Material is the metaphor</string>
+    <string name="title_material_bold">Bold, graphic, intentional</string>
+    <string name="title_material_motion">Motion provides meaning</string>
+    <string name="title_material_shadow">Light and shadow</string>
+
+    <string name="description_material_metaphor">A material metaphor is the unifying theory of a rationalized space and a system of motion. The material is grounded in tactile reality, inspired by the study of paper and ink, yet technologically advanced and open to imagination and magic.</string>
+    <string name="description_material_bold">The foundational elements of print-based design – typography, grids, space, scale, color, and use of imagery – guide visual treatments.</string>
+    <string name="description_material_motion">Motion respects and reinforces the user as the prime mover. Primary user actions are inflection points that initiate motion, transforming the whole design.</string>
+    <string name="description_material_shadow">Within the material environment, virtual lights illuminate the scene. Key lights create directional shadows, while ambient light creates soft shadows from all angles.</string>
+
+    <string name="title_custom_fragment_1">This is a custom fragment.</string>
+    <string name="hint_fake_input_1_custom_fragment_1">Fake input #1</string>
+    <string name="hint_fake_input_2_custom_fragment_1">Fake input #2</string>
+    <string name="label_fake_button_custom_fragment_1">Fake input #2</string>
+    <string name="title_custom_fragment_2">Take off!</string>
+</resources>

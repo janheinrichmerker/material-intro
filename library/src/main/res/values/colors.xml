@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mi_status_bar_background">#ff000000</color>
+    <color name="mi_button_background">#61000000</color>
+    <color name="mi_pager_indicator_color">#50000000</color>
+    <color name="mi_ripple_color">#17000000</color>
+
+    <color name="mi_text_color_primary_light">#de000000</color>
+    <color name="mi_text_color_secondary_light">#8a000000</color>
+    <color name="mi_text_color_primary_dark">#ffffffff</color>
+    <color name="mi_text_color_secondary_dark">#b3ffffff</color>
+</resources>

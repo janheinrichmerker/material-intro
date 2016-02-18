@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.heinrichreimersoftware.materialintro.demo.MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="?colorPrimary"
+        android:elevation="4dp"
+        tools:ignore="UnusedAttribute">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"/>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/baseline"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:gravity=""
+                android:text="@string/label_options"/>
+
+            <CheckBox
+                android:id="@+id/option_fullscreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/baseline"
+                android:text="@string/label_option_fullscreen"
+                android:checked="false"/>
+
+            <CheckBox
+                android:id="@+id/option_custom_fragments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/baseline"
+                android:text="@string/label_option_custom_fragments"
+                android:checked="true"/>
+
+            <Button
+                android:id="@+id/start_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/baseline"
+                android:theme="@style/AppThemeDark"
+                android:text="@string/label_start_intro"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
