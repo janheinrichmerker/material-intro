@@ -3,6 +3,7 @@ material-intro
 
 [![jitpack.io][18]][4]
 [![Build Status][19]][20]
+[![Apache License 2.0][21]][22]
 
 A simple material design app intro with cool animations and a simple API.
 
@@ -180,3 +181,5 @@ License
 [18]: https://jitpack.io/v/com.heinrichreimersoftware/material-intro.svg
 [19]: https://travis-ci.org/HeinrichReimer/material-intro.svg?branch=master
 [20]: https://travis-ci.org/HeinrichReimer/material-intro
+[21]: https://img.shields.io/github/license/HeinrichReimer/material-intro.svg
+[22]: https://www.apache.org/licenses/LICENSE-2.0.html
