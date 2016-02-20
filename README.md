@@ -1,6 +1,10 @@
 material-intro
 =======================
 
+[![jitpack.io][18]][4]
+[![Build Status][19]][20]
+[![Apache License 2.0][21]][22]
+
 A simple material design app intro with cool animations and a simple API.
 
 _Very inspired by Google's app intros._
@@ -9,7 +13,7 @@ Demo video on YouTube: https://youtu.be/eKnCHw0UTrk
 
 Demo
 ----
-For now you can build the APK by forking this repo and importing it in Android Studio.
+A demo APK is available in the [releases][16] section. Grab the latest release [here][17]. 
 
 Screenshots
 -----------
@@ -172,3 +176,10 @@ License
 [13]: http://i.imgur.com/J2iymrL.png
 [14]: http://i.imgur.com/Xyok5qh.png
 [15]: http://i.imgur.com/ft1wz2N.png
+[16]: https://github.com/HeinrichReimer/material-intro/releases
+[17]: https://github.com/HeinrichReimer/material-intro/releases/latest
+[18]: https://jitpack.io/v/com.heinrichreimersoftware/material-intro.svg
+[19]: https://travis-ci.org/HeinrichReimer/material-intro.svg?branch=master
+[20]: https://travis-ci.org/HeinrichReimer/material-intro
+[21]: https://img.shields.io/github/license/HeinrichReimer/material-intro.svg
+[22]: https://www.apache.org/licenses/LICENSE-2.0.html
