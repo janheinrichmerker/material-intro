@@ -61,12 +61,12 @@ public class FragmentSlide extends Slide{
             return this;
         }
 
-        public Builder background(int background) {
+        public Builder background(@ColorRes int background) {
             this.background = background;
             return this;
         }
 
-        public Builder backgroundDark(int backgroundDark) {
+        public Builder backgroundDark(@ColorRes int backgroundDark) {
             this.backgroundDark = backgroundDark;
             return this;
         }

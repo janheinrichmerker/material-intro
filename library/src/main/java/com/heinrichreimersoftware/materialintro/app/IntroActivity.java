@@ -45,7 +45,7 @@ public class IntroActivity extends AppCompatActivity {
     private View buttonSkip;
     private SlideAdapter adapter;
     private IntroPageChangeListener listener = new IntroPageChangeListener();
-    private boolean fullscreen = true;
+    private boolean fullscreen = false;
     private boolean skipEnabled = true;
     private boolean finishEnabled = true;
     private int position = 0;
