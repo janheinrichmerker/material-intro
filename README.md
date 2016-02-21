@@ -13,7 +13,11 @@ Demo video on YouTube: https://youtu.be/eKnCHw0UTrk
 
 Demo
 ----
-A demo APK is available in the [releases][16] section. Grab the latest release [here][17]. 
+A demo app is available on Google Play:
+
+<a href="https://play.google.com/store/apps/details?id=com.heinrichreimersoftware.materialintro.demo">
+	<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="60" />
+</a>
 
 Screenshots
 -----------
@@ -39,7 +43,7 @@ allprojects {
 ````
 ````gradle
 dependencies {
-    compile 'com.heinrichreimersoftware:material-intro:-SNAPSHOT'
+    compile 'com.heinrichreimersoftware:material-intro:1.0'
 }
 ````
 
@@ -176,8 +180,6 @@ License
 [13]: http://i.imgur.com/J2iymrL.png
 [14]: http://i.imgur.com/Xyok5qh.png
 [15]: http://i.imgur.com/ft1wz2N.png
-[16]: https://github.com/HeinrichReimer/material-intro/releases
-[17]: https://github.com/HeinrichReimer/material-intro/releases/latest
 [18]: https://jitpack.io/v/com.heinrichreimersoftware/material-intro.svg
 [19]: https://travis-ci.org/HeinrichReimer/material-intro.svg?branch=master
 [20]: https://travis-ci.org/HeinrichReimer/material-intro
