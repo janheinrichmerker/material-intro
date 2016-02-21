@@ -7,37 +7,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="center_vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textColor="?android:textColorPrimaryInverse"
-            android:text="@string/title_custom_fragment_1"/>
+            android:text="@string/title_fragment_login"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <EditText
+            android:id="@+id/fakeUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/baseline"
-            android:theme="@style/AppThemeDark"
-            android:hint="@string/hint_fake_input_1_custom_fragment_1"/>
+            android:hint="@string/hint_fake_username" />
 
         <EditText
+            android:id="@+id/fakePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppThemeDark"
-            android:hint="@string/hint_fake_input_2_custom_fragment_1"/>
+            android:hint="@string/hint_fake_password" />
 
         <Button
+            android:id="@+id/fakeLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/baseline"
-            android:theme="@style/AppThemeDark"
-            android:text="@string/label_fake_button_custom_fragment_1"/>
+            android:text="@string/label_fake_login"
+            android:theme="@style/AppThemeDark" />
 
     </LinearLayout>
 

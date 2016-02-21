@@ -37,15 +37,19 @@ import java.util.List;
 @SuppressLint("Registered")
 public class IntroActivity extends AppCompatActivity {
 
+    private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private FrameLayout frame;
     private ViewPager pager;
     private InkPageIndicator pagerIndicator;
     private View buttonNext;
     private View buttonSkip;
-
     private SlideAdapter adapter;
-
+    private IntroPageChangeListener listener = new IntroPageChangeListener();
     private boolean fullscreen = true;
+    private boolean skipEnabled = true;
+    private boolean finishEnabled = true;
+    private int position = 0;
+    private float positionOffset = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,17 @@ public class IntroActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         updateTaskDescription();
+        updateBackground();
+        updateTaskDescription();
+        updateButtonNextDrawable();
+        updateButtonSkipDrawable();
+        frame.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                updateViewPositions();
+                v.removeOnLayoutChangeListener(this);
+            }
+        });
     }
 
     @Override
@@ -92,10 +107,6 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
-    protected void setFullscreen(boolean fullscreen){
-        this.fullscreen = fullscreen;
-    }
-
     private void findViews(){
         frame = (FrameLayout) findViewById(R.id.mi_frame);
         pager = (ViewPager) findViewById(R.id.mi_pager);
@@ -106,11 +117,7 @@ public class IntroActivity extends AppCompatActivity {
         adapter = new SlideAdapter(getSupportFragmentManager());
 
         pager.setAdapter(adapter);
-        pager.addOnPageChangeListener(new ButtonListener());
-        pager.addOnPageChangeListener(new BackgroundListener());
-        pager.addOnPageChangeListener(new TaskDescriptionListener());
-        pager.addOnPageChangeListener(new FinishListener());
-        pager.addOnPageChangeListener(new FullscreenListener());
+        pager.addOnPageChangeListener(listener);
         pagerIndicator.setViewPager(pager);
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +129,7 @@ public class IntroActivity extends AppCompatActivity {
         buttonSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishIntro();
+                skipIfEnabled();
             }
         });
         CheatSheet.setup(buttonNext);
@@ -133,12 +140,37 @@ public class IntroActivity extends AppCompatActivity {
         int currentItem = pager.getCurrentItem();
         pager.setCurrentItem(++currentItem, true);
     }
-    private void finishIntro(){
-        int count = getCount();
-        pager.setCurrentItem(count);
+
+    private void previousSlide() {
+        int currentItem = pager.getCurrentItem();
+        pager.setCurrentItem(--currentItem, true);
     }
 
-    private void updateTaskDescription(int position){
+    private void skipIfEnabled() {
+        if (skipEnabled) {
+            int count = getCount();
+            pager.setCurrentItem(count);
+        } else {
+            previousSlide();
+        }
+    }
+
+    private void finishIfNeeded() {
+        if (positionOffset == 0 && position == adapter.getCount()) {
+            finish();
+            overridePendingTransition(0, 0);
+        }
+    }
+
+    private void updateFullscreen() {
+        if (position + positionOffset > adapter.getCount() - 1) {
+            setFullscreenFlags(false);
+        } else {
+            setFullscreenFlags(fullscreen);
+        }
+    }
+
+    private void updateTaskDescription() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             String title = getTitle().toString();
             Drawable iconDrawable = getApplicationInfo().loadIcon(getPackageManager());
@@ -163,16 +195,212 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
-    private void updateTaskDescription(){
-        updateTaskDescription(0);
+    private void updateBackground() {
+        int background;
+        int backgroundNext;
+
+        if (position == getCount()) {
+            background = Color.TRANSPARENT;
+            backgroundNext = Color.TRANSPARENT;
+        } else {
+            background = ContextCompat.getColor(IntroActivity.this,
+                    getBackground(position));
+            backgroundNext = ContextCompat.getColor(IntroActivity.this,
+                    getBackground(Math.min(position + 1, getCount() - 1)));
+
+            background = ColorUtils.setAlphaComponent(background, 0xFF);
+            backgroundNext = ColorUtils.setAlphaComponent(backgroundNext, 0xFF);
+        }
+
+        if (position + positionOffset >= adapter.getCount() - 1) {
+            backgroundNext = ColorUtils.setAlphaComponent(background, 0x00);
+        }
+
+        frame.setBackgroundColor((Integer) evaluator.evaluate(positionOffset, background, backgroundNext));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int backgroundDark;
+            int backgroundDarkNext;
+
+            if (position == getCount()) {
+                backgroundDark = Color.TRANSPARENT;
+                backgroundDarkNext = Color.TRANSPARENT;
+            } else {
+                try {
+                    backgroundDark = ContextCompat.getColor(IntroActivity.this,
+                            getBackgroundDark(position));
+                } catch (Resources.NotFoundException e) {
+                    backgroundDark = ContextCompat.getColor(IntroActivity.this,
+                            R.color.mi_status_bar_background);
+                }
+                try {
+                    backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
+                            getBackgroundDark(Math.min(position + 1, getCount() - 1)));
+                } catch (Resources.NotFoundException e) {
+                    backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
+                            R.color.mi_status_bar_background);
+                }
+            }
+            if (position + positionOffset >= adapter.getCount() - 1) {
+                backgroundDarkNext = Color.TRANSPARENT;
+            }
+
+            backgroundDark = (Integer) evaluator.evaluate(positionOffset, backgroundDark, backgroundDarkNext);
+            getWindow().setStatusBarColor(backgroundDark);
+
+            if (position == adapter.getCount()) {
+                getWindow().setNavigationBarColor(Color.TRANSPARENT);
+            } else if (position + positionOffset >= adapter.getCount() - 1) {
+                TypedValue typedValue = new TypedValue();
+                TypedArray a = obtainStyledAttributes(typedValue.data, new int[]{android.R.attr.navigationBarColor});
+
+                int defaultNavigationBarColor = a.getColor(0, Color.BLACK);
+
+                a.recycle();
+
+                int navigationBarColor = (Integer) evaluator.evaluate(positionOffset, defaultNavigationBarColor, Color.TRANSPARENT);
+                getWindow().setNavigationBarColor(navigationBarColor);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                int systemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
+                int flagLightStatusBar = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+                if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
+                    systemUiVisibility |= flagLightStatusBar;
+                } else {
+                    systemUiVisibility &= ~flagLightStatusBar;
+                }
+                getWindow().getDecorView().setSystemUiVisibility(systemUiVisibility);
+            }
+        }
+    }
+
+    private void updateViewPositions() {
+        if (position + positionOffset < 1) {
+            //Between first and second item
+            float offset = position + positionOffset;
+
+            if (skipEnabled) {
+                buttonSkip.setTranslationY(0);
+            } else {
+                buttonSkip.setTranslationY((1 - offset) * 2 * buttonNext.getHeight());
+            }
+            updateButtonNextDrawable();
+        } else if (position + positionOffset >= 1 && position + positionOffset < adapter.getCount() - 2) {
+            //Between second and second last item
+            //Reset buttons
+            buttonSkip.setTranslationY(0);
+            buttonSkip.setTranslationX(0);
+            buttonNext.setTranslationY(0);
+            updateButtonNextDrawable();
+        } else if (position + positionOffset >= adapter.getCount() - 2 && position + positionOffset < adapter.getCount() - 1) {
+            //Between second last and last item
+            float offset = position + positionOffset - adapter.getCount() + 2;
+
+            if (skipEnabled) {
+                boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
+                        View.LAYOUT_DIRECTION_RTL;
+                buttonSkip.setTranslationX(offset * (rtl ? 1 : -1) * pager.getWidth());
+            } else {
+                buttonSkip.setTranslationX(0);
+            }
+
+            if (finishEnabled) {
+                buttonNext.setTranslationY(0);
+            } else {
+                buttonNext.setTranslationY(offset * 2 * buttonNext.getHeight());
+            }
+            updateButtonNextDrawable();
+        } else if (position + positionOffset >= adapter.getCount() - 1) {
+            //Fade
+            float offset = position + positionOffset - adapter.getCount() + 1;
+
+            if (skipEnabled) {
+                boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
+                        View.LAYOUT_DIRECTION_RTL;
+                buttonSkip.setTranslationX((rtl ? 1 : -1) * pager.getWidth());
+            } else {
+                buttonSkip.setTranslationY(offset * 2 * buttonNext.getHeight());
+            }
+
+            if (finishEnabled) {
+                buttonNext.setTranslationY(offset * 2 * buttonNext.getHeight());
+            } else {
+                buttonNext.setTranslationY(-2 * buttonNext.getHeight());
+            }
+            pagerIndicator.setTranslationY(offset * 2 * buttonNext.getWidth());
+            updateButtonNextDrawable();
+        }
+    }
+
+    private void updateButtonNextDrawable() {
+        if (buttonNext != null && buttonNext instanceof ImageButton) {
+            ImageButton button = (ImageButton) buttonNext;
+            float offset = 0;
+            if (finishEnabled && position + positionOffset >= adapter.getCount() - 2) {
+                offset = Math.min(position + positionOffset - adapter.getCount() + 2, 1);
+            }
+
+            if (offset <= 0) {
+                button.setImageResource(R.drawable.ic_next);
+            } else {
+                button.setImageResource(R.drawable.ic_next_finish);
+                if (button.getDrawable() != null && button.getDrawable() instanceof LayerDrawable) {
+                    LayerDrawable drawable = (LayerDrawable) button.getDrawable();
+                    drawable.getDrawable(0).setAlpha((int) (255 * (1 - offset)));
+                    drawable.getDrawable(1).setAlpha((int) (255 * offset));
+                } else {
+                    button.setImageResource(offset > 0 ? R.drawable.ic_finish : R.drawable.ic_next);
+                }
+            }
+        }
+    }
+
+    private void updateButtonSkipDrawable() {
+        if (buttonSkip != null && buttonSkip instanceof ImageButton) {
+            ImageButton button = (ImageButton) buttonSkip;
+            if (skipEnabled) {
+                button.setImageResource(R.drawable.ic_skip);
+            } else {
+                button.setImageResource(R.drawable.ic_previous);
+            }
+        }
     }
 
 
+    public boolean isFullscreen() {
+        return fullscreen;
+    }
+
+    public void setFullscreen(boolean fullscreen) {
+        this.fullscreen = fullscreen;
+    }
+
+    public boolean isSkipEnabled() {
+        return skipEnabled;
+    }
+
+    public void setSkipEnabled(boolean skipEnabled) {
+        this.skipEnabled = skipEnabled;
+        updateButtonSkipDrawable();
+        updateViewPositions();
+    }
+
+    public boolean isFinishEnabled() {
+        return finishEnabled;
+    }
+
+    public void setFinishEnabled(boolean finishEnabled) {
+        this.finishEnabled = finishEnabled;
+        updateButtonNextDrawable();
+        updateViewPositions();
+    }
 
     @SuppressWarnings("deprecation")
     @Deprecated
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         pager.setOnPageChangeListener(listener);
+        pager.addOnPageChangeListener(this.listener);
     }
 
     public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
@@ -180,7 +408,8 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     public void removeOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
-        pager.removeOnPageChangeListener(listener);
+        if (listener != this.listener)
+            pager.removeOnPageChangeListener(listener);
     }
 
 
@@ -274,158 +503,25 @@ public class IntroActivity extends AppCompatActivity {
         return adapter.setSlides(list);
     }
 
-    private class ButtonListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener{
+
+    private class IntroPageChangeListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if(buttonNext != null && buttonNext instanceof ImageButton){
-                ImageButton button = (ImageButton) buttonNext;
-                if(button.getDrawable() != null && button.getDrawable() instanceof LayerDrawable){
-                    LayerDrawable drawable = (LayerDrawable) button.getDrawable();
-                    if(position + positionOffset < adapter.getCount() - 2){
-                        drawable.getDrawable(0).setAlpha(255);
-                        drawable.getDrawable(1).setAlpha(0);
+            IntroActivity.this.position = position;
+            IntroActivity.this.positionOffset = positionOffset;
 
-                        buttonSkip.setTranslationX(0);
-                        buttonNext.setTranslationY(0);
-                        pagerIndicator.setTranslationY(0);
-                    }
-                    else if(position + positionOffset < adapter.getCount() - 1){
-                        float offset = position + positionOffset - adapter.getCount() + 2;
-                        drawable.getDrawable(0).setAlpha((int) (255 * (1 - offset)));
-                        drawable.getDrawable(1).setAlpha((int) (255 * offset));
+            updateBackground();
+            updateViewPositions();
+            updateFullscreen();
 
-                        boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
-                                View.LAYOUT_DIRECTION_RTL;
-                        buttonSkip.setTranslationX(offset * (rtl ? 1 : -1) * pager.getWidth());
-                        buttonNext.setTranslationY(0);
-                        pagerIndicator.setTranslationY(0);
-                    } else{
-                        float offset = position + positionOffset - adapter.getCount() + 1;
-
-                        buttonSkip.setTranslationX(-pager.getWidth());
-                        buttonNext.setTranslationY(offset * 2 * buttonSkip.getWidth());
-                        pagerIndicator.setTranslationY(offset * 2 * buttonSkip.getWidth());
-                    }
-                }
-            }
+            finishIfNeeded();
         }
-    }
 
-    private class BackgroundListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener{
-        private final ArgbEvaluator evaluator = new ArgbEvaluator();
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            int background;
-            int backgroundNext;
-
-            if(position == getCount()){
-                background = Color.TRANSPARENT;
-                backgroundNext = Color.TRANSPARENT;
-            }
-            else{
-                background = ContextCompat.getColor(IntroActivity.this,
-                        getBackground(position));
-                backgroundNext = ContextCompat.getColor(IntroActivity.this,
-                        getBackground(Math.min(position + 1, getCount() - 1)));
-
-                background = ColorUtils.setAlphaComponent(background, 0xFF);
-                backgroundNext = ColorUtils.setAlphaComponent(backgroundNext, 0xFF);
-            }
-
-            if (position + positionOffset >= adapter.getCount() - 1){
-                backgroundNext = ColorUtils.setAlphaComponent(background, 0x00);
-            }
-
-            frame.setBackgroundColor((Integer) evaluator.evaluate(positionOffset, background, backgroundNext));
-
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                int backgroundDark;
-                int backgroundDarkNext;
-
-                if(position == getCount()){
-                    backgroundDark = Color.TRANSPARENT;
-                    backgroundDarkNext = Color.TRANSPARENT;
-                }
-                else{
-                    try {
-                        backgroundDark = ContextCompat.getColor(IntroActivity.this,
-                                getBackgroundDark(position));
-                    } catch (Resources.NotFoundException e){
-                        backgroundDark = ContextCompat.getColor(IntroActivity.this,
-                                R.color.mi_status_bar_background);
-                    }
-                    try {
-                        backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
-                                getBackgroundDark(Math.min(position + 1, getCount() - 1)));
-                    } catch (Resources.NotFoundException e){
-                        backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
-                                R.color.mi_status_bar_background);
-                    }
-                }
-                if (position + positionOffset >= adapter.getCount() - 1){
-                    backgroundDarkNext = Color.TRANSPARENT;
-                }
-
-                backgroundDark = (Integer) evaluator.evaluate(positionOffset, backgroundDark, backgroundDarkNext);
-                getWindow().setStatusBarColor(backgroundDark);
-
-                if(position == adapter.getCount()){
-                    getWindow().setNavigationBarColor(Color.TRANSPARENT);
-                }
-                else if(position + positionOffset >= adapter.getCount() - 1){
-                    TypedValue typedValue = new TypedValue();
-                    TypedArray a = obtainStyledAttributes(typedValue.data, new int[] { android.R.attr.navigationBarColor });
-
-                    int defaultNavigationBarColor = a.getColor(0, Color.BLACK);
-
-                    a.recycle();
-
-                    int navigationBarColor = (Integer) evaluator.evaluate(positionOffset, defaultNavigationBarColor, Color.TRANSPARENT);
-                    getWindow().setNavigationBarColor(navigationBarColor);
-                }
-
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    int systemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
-                    int flagLightStatusBar = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-                    if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
-                        systemUiVisibility |= flagLightStatusBar;
-                    }
-                    else {
-                        systemUiVisibility &= ~flagLightStatusBar;
-                    }
-                    getWindow().getDecorView().setSystemUiVisibility(systemUiVisibility);
-                }
-            }
-        }
-    }
-
-    private class FinishListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener{
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if(position == adapter.getCount()){
-                finish();
-                overridePendingTransition(0, 0);
-            }
-        }
-    }
-
-    private class FullscreenListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener{
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if(position + positionOffset > adapter.getCount() - 1){
-                setFullscreenFlags(false);
-            }
-            else{
-                setFullscreenFlags(fullscreen);
-            }
-        }
-    }
-
-    private class TaskDescriptionListener extends ViewPager.SimpleOnPageChangeListener{
         @Override
         public void onPageSelected(int position) {
-            updateTaskDescription(position);
+            IntroActivity.this.position = position;
+
+            updateTaskDescription();
         }
     }
 }

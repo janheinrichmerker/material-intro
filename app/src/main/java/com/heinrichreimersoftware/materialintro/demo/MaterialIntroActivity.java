@@ -11,17 +11,24 @@ public class MaterialIntroActivity extends IntroActivity {
 
     public static final String EXTRA_FULLSCREEN = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FULLSCREEN";
     public static final String EXTRA_CUSTOM_FRAGMENTS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_CUSTOM_FRAGMENTS";
+    public static final String EXTRA_SKIP_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SKIP_ENABLED";
+    public static final String EXTRA_FINISH_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FINISH_ENABLED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent = getIntent();
 
         boolean fullscreen = intent.getBooleanExtra(EXTRA_FULLSCREEN, false);
-        boolean customFragments = intent.getBooleanExtra(EXTRA_CUSTOM_FRAGMENTS, false);
+        boolean customFragments = intent.getBooleanExtra(EXTRA_CUSTOM_FRAGMENTS, true);
+        boolean skipEnabled = intent.getBooleanExtra(EXTRA_SKIP_ENABLED, true);
+        boolean finishEnabled = intent.getBooleanExtra(EXTRA_FINISH_ENABLED, true);
 
         setFullscreen(fullscreen);
 
         super.onCreate(savedInstanceState);
+
+        setSkipEnabled(skipEnabled);
+        setFinishEnabled(finishEnabled);
 
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title_material_metaphor)
@@ -56,12 +63,12 @@ public class MaterialIntroActivity extends IntroActivity {
             addSlide(new FragmentSlide.Builder()
                     .background(R.color.color_custom_fragment_1)
                     .backgroundDark(R.color.color_dark_custom_fragment_1)
-                    .fragment(R.layout.fragment_custom_1, R.style.AppTheme)
+                    .fragment(LoginFragment.newInstance())
                     .build());
             addSlide(new FragmentSlide.Builder()
                     .background(R.color.color_custom_fragment_2)
                     .backgroundDark(R.color.color_dark_custom_fragment_2)
-                    .fragment(R.layout.fragment_custom_2, R.style.AppTheme)
+                    .fragment(R.layout.fragment_custom, R.style.AppThemeDark)
                     .build());
         }
 

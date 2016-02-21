@@ -24,10 +24,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 CheckBox optionFullscreen = (CheckBox) findViewById(R.id.option_fullscreen);
                 CheckBox optionCustomFragments = (CheckBox) findViewById(R.id.option_custom_fragments);
+                CheckBox optionSkipEnabled = (CheckBox) findViewById(R.id.option_skip_enabled);
+                CheckBox optionFinishEnabled = (CheckBox) findViewById(R.id.option_finish_enabled);
 
                 Intent intent = new Intent(MainActivity.this, MaterialIntroActivity.class);
                 intent.putExtra(MaterialIntroActivity.EXTRA_FULLSCREEN, optionFullscreen.isChecked());
                 intent.putExtra(MaterialIntroActivity.EXTRA_CUSTOM_FRAGMENTS, optionCustomFragments.isChecked());
+                intent.putExtra(MaterialIntroActivity.EXTRA_SKIP_ENABLED, optionSkipEnabled.isChecked());
+                intent.putExtra(MaterialIntroActivity.EXTRA_FINISH_ENABLED, optionFinishEnabled.isChecked());
 
                 startActivity(intent);
             }

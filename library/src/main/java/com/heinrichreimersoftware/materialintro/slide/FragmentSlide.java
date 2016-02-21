@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 public class FragmentSlide extends Slide{
 
-    private final Fragment fragment;
+    private final android.support.v4.app.Fragment fragment;
     @ColorRes
     private final int background;
     @ColorRes
@@ -25,7 +25,7 @@ public class FragmentSlide extends Slide{
     }
 
     @Override
-    public Fragment getFragment() {
+    public android.support.v4.app.Fragment getFragment() {
         return fragment;
     }
 
@@ -40,13 +40,13 @@ public class FragmentSlide extends Slide{
     }
 
     public static class Builder{
-        private Fragment fragment;
+        private android.support.v4.app.Fragment fragment;
         @ColorRes
         private int background;
         @ColorRes
         private int backgroundDark = 0;
 
-        public Builder fragment(Fragment fragment) {
+        public Builder fragment(android.support.v4.app.Fragment fragment) {
             this.fragment = fragment;
             return this;
         }
@@ -84,6 +84,9 @@ public class FragmentSlide extends Slide{
         private static final String ARGUMENT_THEME_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_THEME_RES";
 
+        public Fragment() {
+        }
+
         public static Fragment newInstance(@LayoutRes int layoutRes, @StyleRes int themeRes) {
             Fragment fragment = new Fragment();
 
@@ -97,9 +100,6 @@ public class FragmentSlide extends Slide{
 
         public static Fragment newInstance(@LayoutRes int layoutRes) {
             return newInstance(layoutRes, -1);
-        }
-
-        public Fragment() {
         }
 
         @Override
