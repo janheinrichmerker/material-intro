@@ -50,7 +50,7 @@ dependencies {
 How-To-Use
 -----
 
-**Step 1:** Your `Activity` must extend [`IntroActivity`][3]:
+**Step 1:** Your `Activity` must extend [`IntroActivity`][3] and be in your *AndroidManifest.java*:
 ````java
 public class MainIntroActivity extends IntroActivity{
     @Override
@@ -58,6 +58,15 @@ public class MainIntroActivity extends IntroActivity{
         super.onCreate(savedInstanceState);
     }
 }
+````
+
+````xml
+<manifest ...>
+    <application ...>
+        <activity android:name=".MainIntroActivity"
+            android:theme="@style/Theme.Intro"/>
+    </application>
+</manifest>
 ````
 
 **Step 2:** Add Slides:
@@ -96,36 +105,33 @@ Slide types:
 - [`Slide`][1]: Base slide. If you want to modify what's shown in your slide this is the way to go.
 - Feel free to submit an [issue][10] or [pull request][11] if you think any slide types are missing
 
-**Step 3 (Optional):** Enable Fullscreen:
+**Step 3:** Enable features:
 ````java
 public class MainIntroActivity extends IntroActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
+    
+        /* Enable/disable fullscreen */
         setFullscreen(true);
-        super.onCreate(savedInstanceState);
-    }
-}
-````
-
-**Step 4 (Optional):** Add your own page change listeners:
-````java
-public class MainIntroActivity extends IntroActivity{
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
         
+        super.onCreate(savedInstanceState);
+    
+        /* Enable/disable skip button */
+        setSkipEnabled(true);
+    
+        /* Enable/disable finish button */
+        setFinishEnabled(true);
+        
+        /* Add your own page change listeners */
         addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                //TODO
             }
             @Override
             public void onPageSelected(int position) {
-                //TODO
             }
             @Override
             public void onPageScrollStateChanged(int state) {
-                //TODO
             }
         });
     }
