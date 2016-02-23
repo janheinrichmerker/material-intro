@@ -96,8 +96,8 @@ public class SimpleSlide extends Slide {
         }
 
         public SimpleSlide build(){
-            if (background == 0 || title == 0 || layout == 0)
-                throw new IllegalArgumentException("You must set at least a title, background and layout.");
+            if (title == 0 || description == 0 || image == 0 || background == 0)
+                throw new IllegalArgumentException("You must set at least a title, description, image, and background.");
             return new SimpleSlide(this);
         }
     }
