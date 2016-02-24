@@ -143,13 +143,21 @@ public class SimpleSlide extends Slide {
             TextView description = (TextView) fragment.findViewById(R.id.mi_description);
             ImageView image = (ImageView) fragment.findViewById(R.id.mi_image);
 
+            int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
+            int descRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES);
+            int imgRes = arguments.getInt(ARGUMENT_IMAGE_RES);
 
-            title.setText(arguments.getInt(ARGUMENT_TITLE_RES));
-            description.setText(arguments.getInt(ARGUMENT_DESCRIPTION_RES));
-            image.setImageResource(arguments.getInt(ARGUMENT_IMAGE_RES));
+            if (titleRes != 0)
+                    title.setText(titleRes);
+            if (descRes != 0)
+                    description.setText(descRes);
+            if (imgRes != 0)
+                    image.setImageResource(imgRes);
 
-            int background = ContextCompat.getColor(getContext(),
-                    arguments.getInt(ARGUMENT_BACKGROUND_RES));
+            int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
+
+            if (backgroundRes != 0)
+                     int background = ContextCompat.getColor(getContext(), backgroundRes);
             if(ColorUtils.calculateLuminance(background) > 0.6){
                 //Use dark text color
                 title.setTextColor(ContextCompat.getColor(getContext(),
