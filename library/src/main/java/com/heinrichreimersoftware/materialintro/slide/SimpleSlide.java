@@ -146,6 +146,7 @@ public class SimpleSlide extends Slide {
             int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
             int descRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES);
             int imgRes = arguments.getInt(ARGUMENT_IMAGE_RES);
+            int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
 
             if (titleRes != 0)
                     title.setText(titleRes);
@@ -154,25 +155,19 @@ public class SimpleSlide extends Slide {
             if (imgRes != 0)
                     image.setImageResource(imgRes);
 
-            int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
-
-            if (backgroundRes != 0)
-                     int background = ContextCompat.getColor(getContext(), backgroundRes);
-            if(ColorUtils.calculateLuminance(background) > 0.6){
+            if (backgroundRes != 0 && ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) > 0.6) {
                 //Use dark text color
                 title.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.mi_text_color_primary_light));
                 description.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.mi_text_color_secondary_light));
-            }
-            else {
+            } else {
                 //Use light text color
                 title.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.mi_text_color_primary_dark));
                 description.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.mi_text_color_secondary_dark));
             }
-
             return fragment;
         }
     }
