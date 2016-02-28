@@ -85,6 +85,17 @@ public class FadeableViewPager extends ViewPager {
 
         private PagerAdapterWrapper(PagerAdapter adapter) {
             this.adapter = adapter;
+            adapter.registerDataSetObserver(new DataSetObserver() {
+                @Override
+                public void onChanged() {
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onInvalidated() {
+                    notifyDataSetChanged();
+                }
+            });
         }
 
         public PagerAdapter getAdapter() {
@@ -184,11 +195,6 @@ public class FadeableViewPager extends ViewPager {
             int position = adapter.getItemPosition(object);
             if (position < adapter.getCount()) return position;
             return POSITION_NONE;
-        }
-
-        @Override
-        public void notifyDataSetChanged() {
-            adapter.notifyDataSetChanged();
         }
 
         @Override
