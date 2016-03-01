@@ -6,7 +6,8 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="@dimen/mi_baseline">
+    android:padding="@dimen/mi_baseline"
+    android:clipToPadding="false">
 
     <TextView
         android:id="@id/mi_title"

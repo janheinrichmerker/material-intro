@@ -1,6 +1,7 @@
 material-intro
 =======================
 
+[![Android Arsenal][23]][24]
 [![jitpack.io][18]][4]
 [![Build Status][19]][20]
 [![Apache License 2.0][21]][22]
@@ -191,3 +192,5 @@ License
 [20]: https://travis-ci.org/HeinrichReimer/material-intro
 [21]: https://img.shields.io/github/license/HeinrichReimer/material-intro.svg
 [22]: https://www.apache.org/licenses/LICENSE-2.0.html
+[23]: https://img.shields.io/badge/Android%20Arsenal-material--intro-green.svg?style=true
+[24]: https://android-arsenal.com/details/1/3206
