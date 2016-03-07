@@ -96,8 +96,6 @@ public class SimpleSlide extends Slide {
         }
 
         public SimpleSlide build(){
-            if (title == 0 || description == 0 || image == 0 || background == 0)
-                throw new IllegalArgumentException("You must set at least a title, description, image, and background.");
             return new SimpleSlide(this);
         }
     }
@@ -145,28 +143,31 @@ public class SimpleSlide extends Slide {
             TextView description = (TextView) fragment.findViewById(R.id.mi_description);
             ImageView image = (ImageView) fragment.findViewById(R.id.mi_image);
 
+            int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
+            int descRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES);
+            int imgRes = arguments.getInt(ARGUMENT_IMAGE_RES);
+            int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
 
-            title.setText(arguments.getInt(ARGUMENT_TITLE_RES));
-            description.setText(arguments.getInt(ARGUMENT_DESCRIPTION_RES));
-            image.setImageResource(arguments.getInt(ARGUMENT_IMAGE_RES));
+            if (titleRes != 0)
+                    title.setText(titleRes);
+            if (descRes != 0)
+                    description.setText(descRes);
+            if (imgRes != 0)
+                    image.setImageResource(imgRes);
 
-            int background = ContextCompat.getColor(getContext(),
-                    arguments.getInt(ARGUMENT_BACKGROUND_RES));
-            if(ColorUtils.calculateLuminance(background) > 0.6){
+            if (backgroundRes != 0 && ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) > 0.6) {
                 //Use dark text color
                 title.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.mi_text_color_primary_light));
                 description.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.mi_text_color_secondary_light));
-            }
-            else {
+            } else {
                 //Use light text color
                 title.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.mi_text_color_primary_dark));
                 description.setTextColor(ContextCompat.getColor(getContext(),
                         R.color.mi_text_color_secondary_dark));
             }
-
             return fragment;
         }
     }
