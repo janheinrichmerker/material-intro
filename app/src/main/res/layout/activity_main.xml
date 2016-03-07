@@ -76,6 +76,14 @@
                 android:checked="true"
                 android:text="@string/label_option_finish_enabled" />
 
+            <CheckBox
+                android:id="@+id/option_start_new_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/baseline"
+                android:checked="false"
+                android:text="@string/label_option_open_new_activity"/>
+
             <Button
                 android:id="@+id/start_intro"
                 android:layout_width="match_parent"

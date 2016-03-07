@@ -8,6 +8,7 @@
     <string name="label_option_custom_fragments">Enable custom fragments</string>
     <string name="label_option_skip_enabled">Enable skip button</string>
     <string name="label_option_finish_enabled">Enable finish button</string>
+    <string name="label_option_open_new_activity">Open new activity after intro</string>
     <string name="label_start_intro">Start intro</string>
 
     <string name="title_material_metaphor">Material is the metaphor</string>

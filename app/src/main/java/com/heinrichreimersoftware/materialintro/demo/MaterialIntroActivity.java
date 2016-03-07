@@ -2,6 +2,7 @@ package com.heinrichreimersoftware.materialintro.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
@@ -71,6 +72,28 @@ public class MaterialIntroActivity extends IntroActivity {
                     .fragment(R.layout.fragment_custom, R.style.AppThemeDark)
                     .build());
         }
+
+        addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (getCount() == position) {
+                    Intent newActivityIntent = new Intent(MaterialIntroActivity.this, FinishActivity.class);
+                    newActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                    startActivity(newActivityIntent);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
         //Feel free to add and remove page change listeners to request permissions or such
         /*
