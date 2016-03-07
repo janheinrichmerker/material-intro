@@ -44,7 +44,7 @@ allprojects {
 ````
 ````gradle
 dependencies {
-    compile 'com.heinrichreimersoftware:material-intro:1.0'
+    compile 'com.heinrichreimersoftware:material-intro:1.1'
 }
 ````
 
@@ -142,6 +142,11 @@ public class MainIntroActivity extends IntroActivity{
 Changes
 -------
 
+* **Version 1.1:**
+    * Bug fixes (#1, #4, #5, #6, #21)
+    * Option to disable skip button / finish button (#3)
+    * Added demo on how to open a new activity after completing the inro (#14)
+    * Added scrollable slides (#22)
 * **Version 1.0:**
     * Initial release
 
