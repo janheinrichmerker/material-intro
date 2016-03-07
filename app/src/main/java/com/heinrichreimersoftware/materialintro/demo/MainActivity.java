@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CheckBox optionFullscreen = (CheckBox) findViewById(R.id.option_fullscreen);
+                CheckBox optionScrollable = (CheckBox) findViewById(R.id.option_scrollable);
                 CheckBox optionCustomFragments = (CheckBox) findViewById(R.id.option_custom_fragments);
                 CheckBox optionSkipEnabled = (CheckBox) findViewById(R.id.option_skip_enabled);
                 CheckBox optionFinishEnabled = (CheckBox) findViewById(R.id.option_finish_enabled);
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_FULLSCREEN, optionFullscreen.isChecked());
+                introIntent.putExtra(MaterialIntroActivity.EXTRA_SCROLLABLE, optionScrollable.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_CUSTOM_FRAGMENTS, optionCustomFragments.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_SKIP_ENABLED, optionSkipEnabled.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_FINISH_ENABLED, optionFinishEnabled.isChecked());
