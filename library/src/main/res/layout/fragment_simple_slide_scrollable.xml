@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:clipToPadding="false"
+    android:fitsSystemWindows="false"
     android:paddingBottom="@dimen/mi_pager_margin_bottom">
 
     <LinearLayout

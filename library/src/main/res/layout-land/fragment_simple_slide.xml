@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:clipToPadding="false"
+    android:fitsSystemWindows="false"
     android:padding="@dimen/mi_baseline">
 
     <LinearLayout
