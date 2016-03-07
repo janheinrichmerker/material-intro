@@ -343,12 +343,13 @@ public class IntroActivity extends AppCompatActivity {
 
             if (offset <= 0) {
                 button.setImageResource(R.drawable.ic_next);
+                button.getDrawable().setAlpha(0xFF);
             } else {
                 button.setImageResource(R.drawable.ic_next_finish);
                 if (button.getDrawable() != null && button.getDrawable() instanceof LayerDrawable) {
                     LayerDrawable drawable = (LayerDrawable) button.getDrawable();
-                    drawable.getDrawable(0).setAlpha((int) (255 * (1 - offset)));
-                    drawable.getDrawable(1).setAlpha((int) (255 * offset));
+                    drawable.getDrawable(0).setAlpha((int) (0xFF * (1 - offset)));
+                    drawable.getDrawable(1).setAlpha((int) (0xFF * offset));
                 } else {
                     button.setImageResource(offset > 0 ? R.drawable.ic_finish : R.drawable.ic_next);
                 }
