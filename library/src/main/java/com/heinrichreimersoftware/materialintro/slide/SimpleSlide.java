@@ -149,24 +149,26 @@ public class SimpleSlide extends Slide {
             int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
 
             if (titleRes != 0)
-                    title.setText(titleRes);
+                title.setText(titleRes);
             if (descRes != 0)
-                    description.setText(descRes);
+                description.setText(descRes);
             if (imgRes != 0)
-                    image.setImageResource(imgRes);
+                image.setImageResource(imgRes);
 
-            if (backgroundRes != 0 && ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) > 0.6) {
-                //Use dark text color
-                title.setTextColor(ContextCompat.getColor(getContext(),
-                        R.color.mi_text_color_primary_light));
-                description.setTextColor(ContextCompat.getColor(getContext(),
-                        R.color.mi_text_color_secondary_light));
-            } else {
-                //Use light text color
-                title.setTextColor(ContextCompat.getColor(getContext(),
-                        R.color.mi_text_color_primary_dark));
-                description.setTextColor(ContextCompat.getColor(getContext(),
-                        R.color.mi_text_color_secondary_dark));
+            if (backgroundRes != 0) {
+                if (ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) > 0.6) {
+                    //Use dark text color
+                    title.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.mi_text_color_primary_light));
+                    description.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.mi_text_color_secondary_light));
+                } else {
+                    //Use light text color
+                    title.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.mi_text_color_primary_dark));
+                    description.setTextColor(ContextCompat.getColor(getContext(),
+                            R.color.mi_text_color_secondary_dark));
+                }
             }
             return fragment;
         }
