@@ -22,6 +22,8 @@ public class FragmentSlide extends Slide{
         fragment = builder.fragment;
         background = builder.background;
         backgroundDark = builder.backgroundDark;
+        this.setAllowSlideNext(builder.allowNext);
+        this.setAllowSlidePrevious(builder.allowPrevious);
     }
 
     @Override
@@ -46,6 +48,9 @@ public class FragmentSlide extends Slide{
         @ColorRes
         private int backgroundDark = 0;
 
+        private boolean allowNext = true;
+        private boolean allowPrevious = true;
+
         public Builder fragment(android.support.v4.app.Fragment fragment) {
             this.fragment = fragment;
             return this;
@@ -68,6 +73,16 @@ public class FragmentSlide extends Slide{
 
         public Builder backgroundDark(@ColorRes int backgroundDark) {
             this.backgroundDark = backgroundDark;
+            return this;
+        }
+
+        public Builder allowNext(boolean value) {
+            this.allowNext = value;
+            return this;
+        }
+
+        public Builder allowPrevious(boolean value) {
+            this.allowPrevious = value;
             return this;
         }
 

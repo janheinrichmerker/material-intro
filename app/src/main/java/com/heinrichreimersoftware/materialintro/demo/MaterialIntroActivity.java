@@ -2,10 +2,18 @@ package com.heinrichreimersoftware.materialintro.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.widget.Toast;
 
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
+import com.heinrichreimersoftware.materialintro.app.NavigationInterface;
+import com.heinrichreimersoftware.materialintro.app.SetNavigationStateInterface;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
+import com.heinrichreimersoftware.materialintro.slide.Slide;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MaterialIntroActivity extends IntroActivity {
 
@@ -15,6 +23,8 @@ public class MaterialIntroActivity extends IntroActivity {
     public static final String EXTRA_CUSTOM_FRAGMENTS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_CUSTOM_FRAGMENTS";
     public static final String EXTRA_SKIP_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SKIP_ENABLED";
     public static final String EXTRA_FINISH_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FINISH_ENABLED";
+
+    private List<Slide> slides;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +43,9 @@ public class MaterialIntroActivity extends IntroActivity {
         setSkipEnabled(skipEnabled);
         setFinishEnabled(finishEnabled);
 
-        addSlide(new SimpleSlide.Builder()
+        slides = new ArrayList<>();
+
+        slides.add(new SimpleSlide.Builder()
                 .title(R.string.title_material_metaphor)
                 .description(R.string.description_material_metaphor)
                 .image(R.drawable.art_material_metaphor)
@@ -41,7 +53,8 @@ public class MaterialIntroActivity extends IntroActivity {
                 .backgroundDark(R.color.color_dark_material_metaphor)
                 .scrollable(scrollable)
                 .build());
-        addSlide(new SimpleSlide.Builder()
+
+        slides.add(new SimpleSlide.Builder()
                 .title(R.string.title_material_bold)
                 .description(R.string.description_material_bold)
                 .image(R.drawable.art_material_bold)
@@ -49,7 +62,8 @@ public class MaterialIntroActivity extends IntroActivity {
                 .backgroundDark(R.color.color_dark_material_bold)
                 .scrollable(scrollable)
                 .build());
-        addSlide(new SimpleSlide.Builder()
+
+        slides.add(new SimpleSlide.Builder()
                 .title(R.string.title_material_motion)
                 .description(R.string.description_material_motion)
                 .image(R.drawable.art_material_motion)
@@ -57,7 +71,8 @@ public class MaterialIntroActivity extends IntroActivity {
                 .backgroundDark(R.color.color_dark_material_motion)
                 .scrollable(scrollable)
                 .build());
-        addSlide(new SimpleSlide.Builder()
+
+        slides.add(new SimpleSlide.Builder()
                 .title(R.string.title_material_shadow)
                 .description(R.string.description_material_shadow)
                 .image(R.drawable.art_material_shadow)
@@ -67,17 +82,38 @@ public class MaterialIntroActivity extends IntroActivity {
                 .build());
 
         if(customFragments){
-            addSlide(new FragmentSlide.Builder()
+            slides.add(new FragmentSlide.Builder()
                     .background(R.color.color_custom_fragment_1)
                     .backgroundDark(R.color.color_dark_custom_fragment_1)
                     .fragment(LoginFragment.newInstance())
+                    .allowNext(false)
                     .build());
-            addSlide(new FragmentSlide.Builder()
+
+            slides.add(new FragmentSlide.Builder()
                     .background(R.color.color_custom_fragment_2)
                     .backgroundDark(R.color.color_dark_custom_fragment_2)
                     .fragment(R.layout.fragment_custom, R.style.AppThemeDark)
                     .build());
         }
+
+        addSlides(slides);
+
+        setNavigationInterface(new NavigationInterface() {
+            @Override
+            public boolean onNextClick(int position) {
+                return slides.get(position).isAllowSlideNext();
+            }
+
+            @Override
+            public boolean onPreviousClick(int position) {
+                return slides.get(position).isAllowSlidePrevious();
+            }
+
+            @Override
+            public void onImpossibleToNavigate(int position, int direction) {
+                Toast.makeText(getApplicationContext(), R.string.toast_impossible_to_navigate, Toast.LENGTH_LONG).show();
+            }
+        });
 
         //Feel free to add and remove page change listeners to request permissions or such
         /*
@@ -99,4 +135,5 @@ public class MaterialIntroActivity extends IntroActivity {
         });
         */
     }
+
 }

@@ -28,6 +28,8 @@ public class SimpleSlide extends Slide {
                 builder.background, builder.layout);
         background = builder.background;
         backgroundDark = builder.backgroundDark;
+        this.setAllowSlideNext(builder.allowNext);
+        this.setAllowSlidePrevious(builder.allowPrevious);
     }
 
     @Override
@@ -58,6 +60,9 @@ public class SimpleSlide extends Slide {
         private int image = 0;
         @LayoutRes
         private int layout = R.layout.fragment_simple_slide;
+
+        private boolean allowNext = true;
+        private boolean allowPrevious = true;
 
         public Builder background(@ColorRes int background) {
             this.background = background;
@@ -92,6 +97,16 @@ public class SimpleSlide extends Slide {
         public Builder scrollable(boolean scrollable) {
             this.layout = scrollable ? R.layout.fragment_simple_slide_scrollable :
                     R.layout.fragment_simple_slide;
+            return this;
+        }
+
+        public Builder allowNext(boolean value) {
+            this.allowNext = value;
+            return this;
+        }
+
+        public Builder allowPrevious(boolean value) {
+            this.allowPrevious = value;
             return this;
         }
 
