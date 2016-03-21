@@ -27,19 +27,26 @@ import android.widget.ImageButton;
 import com.heinrichreimersoftware.materialintro.R;
 import com.heinrichreimersoftware.materialintro.slide.Slide;
 import com.heinrichreimersoftware.materialintro.slide.SlideAdapter;
+import com.heinrichreimersoftware.materialintro.util.AnimUtils;
 import com.heinrichreimersoftware.materialintro.util.CheatSheet;
 import com.heinrichreimersoftware.materialintro.view.FadeableViewPager;
 import com.heinrichreimersoftware.materialintro.view.InkPageIndicator;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 @SuppressLint("Registered")
-public class IntroActivity extends AppCompatActivity {
+public class IntroActivity extends AppCompatActivity implements SetNavigationStateInterface {
+
+    public static final int DIRECTION_NEXT = 1;
+    public static final int DIRECTION_PREVIOUS = -1;
+
+    private NavigationInterface navigationInterface;
 
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private FrameLayout frame;
-    private ViewPager pager;
+    private FadeableViewPager pager;
     private InkPageIndicator pagerIndicator;
     private View buttonNext;
     private View buttonSkip;
@@ -50,6 +57,8 @@ public class IntroActivity extends AppCompatActivity {
     private boolean finishEnabled = true;
     private int position = 0;
     private float positionOffset = 0;
+
+    private int positionTmp = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +118,7 @@ public class IntroActivity extends AppCompatActivity {
 
     private void findViews(){
         frame = (FrameLayout) findViewById(R.id.mi_frame);
-        pager = (ViewPager) findViewById(R.id.mi_pager);
+        pager = (FadeableViewPager) findViewById(R.id.mi_pager);
         pagerIndicator = (InkPageIndicator) findViewById(R.id.mi_pager_indicator);
         buttonNext = findViewById(R.id.mi_button_next);
         buttonSkip = findViewById(R.id.mi_button_skip);
@@ -123,7 +132,7 @@ public class IntroActivity extends AppCompatActivity {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextSlide();
+                nextSlide(false);
             }
         });
         buttonSkip.setOnClickListener(new View.OnClickListener() {
@@ -136,14 +145,38 @@ public class IntroActivity extends AppCompatActivity {
         CheatSheet.setup(buttonSkip);
     }
 
-    private void nextSlide(){
+    public void nextSlide(boolean force){
         int currentItem = pager.getCurrentItem();
-        pager.setCurrentItem(++currentItem, true);
+
+        if (navigationInterface == null || force) {
+            pager.setCurrentItem(++currentItem, true);
+        }
+        else {
+            if (navigationInterface.onNextClick(currentItem)) {
+                pager.setCurrentItem(++currentItem, true);
+            }
+            else {
+                AnimUtils.applyShakeAnimation(getApplicationContext(), buttonNext);
+                navigationInterface.onImpossibleToNavigate(currentItem, DIRECTION_NEXT);
+            }
+        }
     }
 
-    private void previousSlide() {
+    public void previousSlide(boolean force) {
         int currentItem = pager.getCurrentItem();
-        pager.setCurrentItem(--currentItem, true);
+
+        if (navigationInterface == null || force) {
+            pager.setCurrentItem(--currentItem, true);
+        }
+        else {
+            if (navigationInterface.onPreviousClick(currentItem)) {
+                pager.setCurrentItem(--currentItem, true);
+            }
+            else {
+                AnimUtils.applyShakeAnimation(getApplicationContext(), buttonSkip);
+                navigationInterface.onImpossibleToNavigate(currentItem, DIRECTION_PREVIOUS);
+            }
+        }
     }
 
     private void skipIfEnabled() {
@@ -151,7 +184,7 @@ public class IntroActivity extends AppCompatActivity {
             int count = getCount();
             pager.setCurrentItem(count);
         } else {
-            previousSlide();
+            previousSlide(false);
         }
     }
 
@@ -415,18 +448,30 @@ public class IntroActivity extends AppCompatActivity {
 
 
     protected void addSlide(int location, Slide object) {
+        object.setPosition(++positionTmp);
         adapter.addSlide(location, object);
     }
 
     protected boolean addSlide(Slide object) {
+        object.setPosition(++positionTmp);
         return adapter.addSlide(object);
     }
 
     protected boolean addSlides(int location, @NonNull Collection<? extends Slide> collection) {
+        Iterator<? extends Slide> iterator = collection.iterator();
+        while(iterator.hasNext()) {
+            iterator.next().setPosition(++positionTmp);
+        }
+
         return adapter.addSlides(location, collection);
     }
 
     protected boolean addSlides(@NonNull Collection<? extends Slide> collection) {
+        Iterator<? extends Slide> iterator = collection.iterator();
+        while(iterator.hasNext()) {
+            iterator.next().setPosition(++positionTmp);
+        }
+
         return adapter.addSlides(collection);
     }
 
@@ -521,8 +566,53 @@ public class IntroActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
             IntroActivity.this.position = position;
-
             updateTaskDescription();
+            lockOrUnlockSwipeableIfNeeded(position);
         }
     }
+
+    public void setNavigationInterface(NavigationInterface navigationInterface) {
+        this.navigationInterface = navigationInterface;
+    }
+
+    public void setAllowNextForSlideByPosition(int position) {
+        getSlide(position).setAllowSlideNext(true);
+    }
+
+    public void setAllowNextForSlideByFragmentTag(String tag) {
+        pager.setSwipeable(true);
+
+        for (int i = 0; i < this.adapter.getCount(); i++) {
+            if (getSlide(i).getFragment() != null && getSlide(i).getFragment().getTag().equals(tag)) {
+                setAllowNextForSlideByPosition(i);
+                break;
+            }
+        }
+    }
+
+    public void setAllowPreviousForSlideByPosition(int position) {
+        getSlide(position).setAllowSlidePrevious(true);
+    }
+
+    public void setAllowPreviousForSlideByFragmentTag(String tag) {
+        pager.setSwipeable(true);
+
+        for (int i = 0; i < this.adapter.getCount(); i++) {
+            if (getSlide(i).getFragment() != null && getSlide(i).getFragment().getTag().equals(tag)) {
+                setAllowPreviousForSlideByPosition(i);
+                break;
+            }
+        }
+    }
+
+    private void lockOrUnlockSwipeableIfNeeded(int position) {
+        if (position < getCount()) {
+            if (!getSlide(position).isAllowSlideNext() || !getSlide(position).isAllowSlidePrevious()) {
+                pager.setSwipeable(false);
+            } else {
+                pager.setSwipeable(true);
+            }
+        }
+    }
+
 }

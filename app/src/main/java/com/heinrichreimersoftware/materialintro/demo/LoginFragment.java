@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginFragment extends Fragment {
+import com.heinrichreimersoftware.materialintro.app.IntroActivity;
+import com.heinrichreimersoftware.materialintro.app.SlideFragment;
+
+public class LoginFragment extends SlideFragment {
 
     private EditText fakeUsername;
     private EditText fakePassword;
@@ -26,6 +29,9 @@ public class LoginFragment extends Fragment {
             fakeLogin.setEnabled(true);
             fakeLogin.setText(R.string.label_fake_login);
             Toast.makeText(getContext(), R.string.label_fake_login_success, Toast.LENGTH_SHORT).show();
+
+            allowNextSlide();
+            //showNextSlide();
         }
     };
 

@@ -30,4 +30,6 @@
     <string name="label_fake_login_success">Successfully faked login.</string>
 
     <string name="title_fragment_custom">Take off!</string>
+
+    <string name="toast_impossible_to_navigate">Impossible to navigate</string>
 </resources>
