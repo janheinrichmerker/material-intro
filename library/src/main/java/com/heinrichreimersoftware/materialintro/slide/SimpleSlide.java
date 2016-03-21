@@ -222,12 +222,21 @@ public class SimpleSlide extends Slide {
             int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES);
             String[] permissions = arguments.getStringArray(ARGUMENT_PERMISSIONS);
 
-            if (titleRes != 0)
+            if (titleRes != 0) {
                 title.setText(titleRes);
-            if (descRes != 0)
+            } else {
+                title.setVisibility(View.GONE);
+            }
+            if (descRes != 0) {
                 description.setText(descRes);
-            if (imgRes != 0)
+            } else {
+                description.setVisibility(View.GONE);
+            }
+            if (imgRes != 0) {
                 image.setImageResource(imgRes);
+            } else {
+                image.setVisibility(View.GONE);
+            }
 
             if (backgroundDarkRes != 0) {
                 ViewCompat.setBackgroundTintList(buttonGrantPermissions, ColorStateList.valueOf(
@@ -253,9 +262,7 @@ public class SimpleSlide extends Slide {
                             R.color.mi_text_color_primary_dark));
                 }
             }
-
             updatePermissions(permissions);
-
             return fragment;
         }
 
