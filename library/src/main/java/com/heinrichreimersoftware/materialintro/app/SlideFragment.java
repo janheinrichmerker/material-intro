@@ -2,32 +2,31 @@ package com.heinrichreimersoftware.materialintro.app;
 
 import android.support.v4.app.Fragment;
 
-/**
- * Created by juced on 15.03.2016.
- */
 public class SlideFragment extends Fragment {
 
-    protected void allowNextSlide() {
+    public boolean canGoForward() {
+        return true;
+    }
+
+    public boolean canGoBackward() {
+        return true;
+    }
+
+    protected void updateNavigation() {
         if (getActivity() instanceof IntroActivity) {
-            ((IntroActivity) getActivity()).setAllowNextForSlideByFragmentTag(getTag());
+            ((IntroActivity) getActivity()).lockSwipeIfNeeded();
         }
     }
 
-    protected void allowPreviousSlide() {
+    protected void nextSlide() {
         if (getActivity() instanceof IntroActivity) {
-            ((IntroActivity) getActivity()).setAllowPreviousForSlideByFragmentTag(getTag());
+            ((IntroActivity) getActivity()).nextSlide();
         }
     }
 
-    protected void showNextSlide() {
+    protected void previousSlide() {
         if (getActivity() instanceof IntroActivity) {
-            ((IntroActivity) getActivity()).nextSlide(true);
-        }
-    }
-
-    protected void showPreviousSlide() {
-        if (getActivity() instanceof IntroActivity) {
-            ((IntroActivity) getActivity()).previousSlide(true);
+            ((IntroActivity) getActivity()).previousSlide();
         }
     }
 

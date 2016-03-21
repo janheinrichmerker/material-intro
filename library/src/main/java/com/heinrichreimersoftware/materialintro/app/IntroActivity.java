@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewPager;
@@ -32,17 +33,12 @@ import com.heinrichreimersoftware.materialintro.util.CheatSheet;
 import com.heinrichreimersoftware.materialintro.view.FadeableViewPager;
 import com.heinrichreimersoftware.materialintro.view.InkPageIndicator;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 @SuppressLint("Registered")
-public class IntroActivity extends AppCompatActivity implements SetNavigationStateInterface {
-
-    public static final int DIRECTION_NEXT = 1;
-    public static final int DIRECTION_PREVIOUS = -1;
-
-    private NavigationInterface navigationInterface;
+public class IntroActivity extends AppCompatActivity {
 
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private FrameLayout frame;
@@ -58,7 +54,9 @@ public class IntroActivity extends AppCompatActivity implements SetNavigationSta
     private int position = 0;
     private float positionOffset = 0;
 
-    private int positionTmp = 0;
+    private NavigationPolicy navigationPolicy = null;
+
+    private List<OnNavigationBlockedListener> navigationBlockedListeners = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +87,22 @@ public class IntroActivity extends AppCompatActivity implements SetNavigationSta
                 v.removeOnLayoutChangeListener(this);
             }
         });
+        lockSwipeIfNeeded();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setFullscreenFlags(fullscreen);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        for (Fragment fragment : fragmentManager.getFragments()) {
+            fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private void setSystemUiFlags(int flags, boolean value){
@@ -127,12 +135,13 @@ public class IntroActivity extends AppCompatActivity implements SetNavigationSta
 
         pager.setAdapter(adapter);
         pager.addOnPageChangeListener(listener);
+
         pagerIndicator.setViewPager(pager);
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nextSlide(false);
+                nextSlide();
             }
         });
         buttonSkip.setOnClickListener(new View.OnClickListener() {
@@ -145,47 +154,63 @@ public class IntroActivity extends AppCompatActivity implements SetNavigationSta
         CheatSheet.setup(buttonSkip);
     }
 
-    public void nextSlide(boolean force){
+    public void nextSlide() {
         int currentItem = pager.getCurrentItem();
 
-        if (navigationInterface == null || force) {
+        if (canGoForward(currentItem, true)) {
             pager.setCurrentItem(++currentItem, true);
         }
         else {
-            if (navigationInterface.onNextClick(currentItem)) {
-                pager.setCurrentItem(++currentItem, true);
-            }
-            else {
-                AnimUtils.applyShakeAnimation(getApplicationContext(), buttonNext);
-                navigationInterface.onImpossibleToNavigate(currentItem, DIRECTION_NEXT);
-            }
+            AnimUtils.applyShakeAnimation(this, buttonNext);
+
         }
     }
 
-    public void previousSlide(boolean force) {
+    public void previousSlide() {
         int currentItem = pager.getCurrentItem();
 
-        if (navigationInterface == null || force) {
+        if (canGoBackward(currentItem, true)) {
             pager.setCurrentItem(--currentItem, true);
         }
         else {
-            if (navigationInterface.onPreviousClick(currentItem)) {
-                pager.setCurrentItem(--currentItem, true);
-            }
-            else {
-                AnimUtils.applyShakeAnimation(getApplicationContext(), buttonSkip);
-                navigationInterface.onImpossibleToNavigate(currentItem, DIRECTION_PREVIOUS);
-            }
+            AnimUtils.applyShakeAnimation(getApplicationContext(), buttonSkip);
+
         }
     }
 
     private void skipIfEnabled() {
         if (skipEnabled) {
             int count = getCount();
-            pager.setCurrentItem(count);
+            int endPosition = pager.getCurrentItem();
+            while (endPosition < count && canGoForward(endPosition, true)) {
+                endPosition++;
+            }
+            pager.setCurrentItem(endPosition);
         } else {
-            previousSlide(false);
+            previousSlide();
         }
+    }
+
+    private boolean canGoForward(int position, boolean notifyListeners) {
+        boolean canGoForward = (navigationPolicy == null || navigationPolicy.canGoForward(position)) &&
+                getSlide(position).canGoForward();
+        if (!canGoForward && notifyListeners) {
+            for (OnNavigationBlockedListener listener : navigationBlockedListeners) {
+                listener.onNavigationBlocked(position, OnNavigationBlockedListener.DIRECTION_FORWARD);
+            }
+        }
+        return canGoForward;
+    }
+
+    private boolean canGoBackward(int position, boolean notifyListeners) {
+        boolean canGoBackward = (navigationPolicy == null || navigationPolicy.canGoBackward(position)) &&
+                getSlide(position).canGoBackward();
+        if (!canGoBackward && notifyListeners) {
+            for (OnNavigationBlockedListener listener : navigationBlockedListeners) {
+                listener.onNavigationBlocked(position, OnNavigationBlockedListener.DIRECTION_BACKWARD);
+            }
+        }
+        return canGoBackward;
     }
 
     private void finishIfNeeded() {
@@ -448,30 +473,18 @@ public class IntroActivity extends AppCompatActivity implements SetNavigationSta
 
 
     protected void addSlide(int location, Slide object) {
-        object.setPosition(++positionTmp);
         adapter.addSlide(location, object);
     }
 
     protected boolean addSlide(Slide object) {
-        object.setPosition(++positionTmp);
         return adapter.addSlide(object);
     }
 
     protected boolean addSlides(int location, @NonNull Collection<? extends Slide> collection) {
-        Iterator<? extends Slide> iterator = collection.iterator();
-        while(iterator.hasNext()) {
-            iterator.next().setPosition(++positionTmp);
-        }
-
         return adapter.addSlides(location, collection);
     }
 
     protected boolean addSlides(@NonNull Collection<? extends Slide> collection) {
-        Iterator<? extends Slide> iterator = collection.iterator();
-        while(iterator.hasNext()) {
-            iterator.next().setPosition(++positionTmp);
-        }
-
         return adapter.addSlides(collection);
     }
 
@@ -567,52 +580,30 @@ public class IntroActivity extends AppCompatActivity implements SetNavigationSta
         public void onPageSelected(int position) {
             IntroActivity.this.position = position;
             updateTaskDescription();
-            lockOrUnlockSwipeableIfNeeded(position);
+            lockSwipeIfNeeded();
         }
     }
 
-    public void setNavigationInterface(NavigationInterface navigationInterface) {
-        this.navigationInterface = navigationInterface;
+    public void setNavigationPolicy(NavigationPolicy navigationPolicy) {
+        this.navigationPolicy = navigationPolicy;
     }
 
-    public void setAllowNextForSlideByPosition(int position) {
-        getSlide(position).setAllowSlideNext(true);
+    public void addOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
+        navigationBlockedListeners.add(listener);
     }
 
-    public void setAllowNextForSlideByFragmentTag(String tag) {
-        pager.setSwipeable(true);
-
-        for (int i = 0; i < this.adapter.getCount(); i++) {
-            if (getSlide(i).getFragment() != null && getSlide(i).getFragment().getTag().equals(tag)) {
-                setAllowNextForSlideByPosition(i);
-                break;
-            }
-        }
+    public void removeOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
+        navigationBlockedListeners.remove(listener);
     }
 
-    public void setAllowPreviousForSlideByPosition(int position) {
-        getSlide(position).setAllowSlidePrevious(true);
+    public void clearOnNavigationBlockedListeners() {
+        navigationBlockedListeners.clear();
     }
 
-    public void setAllowPreviousForSlideByFragmentTag(String tag) {
-        pager.setSwipeable(true);
-
-        for (int i = 0; i < this.adapter.getCount(); i++) {
-            if (getSlide(i).getFragment() != null && getSlide(i).getFragment().getTag().equals(tag)) {
-                setAllowPreviousForSlideByPosition(i);
-                break;
-            }
-        }
-    }
-
-    private void lockOrUnlockSwipeableIfNeeded(int position) {
+    public void lockSwipeIfNeeded() {
         if (position < getCount()) {
-            if (!getSlide(position).isAllowSlideNext() || !getSlide(position).isAllowSlidePrevious()) {
-                pager.setSwipeable(false);
-            } else {
-                pager.setSwipeable(true);
-            }
+            pager.setSwipeLeftEnabled(canGoForward(position, false));
+            pager.setSwipeRightEnabled(canGoBackward(position, false));
         }
     }
-
 }

@@ -8,5 +8,6 @@
 
     <item name="mi_title" type="id"/>
     <item name="mi_description" type="id"/>
+    <item name="mi_button_grant_permissions" type="id"/>
     <item name="mi_image" type="id"/>
 </resources>

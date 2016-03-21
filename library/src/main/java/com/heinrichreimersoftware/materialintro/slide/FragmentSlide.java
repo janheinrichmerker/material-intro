@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.heinrichreimersoftware.materialintro.app.SlideFragment;
+
 public class FragmentSlide extends Slide{
 
     private final android.support.v4.app.Fragment fragment;
@@ -18,12 +20,16 @@ public class FragmentSlide extends Slide{
     @ColorRes
     private final int backgroundDark;
 
+    private final boolean canGoForward;
+
+    private final boolean canGoBackward;
+
     private FragmentSlide(Builder builder) {
         fragment = builder.fragment;
         background = builder.background;
         backgroundDark = builder.backgroundDark;
-        this.setAllowSlideNext(builder.allowNext);
-        this.setAllowSlidePrevious(builder.allowPrevious);
+        canGoForward = builder.canGoForward;
+        canGoBackward = builder.canGoBackward;
     }
 
     @Override
@@ -41,6 +47,22 @@ public class FragmentSlide extends Slide{
         return backgroundDark;
     }
 
+    @Override
+    public boolean canGoForward() {
+        if (fragment instanceof SlideFragment) {
+            return ((SlideFragment) fragment).canGoForward();
+        }
+        return canGoForward;
+    }
+
+    @Override
+    public boolean canGoBackward() {
+        if (fragment instanceof SlideFragment) {
+            return ((SlideFragment) fragment).canGoBackward();
+        }
+        return canGoBackward;
+    }
+
     public static class Builder{
         private android.support.v4.app.Fragment fragment;
         @ColorRes
@@ -48,8 +70,9 @@ public class FragmentSlide extends Slide{
         @ColorRes
         private int backgroundDark = 0;
 
-        private boolean allowNext = true;
-        private boolean allowPrevious = true;
+        private boolean canGoForward = true;
+
+        private boolean canGoBackward = true;
 
         public Builder fragment(android.support.v4.app.Fragment fragment) {
             this.fragment = fragment;
@@ -76,13 +99,13 @@ public class FragmentSlide extends Slide{
             return this;
         }
 
-        public Builder allowNext(boolean value) {
-            this.allowNext = value;
+        public Builder canGoForward(boolean canGoForward) {
+            this.canGoForward = canGoForward;
             return this;
         }
 
-        public Builder allowPrevious(boolean value) {
-            this.allowPrevious = value;
+        public Builder canGoBackward(boolean canGoBackward) {
+            this.canGoBackward = canGoBackward;
             return this;
         }
 

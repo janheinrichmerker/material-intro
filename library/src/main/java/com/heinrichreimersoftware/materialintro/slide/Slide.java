@@ -12,32 +12,11 @@ public abstract class Slide {
         return 0;
     }
 
-    private int position;
-
-    private boolean allowSlideNext = true;
-    private boolean allowSlidePrevious = true;
-
-    public boolean isAllowSlideNext() {
-        return allowSlideNext;
+    public boolean canGoForward() {
+        return true;
     }
 
-    public boolean isAllowSlidePrevious() {
-        return allowSlidePrevious;
-    }
-
-    public void setAllowSlidePrevious(boolean allowSlidePrevious) {
-        this.allowSlidePrevious = allowSlidePrevious;
-    }
-
-    public void setAllowSlideNext(boolean allowSlideNext) {
-        this.allowSlideNext = allowSlideNext;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
+    public boolean canGoBackward() {
+        return true;
     }
 }

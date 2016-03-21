@@ -8,6 +8,7 @@
     <color name="color_material_bold">#EC407A</color>
     <color name="color_material_motion">#6A1B9A</color>
     <color name="color_material_shadow">#E0E0E0</color>
+    <color name="color_permissions">#FFEB3B</color>
     <color name="color_custom_fragment_1">#E64A19</color>
     <color name="color_custom_fragment_2">#3F51B5</color>
 
@@ -15,6 +16,7 @@
     <color name="color_dark_material_bold">#D81B60</color>
     <color name="color_dark_material_motion">#4A148C</color>
     <color name="color_dark_material_shadow">#BDBDBD</color>
+    <color name="color_dark_permissions">#FBC02D</color>
     <color name="color_dark_custom_fragment_1">#BF360C</color>
     <color name="color_dark_custom_fragment_2">#303F9F</color>
 </resources>

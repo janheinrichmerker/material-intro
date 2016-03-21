@@ -7,6 +7,7 @@
     <string name="label_option_fullscreen">Enable fullscreen</string>
     <string name="label_option_scrollable">Scrollable slides</string>
     <string name="label_option_custom_fragments">Enable custom fragments</string>
+    <string name="label_option_permissions">Enable permission request</string>
     <string name="label_option_skip_enabled">Enable skip button</string>
     <string name="label_option_finish_enabled">Enable finish button</string>
     <string name="label_option_open_new_activity">Open new activity after intro</string>
@@ -22,14 +23,18 @@
     <string name="description_material_motion">Motion respects and reinforces the user as the prime mover. Primary user actions are inflection points that initiate motion, transforming the whole design.</string>
     <string name="description_material_shadow">Within the material environment, virtual lights illuminate the scene. Key lights create directional shadows, while ambient light creates soft shadows from all angles.</string>
 
+    <string name="title_permissions">Requesting permissions was never easier.</string>
+    <string name="description_permissions">This app needs the camera and storage permission.\nIt\'s only to show how permission requests work in this library and we won\'t do anything with the granted permissions.</string>
+    <string name="label_grant_permissions">Please grant the permissions before proceeding.</string>
+
     <string name="title_fragment_login">This is a custom fragment.</string>
     <string name="hint_fake_username">Fake username</string>
     <string name="hint_fake_password">Fake password</string>
     <string name="label_fake_login">Fake login</string>
     <string name="label_fake_login_loading">Loading…</string>
-    <string name="label_fake_login_success">Successfully faked login.</string>
+    <string name="label_fake_login_success">Logged in ☺</string>
+    <string name="label_fake_login_success_message">Successfully faked login.</string>
+    <string name="label_fill_out_form">Please fill out the form before proceeding.</string>
 
     <string name="title_fragment_custom">Take off!</string>
-
-    <string name="toast_impossible_to_navigate">Impossible to navigate</string>
 </resources>

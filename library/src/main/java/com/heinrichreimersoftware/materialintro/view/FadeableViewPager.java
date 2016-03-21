@@ -4,15 +4,11 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FadeableViewPager extends ViewPager {
-
-    private boolean swipeable = true;
+public class FadeableViewPager extends SwipeBlockableViewPager {
 
     public FadeableViewPager(Context context) {
         super(context);
@@ -256,27 +252,5 @@ public class FadeableViewPager extends ViewPager {
         @Override
         public void onPageScrollStateChanged(int state) {
         }
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (this.swipeable) {
-            return super.onInterceptTouchEvent(event);
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (this.swipeable) {
-            return super.onTouchEvent(event);
-        }
-
-        return false;
-    }
-
-    public void setSwipeable(boolean swipeable) {
-        this.swipeable = swipeable;
     }
 }

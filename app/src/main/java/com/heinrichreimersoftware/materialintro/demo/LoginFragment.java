@@ -3,7 +3,6 @@ package com.heinrichreimersoftware.materialintro.demo;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 
 public class LoginFragment extends SlideFragment {
@@ -20,18 +18,17 @@ public class LoginFragment extends SlideFragment {
     private EditText fakePassword;
     private Button fakeLogin;
 
+    private boolean loggedIn = false;
+
     private Handler loginHandler = new Handler();
     private Runnable loginRunnable = new Runnable() {
         @Override
         public void run() {
-            fakeUsername.setEnabled(true);
-            fakePassword.setEnabled(true);
-            fakeLogin.setEnabled(true);
-            fakeLogin.setText(R.string.label_fake_login);
-            Toast.makeText(getContext(), R.string.label_fake_login_success, Toast.LENGTH_SHORT).show();
+            fakeLogin.setText(R.string.label_fake_login_success);
+            Toast.makeText(getContext(), R.string.label_fake_login_success_message, Toast.LENGTH_SHORT).show();
 
-            allowNextSlide();
-            //showNextSlide();
+            loggedIn = true;
+            updateNavigation();
         }
     };
 
@@ -53,6 +50,10 @@ public class LoginFragment extends SlideFragment {
         fakePassword = (EditText) root.findViewById(R.id.fakePassword);
         fakeLogin = (Button) root.findViewById(R.id.fakeLogin);
 
+        fakeUsername.setEnabled(!loggedIn);
+        fakePassword.setEnabled(!loggedIn);
+        fakeLogin.setEnabled(!loggedIn);
+
         fakeLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,5 +73,10 @@ public class LoginFragment extends SlideFragment {
     public void onDestroy() {
         loginHandler.removeCallbacks(loginRunnable);
         super.onDestroy();
+    }
+
+    @Override
+    public boolean canGoForward() {
+        return loggedIn;
     }
 }
