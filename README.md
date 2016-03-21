@@ -36,15 +36,14 @@ Dependency
 **Gradle dependency:**
 ````gradle
 allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
 ````
 ````gradle
 dependencies {
-    compile 'com.heinrichreimersoftware:material-intro:1.1'
+    compile 'com.heinrichreimersoftware:material-intro:1.2.1'
 }
 ````
 
@@ -86,6 +85,7 @@ public class MainIntroActivity extends IntroActivity{
                 .image(R.drawable.image_1)
                 .background(R.color.background_1)
                 .backgroundDark(R.color.background_dark_1)
+                .permission(Manifest.permission.CAMERA)
                 .build());
         
         /**
@@ -122,6 +122,26 @@ public class MainIntroActivity extends IntroActivity{
     
         /* Enable/disable finish button */
         setFinishEnabled(true);
+
+        /* Add a navigation policy to define when users can go forward/backward */
+        setNavigationPolicy(new NavigationPolicy() {
+            @Override
+            public boolean canGoForward(int position) {
+                return true;
+            }
+
+            @Override
+            public boolean canGoBackward(int position) {
+                return false;
+            }
+        });
+
+        /* Add a listener to detect ehen users try to go to a page they can't go to */
+        addOnNavigationBlockedListener(new OnNavigationBlockedListener() {
+            @Override
+            public void onNavigationBlocked(int position, int direction) {
+            }
+        });
         
         /* Add your own page change listeners */
         addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
@@ -142,6 +162,12 @@ public class MainIntroActivity extends IntroActivity{
 Changes
 -------
 
+* **Version 1.2.1:**
+    * Fixed annotation bug
+* **Version 1.2:**
+    * Validation feature (#7, 55d2d08)
+    * Permission requests (55d2d08)
+    * Bug fixes
 * **Version 1.1:**
     * Bug fixes (#1, #4, #5, #6, #21)
     * Option to disable skip button / finish button (#3)
