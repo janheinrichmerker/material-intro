@@ -118,7 +118,7 @@ public class MaterialIntroActivity extends IntroActivity {
 
         addOnNavigationBlockedListener(new OnNavigationBlockedListener() {
             @Override
-            public void onNavigationBlocked(int position, @Direction int direction) {
+            public void onNavigationBlocked(int position, int direction) {
                 View contentView = findViewById(android.R.id.content);
                 Snackbar.make(contentView, (permissions && position == 4) ?
                                 R.string.label_grant_permissions : R.string.label_fill_out_form,
