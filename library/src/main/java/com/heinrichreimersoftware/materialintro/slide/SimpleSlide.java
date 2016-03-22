@@ -3,6 +3,7 @@ package com.heinrichreimersoftware.materialintro.slide;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
@@ -77,7 +78,7 @@ public class SimpleSlide extends Slide {
         return canGoBackward;
     }
 
-    public static class Builder{
+    public static class Builder {
         @ColorRes
         private int background = 0;
         @ColorRes
@@ -153,7 +154,7 @@ public class SimpleSlide extends Slide {
             return this;
         }
 
-        public SimpleSlide build(){
+        public SimpleSlide build() {
             return new SimpleSlide(this);
         }
     }
@@ -176,19 +177,15 @@ public class SimpleSlide extends Slide {
         private static final String ARGUMENT_PERMISSIONS =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_PERMISSIONS";
 
-        private Button buttonGrantPermissions;
-
+        private String permissions[];
         private boolean permissionsGranted = false;
-
-        public Fragment() {
-        }
+        private Button buttonGrantPermissions;
 
         public static Fragment newInstance(@StringRes int title, @StringRes int description,
                                            @DrawableRes int image, @ColorRes int background,
                                            @ColorRes int backgroundDark, @LayoutRes int layout,
                                            String[] permissions) {
             Fragment fragment = new Fragment();
-
             Bundle arguments = new Bundle();
             arguments.putInt(ARGUMENT_TITLE_RES, title);
             arguments.putInt(ARGUMENT_DESCRIPTION_RES, description);
@@ -198,7 +195,6 @@ public class SimpleSlide extends Slide {
             arguments.putInt(ARGUMENT_LAYOUT_RES, layout);
             arguments.putStringArray(ARGUMENT_PERMISSIONS, permissions);
             fragment.setArguments(arguments);
-
             return fragment;
         }
 
@@ -220,93 +216,90 @@ public class SimpleSlide extends Slide {
             int imgRes = arguments.getInt(ARGUMENT_IMAGE_RES);
             int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
             int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES);
-            String[] permissions = arguments.getStringArray(ARGUMENT_PERMISSIONS);
+            permissions = arguments.getStringArray(ARGUMENT_PERMISSIONS);
 
-            if (titleRes != 0) {
-                title.setText(titleRes);
-            } else {
-                title.setVisibility(View.GONE);
+            if (title != null) {
+                if (titleRes != 0)
+                    title.setText(titleRes);
+                else
+                    title.setVisibility(View.GONE);
             }
-            if (descRes != 0) {
-                description.setText(descRes);
-            } else {
-                description.setVisibility(View.GONE);
+            if (description != null) {
+                if (descRes != 0)
+                    description.setText(descRes);
+                else
+                    description.setVisibility(View.GONE);
             }
-            if (imgRes != 0) {
-                image.setImageResource(imgRes);
-            } else {
-                image.setVisibility(View.GONE);
+            if (image != null) {
+                if (imgRes != 0)
+                    image.setImageResource(imgRes);
+                else
+                    image.setVisibility(View.GONE);
             }
-
-            if (backgroundDarkRes != 0) {
+            if (buttonGrantPermissions != null && backgroundDarkRes != 0) {
                 ViewCompat.setBackgroundTintList(buttonGrantPermissions, ColorStateList.valueOf(
                         ContextCompat.getColor(getContext(), backgroundDarkRes)));
             }
 
             if (backgroundRes != 0) {
-                if (ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) > 0.6) {
-                    //Use dark text color
-                    title.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_primary_light));
-                    description.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_secondary_light));
-                    buttonGrantPermissions.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_primary_light));
-                } else {
-                    //Use light text color
-                    title.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_primary_dark));
-                    description.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_secondary_dark));
-                    buttonGrantPermissions.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_primary_dark));
-                }
+                @ColorInt int color = ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) > 0.6 ?
+                        ContextCompat.getColor(getContext(), R.color.mi_text_color_primary_light) :
+                        ContextCompat.getColor(getContext(), R.color.mi_text_color_primary_dark);
+                if (title != null)
+                    title.setTextColor(color);
+                if (description != null)
+                    description.setTextColor(color);
+                if (buttonGrantPermissions != null)
+                    buttonGrantPermissions.setTextColor(color);
             }
-            updatePermissions(permissions);
+            updatePermissions();
             return fragment;
         }
 
-        private void updatePermissions(String[] permissions) {
+        @Override
+        public void onResume() {
+            super.onResume();
+            updatePermissions();
+        }
+
+        private void updatePermissions() {
             Log.d("SimpleSlide", "Updating permissions...");
-            if (permissions != null) {
-                final List<String> permissionsNotGranted = new ArrayList<>();
-                for (String permission : permissions) {
-                    if (ContextCompat.checkSelfPermission(getActivity(), permission) !=
-                            PackageManager.PERMISSION_GRANTED) {
-                        permissionsNotGranted.add(permission);
+            if (buttonGrantPermissions != null) {
+                if (permissions != null) {
+                    final List<String> permissionsNotGranted = new ArrayList<>();
+                    for (String permission : permissions) {
+                        if (ContextCompat.checkSelfPermission(getActivity(), permission) !=
+                                PackageManager.PERMISSION_GRANTED) {
+                            permissionsNotGranted.add(permission);
+                        }
+                    }
+                    if (permissionsNotGranted.size() > 0) {
+                        buttonGrantPermissions.setVisibility(View.VISIBLE);
+                        buttonGrantPermissions.setText(getResources().getQuantityText(
+                                R.plurals.mi_label_grant_permission, permissionsNotGranted.size()));
+                        buttonGrantPermissions.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        permissionsNotGranted.toArray(
+                                                new String[permissionsNotGranted.size()]),
+                                        PERMISSIONS_REQUEST_CODE);
+                            }
+                        });
+                        return;
                     }
                 }
-
-                if (permissionsNotGranted.size() > 0) {
-                    buttonGrantPermissions.setVisibility(View.VISIBLE);
-                    buttonGrantPermissions.setText(getResources().getQuantityText(
-                            R.plurals.mi_label_grant_permission, permissionsNotGranted.size()));
-                    buttonGrantPermissions.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ActivityCompat.requestPermissions(getActivity(),
-                                    permissionsNotGranted.toArray(
-                                            new String[permissionsNotGranted.size()]),
-                                    PERMISSIONS_REQUEST_CODE);
-                        }
-                    });
-                } else {
-                    buttonGrantPermissions.setVisibility(View.GONE);
-                    permissionsGranted = true;
-                    updateNavigation();
-                }
-            } else {
                 buttonGrantPermissions.setVisibility(View.GONE);
-                permissionsGranted = true;
-                updateNavigation();
             }
+            permissionsGranted = true;
+            updateNavigation();
         }
 
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                @NonNull int[] grantResults) {
             if (requestCode == PERMISSIONS_REQUEST_CODE) {
-                updatePermissions(permissions);
+                updatePermissions();
             }
         }
 
