@@ -82,10 +82,10 @@ public class SimpleSlide extends Slide {
         private int background = 0;
         @ColorRes
         private int backgroundDark = 0;
-        @StringRes
-        private int title = 0;
-        @StringRes
-        private int description = 0;
+        @String
+        private String title = "";
+        @String
+        private String description = "";
         @DrawableRes
         private int image = 0;
         @LayoutRes
@@ -107,12 +107,12 @@ public class SimpleSlide extends Slide {
             return this;
         }
 
-        public Builder title(@StringRes int title) {
+        public Builder title(@String String title) {
             this.title = title;
             return this;
         }
 
-        public Builder description(@StringRes int description) {
+        public Builder description(@String String description) {
             this.description = description;
             return this;
         }
@@ -183,15 +183,15 @@ public class SimpleSlide extends Slide {
         public Fragment() {
         }
 
-        public static Fragment newInstance(@StringRes int title, @StringRes int description,
+        public static Fragment newInstance(@String String title, @String String description,
                                            @DrawableRes int image, @ColorRes int background,
                                            @ColorRes int backgroundDark, @LayoutRes int layout,
                                            String[] permissions) {
             Fragment fragment = new Fragment();
 
             Bundle arguments = new Bundle();
-            arguments.putInt(ARGUMENT_TITLE_RES, title);
-            arguments.putInt(ARGUMENT_DESCRIPTION_RES, description);
+            arguments.putString(ARGUMENT_TITLE_RES, title);
+            arguments.putString(ARGUMENT_DESCRIPTION_RES, description);
             arguments.putInt(ARGUMENT_IMAGE_RES, image);
             arguments.putInt(ARGUMENT_BACKGROUND_RES, background);
             arguments.putInt(ARGUMENT_BACKGROUND_DARK_RES, backgroundDark);
@@ -215,19 +215,19 @@ public class SimpleSlide extends Slide {
             buttonGrantPermissions = (Button) fragment.findViewById(R.id.mi_button_grant_permissions);
             ImageView image = (ImageView) fragment.findViewById(R.id.mi_image);
 
-            int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
-            int descRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES);
+            String titleRes = arguments.getString(ARGUMENT_TITLE_RES);
+            String descRes = arguments.getString(ARGUMENT_DESCRIPTION_RES);
             int imgRes = arguments.getInt(ARGUMENT_IMAGE_RES);
             int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
             int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES);
             String[] permissions = arguments.getStringArray(ARGUMENT_PERMISSIONS);
 
-            if (titleRes != 0) {
+            if (!titleRes.equals("")) {
                 title.setText(titleRes);
             } else {
                 title.setVisibility(View.GONE);
             }
-            if (descRes != 0) {
+            if (!descRes.equals("")) {
                 description.setText(descRes);
             } else {
                 description.setVisibility(View.GONE);
