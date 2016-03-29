@@ -224,7 +224,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     private void setCurrentPageImmediate() {
         if (viewPager != null) {
-            currentPage = viewPager.getCurrentItem();
+            currentPage = Math.min(viewPager.getCurrentItem(), pageCount);
         } else {
             currentPage = 0;
         }

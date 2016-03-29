@@ -101,7 +101,9 @@ public class IntroActivity extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         for (Fragment fragment : fragmentManager.getFragments()) {
-            fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (fragment != null) {
+                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
         }
     }
 

@@ -137,17 +137,22 @@ public class FragmentSlide extends Slide{
         }
 
         public static Fragment newInstance(@LayoutRes int layoutRes) {
-            return newInstance(layoutRes, -1);
+            return newInstance(layoutRes, 0);
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            Context contextThemeWrapper = new ContextThemeWrapper(getActivity(),
-                    getArguments().getInt(ARGUMENT_THEME_RES));
+            int themeRes = getArguments().getInt(ARGUMENT_THEME_RES, 0);
+            Context contextThemeWrapper;
+            if (themeRes != 0) {
+                contextThemeWrapper = new ContextThemeWrapper(getActivity(), themeRes);
+            } else {
+                contextThemeWrapper = getActivity();
+            }
             LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
 
-            return localInflater.inflate(getArguments().getInt(ARGUMENT_LAYOUT_RES), container, false);
+            return localInflater.inflate(getArguments().getInt(ARGUMENT_LAYOUT_RES, 0), container, false);
         }
     }
 }

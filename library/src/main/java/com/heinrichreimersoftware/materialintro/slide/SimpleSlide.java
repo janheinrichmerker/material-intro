@@ -31,8 +31,10 @@ public class SimpleSlide extends Slide {
     private static final int PERMISSIONS_REQUEST_CODE = 34;
 
     private final Fragment fragment;
+
     @ColorRes
     private final int background;
+
     @ColorRes
     private final int backgroundDark;
 
@@ -41,10 +43,11 @@ public class SimpleSlide extends Slide {
     private final boolean canGoBackward;
 
     private SimpleSlide(Builder builder) {
-        fragment = Fragment.newInstance(builder.title, builder.description, builder.image,
-                builder.background, builder.backgroundDark, builder.layout, builder.permissions);
-        background = builder.background;
-        backgroundDark = builder.backgroundDark;
+        fragment = Fragment.newInstance(builder.title, builder.titleRes, builder.description,
+                builder.descriptionRes, builder.imageRes, builder.backgroundRes,
+                builder.backgroundDarkRes, builder.layoutRes, builder.permissions);
+        background = builder.backgroundRes;
+        backgroundDark = builder.backgroundDarkRes;
         canGoForward = builder.canGoForward;
         canGoBackward = builder.canGoBackward;
     }
@@ -77,19 +80,28 @@ public class SimpleSlide extends Slide {
         return canGoBackward;
     }
 
-    public static class Builder{
+    public static class Builder {
         @ColorRes
-        private int background = 0;
+        private int backgroundRes = 0;
+
         @ColorRes
-        private int backgroundDark = 0;
+        private int backgroundDarkRes = 0;
+
+        private String title = null;
+
         @StringRes
-        private int title = 0;
+        private int titleRes = 0;
+
+        private String description = null;
+
         @StringRes
-        private int description = 0;
+        private int descriptionRes = 0;
+
         @DrawableRes
-        private int image = 0;
+        private int imageRes = 0;
+
         @LayoutRes
-        private int layout = R.layout.fragment_simple_slide;
+        private int layoutRes = R.layout.fragment_simple_slide;
 
         private boolean canGoForward = true;
 
@@ -97,38 +109,52 @@ public class SimpleSlide extends Slide {
 
         private String[] permissions = null;
 
-        public Builder background(@ColorRes int background) {
-            this.background = background;
+        public Builder background(@ColorRes int backgroundRes) {
+            this.backgroundRes = backgroundRes;
             return this;
         }
 
-        public Builder backgroundDark(@ColorRes int backgroundDark) {
-            this.backgroundDark = backgroundDark;
+        public Builder backgroundDark(@ColorRes int backgroundDarkRes) {
+            this.backgroundDarkRes = backgroundDarkRes;
             return this;
         }
 
-        public Builder title(@StringRes int title) {
+        public Builder title(String title) {
             this.title = title;
+            this.titleRes = 0;
             return this;
         }
 
-        public Builder description(@StringRes int description) {
+        public Builder title(@StringRes int titleRes) {
+            this.titleRes = titleRes;
+            this.title = null;
+            return this;
+        }
+
+        public Builder description(String description) {
             this.description = description;
+            this.descriptionRes = 0;
             return this;
         }
 
-        public Builder image(@DrawableRes int image) {
-            this.image = image;
+        public Builder description(@StringRes int descriptionRes) {
+            this.descriptionRes = descriptionRes;
+            this.description = null;
             return this;
         }
 
-        public Builder layout(@LayoutRes int layout) {
-            this.layout = layout;
+        public Builder image(@DrawableRes int imageRes) {
+            this.imageRes = imageRes;
+            return this;
+        }
+
+        public Builder layout(@LayoutRes int layoutRes) {
+            this.layoutRes = layoutRes;
             return this;
         }
 
         public Builder scrollable(boolean scrollable) {
-            this.layout = scrollable ? R.layout.fragment_simple_slide_scrollable :
+            this.layoutRes = scrollable ? R.layout.fragment_simple_slide_scrollable :
                     R.layout.fragment_simple_slide;
             return this;
         }
@@ -153,23 +179,33 @@ public class SimpleSlide extends Slide {
             return this;
         }
 
-        public SimpleSlide build(){
+        public SimpleSlide build() {
             return new SimpleSlide(this);
         }
     }
 
     public static class Fragment extends SlideFragment {
+        private static final String ARGUMENT_TITLE =
+                "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_TITLE";
+
         private static final String ARGUMENT_TITLE_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_TITLE_RES";
+
+        private static final String ARGUMENT_DESCRIPTION =
+                "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_DESCRIPTION";
+
         private static final String ARGUMENT_DESCRIPTION_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_DESCRIPTION_RES";
+
         private static final String ARGUMENT_IMAGE_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_IMAGE_RES";
+
         private static final String ARGUMENT_BACKGROUND_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_BACKGROUND_RES";
 
         private static final String ARGUMENT_BACKGROUND_DARK_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_BACKGROUND_DARK_RES";
+
         private static final String ARGUMENT_LAYOUT_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_LAYOUT_RES";
 
@@ -178,26 +214,31 @@ public class SimpleSlide extends Slide {
 
         private Button buttonGrantPermissions;
 
-        private boolean permissionsGranted = false;
+        private boolean permissionsGranted = true;
 
         public Fragment() {
         }
 
-        public static Fragment newInstance(@StringRes int title, @StringRes int description,
-                                           @DrawableRes int image, @ColorRes int background,
+        public static Fragment newInstance(String title, @StringRes int titleRes,
+                                           String description, @StringRes int descriptionRes,
+                                           @DrawableRes int imageRes, @ColorRes int background,
                                            @ColorRes int backgroundDark, @LayoutRes int layout,
                                            String[] permissions) {
             Fragment fragment = new Fragment();
 
             Bundle arguments = new Bundle();
-            arguments.putInt(ARGUMENT_TITLE_RES, title);
-            arguments.putInt(ARGUMENT_DESCRIPTION_RES, description);
-            arguments.putInt(ARGUMENT_IMAGE_RES, image);
+            arguments.putString(ARGUMENT_TITLE, title);
+            arguments.putInt(ARGUMENT_TITLE_RES, titleRes);
+            arguments.putString(ARGUMENT_DESCRIPTION, description);
+            arguments.putInt(ARGUMENT_DESCRIPTION_RES, descriptionRes);
+            arguments.putInt(ARGUMENT_IMAGE_RES, imageRes);
             arguments.putInt(ARGUMENT_BACKGROUND_RES, background);
             arguments.putInt(ARGUMENT_BACKGROUND_DARK_RES, backgroundDark);
             arguments.putInt(ARGUMENT_LAYOUT_RES, layout);
             arguments.putStringArray(ARGUMENT_PERMISSIONS, permissions);
             fragment.setArguments(arguments);
+
+            fragment.permissionsGranted = permissions == null || permissions.length <= 0;
 
             return fragment;
         }
@@ -210,35 +251,57 @@ public class SimpleSlide extends Slide {
             View fragment = inflater.inflate(arguments.getInt(ARGUMENT_LAYOUT_RES,
                     R.layout.fragment_simple_slide), container, false);
 
-            TextView title = (TextView) fragment.findViewById(R.id.mi_title);
-            TextView description = (TextView) fragment.findViewById(R.id.mi_description);
+            TextView titleView = (TextView) fragment.findViewById(R.id.mi_title);
+            TextView descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
             buttonGrantPermissions = (Button) fragment.findViewById(R.id.mi_button_grant_permissions);
-            ImageView image = (ImageView) fragment.findViewById(R.id.mi_image);
+            ImageView imageView = (ImageView) fragment.findViewById(R.id.mi_image);
 
-            int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
-            int descRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES);
-            int imgRes = arguments.getInt(ARGUMENT_IMAGE_RES);
-            int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
-            int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES);
+            String title = arguments.getString(ARGUMENT_TITLE, null);
+            int titleRes = arguments.getInt(ARGUMENT_TITLE_RES, 0);
+            String description = arguments.getString(ARGUMENT_DESCRIPTION, null);
+            int descriptionRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES, 0);
+            int imageRes = arguments.getInt(ARGUMENT_IMAGE_RES, 0);
+            int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES, 0);
+            int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES, 0);
             String[] permissions = arguments.getStringArray(ARGUMENT_PERMISSIONS);
 
-            if (titleRes != 0) {
-                title.setText(titleRes);
-            } else {
-                title.setVisibility(View.GONE);
-            }
-            if (descRes != 0) {
-                description.setText(descRes);
-            } else {
-                description.setVisibility(View.GONE);
-            }
-            if (imgRes != 0) {
-                image.setImageResource(imgRes);
-            } else {
-                image.setVisibility(View.GONE);
+            //Title
+            if (titleView != null) {
+                if (title != null) {
+                    titleView.setText(title);
+                    titleView.setVisibility(View.VISIBLE);
+                } else if (titleRes != 0) {
+                    titleView.setText(titleRes);
+                    titleView.setVisibility(View.VISIBLE);
+                } else {
+                    titleView.setVisibility(View.GONE);
+                }
             }
 
-            if (backgroundDarkRes != 0) {
+            //Description
+            if (descriptionView != null) {
+                if (description != null) {
+                    descriptionView.setText(description);
+                    descriptionView.setVisibility(View.VISIBLE);
+                } else if (descriptionRes != 0) {
+                    descriptionView.setText(descriptionRes);
+                    descriptionView.setVisibility(View.VISIBLE);
+                } else {
+                    descriptionView.setVisibility(View.GONE);
+                }
+            }
+
+            //Image
+            if (imageView != null) {
+                if (imageRes != 0) {
+                    imageView.setImageResource(imageRes);
+                    imageView.setVisibility(View.VISIBLE);
+                } else {
+                    imageView.setVisibility(View.GONE);
+                }
+            }
+
+            if (backgroundDarkRes != 0 && buttonGrantPermissions != null) {
                 ViewCompat.setBackgroundTintList(buttonGrantPermissions, ColorStateList.valueOf(
                         ContextCompat.getColor(getContext(), backgroundDarkRes)));
             }
@@ -246,23 +309,37 @@ public class SimpleSlide extends Slide {
             if (backgroundRes != 0) {
                 if (ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) > 0.6) {
                     //Use dark text color
-                    title.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_primary_light));
-                    description.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_secondary_light));
-                    buttonGrantPermissions.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_primary_light));
+                    if (titleView != null) {
+                        titleView.setTextColor(ContextCompat.getColor(getContext(),
+                                R.color.mi_text_color_primary_light));
+                    }
+                    if (descriptionView != null) {
+                        descriptionView.setTextColor(ContextCompat.getColor(getContext(),
+                                R.color.mi_text_color_secondary_light));
+                    }
+                    if (buttonGrantPermissions != null) {
+                        buttonGrantPermissions.setTextColor(ContextCompat.getColor(getContext(),
+                                R.color.mi_text_color_primary_light));
+                    }
                 } else {
                     //Use light text color
-                    title.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_primary_dark));
-                    description.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_secondary_dark));
-                    buttonGrantPermissions.setTextColor(ContextCompat.getColor(getContext(),
-                            R.color.mi_text_color_primary_dark));
+                    if (titleView != null) {
+                        titleView.setTextColor(ContextCompat.getColor(getContext(),
+                                R.color.mi_text_color_primary_dark));
+                    }
+                    if (descriptionView != null) {
+                        descriptionView.setTextColor(ContextCompat.getColor(getContext(),
+                                R.color.mi_text_color_secondary_dark));
+                    }
+                    if (buttonGrantPermissions != null) {
+                        buttonGrantPermissions.setTextColor(ContextCompat.getColor(getContext(),
+                                R.color.mi_text_color_primary_dark));
+                    }
                 }
             }
+
             updatePermissions(permissions);
+
             return fragment;
         }
 
@@ -278,25 +355,31 @@ public class SimpleSlide extends Slide {
                 }
 
                 if (permissionsNotGranted.size() > 0) {
-                    buttonGrantPermissions.setVisibility(View.VISIBLE);
-                    buttonGrantPermissions.setText(getResources().getQuantityText(
-                            R.plurals.mi_label_grant_permission, permissionsNotGranted.size()));
-                    buttonGrantPermissions.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ActivityCompat.requestPermissions(getActivity(),
-                                    permissionsNotGranted.toArray(
-                                            new String[permissionsNotGranted.size()]),
-                                    PERMISSIONS_REQUEST_CODE);
-                        }
-                    });
+                    if (buttonGrantPermissions != null) {
+                        buttonGrantPermissions.setVisibility(View.VISIBLE);
+                        buttonGrantPermissions.setText(getResources().getQuantityText(
+                                R.plurals.mi_label_grant_permission, permissionsNotGranted.size()));
+                        buttonGrantPermissions.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ActivityCompat.requestPermissions(getActivity(),
+                                        permissionsNotGranted.toArray(
+                                                new String[permissionsNotGranted.size()]),
+                                        PERMISSIONS_REQUEST_CODE);
+                            }
+                        });
+                    }
                 } else {
-                    buttonGrantPermissions.setVisibility(View.GONE);
+                    if (buttonGrantPermissions != null) {
+                        buttonGrantPermissions.setVisibility(View.GONE);
+                    }
                     permissionsGranted = true;
                     updateNavigation();
                 }
             } else {
-                buttonGrantPermissions.setVisibility(View.GONE);
+                if (buttonGrantPermissions != null) {
+                    buttonGrantPermissions.setVisibility(View.GONE);
+                }
                 permissionsGranted = true;
                 updateNavigation();
             }

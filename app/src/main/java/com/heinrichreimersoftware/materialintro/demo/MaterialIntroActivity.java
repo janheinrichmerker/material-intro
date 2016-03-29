@@ -10,15 +10,20 @@ import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.app.OnNavigationBlockedListener;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
+import com.heinrichreimersoftware.materialintro.slide.Slide;
 
 public class MaterialIntroActivity extends IntroActivity {
 
     public static final String EXTRA_FULLSCREEN = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FULLSCREEN";
+
     public static final String EXTRA_SCROLLABLE = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SCROLLABLE";
+
     public static final String EXTRA_CUSTOM_FRAGMENTS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_CUSTOM_FRAGMENTS";
 
     public static final String EXTRA_PERMISSIONS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_PERMISSIONS";
+
     public static final String EXTRA_SKIP_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SKIP_ENABLED";
+
     public static final String EXTRA_FINISH_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FINISH_ENABLED";
 
     @Override
@@ -28,7 +33,7 @@ public class MaterialIntroActivity extends IntroActivity {
         boolean fullscreen = intent.getBooleanExtra(EXTRA_FULLSCREEN, false);
         boolean scrollable = intent.getBooleanExtra(EXTRA_SCROLLABLE, false);
         boolean customFragments = intent.getBooleanExtra(EXTRA_CUSTOM_FRAGMENTS, true);
-        final boolean permissions = intent.getBooleanExtra(EXTRA_PERMISSIONS, true);
+        boolean permissions = intent.getBooleanExtra(EXTRA_PERMISSIONS, true);
         boolean skipEnabled = intent.getBooleanExtra(EXTRA_SKIP_ENABLED, true);
         boolean finishEnabled = intent.getBooleanExtra(EXTRA_FINISH_ENABLED, true);
 
@@ -75,8 +80,9 @@ public class MaterialIntroActivity extends IntroActivity {
                 .scrollable(scrollable)
                 .build());
 
+        final Slide permissionsSlide;
         if (permissions) {
-            addSlide(new SimpleSlide.Builder()
+            permissionsSlide = new SimpleSlide.Builder()
                     .title(R.string.title_permissions)
                     .description(R.string.description_permissions)
                     .background(R.color.color_permissions)
@@ -84,21 +90,28 @@ public class MaterialIntroActivity extends IntroActivity {
                     .scrollable(scrollable)
                     .permissions(new String[]{Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE})
-                    .build());
+                    .build();
+            addSlide(permissionsSlide);
+        } else {
+            permissionsSlide = null;
         }
 
-        if(customFragments){
-            addSlide(new FragmentSlide.Builder()
+        final Slide loginSlide;
+        if (customFragments) {
+            loginSlide = new FragmentSlide.Builder()
                     .background(R.color.color_custom_fragment_1)
                     .backgroundDark(R.color.color_dark_custom_fragment_1)
                     .fragment(LoginFragment.newInstance())
-                    .build());
+                    .build();
+            addSlide(loginSlide);
 
             addSlide(new FragmentSlide.Builder()
                     .background(R.color.color_custom_fragment_2)
                     .backgroundDark(R.color.color_dark_custom_fragment_2)
                     .fragment(R.layout.fragment_custom, R.style.AppThemeDark)
                     .build());
+        } else {
+            loginSlide = null;
         }
 
         //Feel free to add a navigation policy to define when users can go forward/backward
@@ -120,9 +133,13 @@ public class MaterialIntroActivity extends IntroActivity {
             @Override
             public void onNavigationBlocked(int position, int direction) {
                 View contentView = findViewById(android.R.id.content);
-                Snackbar.make(contentView, (permissions && position == 4) ?
-                                R.string.label_grant_permissions : R.string.label_fill_out_form,
-                        Snackbar.LENGTH_LONG).show();
+                Slide slide = getSlide(position);
+
+                if (slide == permissionsSlide) {
+                    Snackbar.make(contentView, R.string.label_grant_permissions, Snackbar.LENGTH_LONG).show();
+                } else if (slide == loginSlide) {
+                    Snackbar.make(contentView, R.string.label_fill_out_form, Snackbar.LENGTH_LONG).show();
+                }
             }
         });
 

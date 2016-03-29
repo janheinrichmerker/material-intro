@@ -15,12 +15,15 @@ import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 public class LoginFragment extends SlideFragment {
 
     private EditText fakeUsername;
+
     private EditText fakePassword;
+
     private Button fakeLogin;
 
     private boolean loggedIn = false;
 
     private Handler loginHandler = new Handler();
+
     private Runnable loginRunnable = new Runnable() {
         @Override
         public void run() {

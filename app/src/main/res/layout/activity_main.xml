@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:gravity=""
                 android:text="@string/label_options"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
             <CheckBox
                 android:id="@+id/option_fullscreen"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/baseline"
                 android:checked="false"
-                android:text="@string/label_option_fullscreen" />
+                android:text="@string/label_option_fullscreen"/>
 
             <CheckBox
                 android:id="@+id/option_scrollable"
@@ -66,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/baseline"
                 android:checked="true"
-                android:text="@string/label_option_custom_fragments" />
+                android:text="@string/label_option_custom_fragments"/>
 
             <CheckBox
                 android:id="@+id/option_permissions"
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/baseline"
                 android:checked="true"
-                android:text="@string/label_option_skip_enabled" />
+                android:text="@string/label_option_skip_enabled"/>
 
             <CheckBox
                 android:id="@+id/option_finish_enabled"
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/baseline"
                 android:checked="true"
-                android:text="@string/label_option_finish_enabled" />
+                android:text="@string/label_option_finish_enabled"/>
 
             <CheckBox
                 android:id="@+id/option_start_new_activity"
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/baseline"
                 android:text="@string/label_start_intro"
-                android:theme="@style/AppThemeDark" />
+                android:theme="@style/AppThemeDark"/>
 
         </LinearLayout>
 

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/title_fragment_custom"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
     <ImageView
         android:layout_width="match_parent"
@@ -22,16 +22,16 @@
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/baseline"
         android:src="@drawable/art_plane"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"/>
 
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/baseline" />
+        android:layout_marginTop="@dimen/baseline"/>
 
     <android.support.v4.widget.Space
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mi_pager_margin_bottom" />
+        android:layout_height="@dimen/mi_pager_margin_bottom"/>
 
 </LinearLayout>
