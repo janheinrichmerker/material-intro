@@ -556,6 +556,14 @@ public class IntroActivity extends AppCompatActivity {
         return adapter.retainSlides(collection);
     }
 
+    /**
+     * Sets the scroll duration factor of the scroller inside the ViewPager
+     * @param factor a factor of 2 will double the time, halving the speed.
+     */
+    protected void setScrollDurationFactor(double factor) {
+        pager.setScrollDurationFactor(factor);
+    }
+
     protected Slide setSlide(int location, Slide object) {
         return adapter.setSlide(location, object);
     }
