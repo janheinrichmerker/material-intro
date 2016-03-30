@@ -45,7 +45,8 @@ public class SimpleSlide extends Slide {
     private SimpleSlide(Builder builder) {
         fragment = Fragment.newInstance(builder.title, builder.titleRes, builder.description,
                 builder.descriptionRes, builder.imageRes, builder.backgroundRes,
-                builder.backgroundDarkRes, builder.layoutRes, builder.permissions);
+                builder.backgroundDarkRes, builder.layoutRes, builder.permissions,
+                builder.isPermissionRequired);
         background = builder.backgroundRes;
         backgroundDark = builder.backgroundDarkRes;
         canGoForward = builder.canGoForward;
@@ -108,6 +109,8 @@ public class SimpleSlide extends Slide {
         private boolean canGoBackward = true;
 
         private String[] permissions = null;
+
+        private boolean isPermissionRequired = true;
 
         public Builder background(@ColorRes int backgroundRes) {
             this.backgroundRes = backgroundRes;
@@ -179,6 +182,11 @@ public class SimpleSlide extends Slide {
             return this;
         }
 
+        public Builder permissionRequired(boolean isRequired) {
+            this.isPermissionRequired = isRequired;
+            return this;
+        }
+
         public SimpleSlide build() {
             return new SimpleSlide(this);
         }
@@ -223,7 +231,7 @@ public class SimpleSlide extends Slide {
                                            String description, @StringRes int descriptionRes,
                                            @DrawableRes int imageRes, @ColorRes int background,
                                            @ColorRes int backgroundDark, @LayoutRes int layout,
-                                           String[] permissions) {
+                                           String[] permissions, boolean isPermissionRequired) {
             Fragment fragment = new Fragment();
 
             Bundle arguments = new Bundle();
@@ -238,7 +246,8 @@ public class SimpleSlide extends Slide {
             arguments.putStringArray(ARGUMENT_PERMISSIONS, permissions);
             fragment.setArguments(arguments);
 
-            fragment.permissionsGranted = permissions == null || permissions.length <= 0;
+            fragment.permissionsGranted = permissions == null || permissions.length <= 0
+                    || !isPermissionRequired;
 
             return fragment;
         }
