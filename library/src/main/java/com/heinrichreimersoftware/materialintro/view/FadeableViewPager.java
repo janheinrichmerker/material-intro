@@ -4,18 +4,26 @@ import android.content.Context;
 import android.database.DataSetObserver;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
+
+import com.heinrichreimersoftware.materialintro.util.DurationScroller;
+
+import java.lang.reflect.Field;
 
 public class FadeableViewPager extends SwipeBlockableViewPager {
 
     public FadeableViewPager(Context context) {
         super(context);
+        postInitViewPager();
     }
 
     public FadeableViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+        postInitViewPager();
     }
 
     @Override
@@ -26,6 +34,32 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
     @Override
     public PagerAdapter getAdapter() {
         return ((PagerAdapterWrapper) super.getAdapter()).getAdapter();
+    }
+
+    private DurationScroller mDurationScroller = null;
+
+    /**
+     * Override the Scroller instance with our own class so we can change the
+     * duration.
+     */
+    private void postInitViewPager() {
+        try {
+            Field scroller = ViewPager.class.getDeclaredField("mScroller");
+            scroller.setAccessible(true);
+            Field interpolator = ViewPager.class.getDeclaredField("sInterpolator");
+            interpolator.setAccessible(true);
+
+            mDurationScroller = new DurationScroller(getContext(),
+                    (Interpolator) interpolator.get(null));
+            scroller.set(this, mDurationScroller);
+        } catch (Exception e) {
+            // Oh dear
+        }
+    }
+
+
+    public void setScrollDurationFactor(double scrollDurationFactor) {
+        mDurationScroller.setScrollDurationFactor(scrollDurationFactor);
     }
 
     @SuppressWarnings("deprecation")
