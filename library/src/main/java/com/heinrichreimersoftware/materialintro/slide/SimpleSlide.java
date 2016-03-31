@@ -305,37 +305,31 @@ public class SimpleSlide extends Slide {
                 ViewCompat.setBackgroundTintList(buttonGrantPermissions, ColorStateList.valueOf(
                         ContextCompat.getColor(getContext(), backgroundDarkRes)));
             }
+            
+            @ColorInt
+            int textColorPrimary;
+            @ColorInt
+            int textColorSecondary;
 
-            if (backgroundRes != 0) {
-                if (ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) > 0.6) {
-                    //Use dark text color
-                    if (titleView != null) {
-                        titleView.setTextColor(ContextCompat.getColor(getContext(),
-                                R.color.mi_text_color_primary_light));
-                    }
-                    if (descriptionView != null) {
-                        descriptionView.setTextColor(ContextCompat.getColor(getContext(),
-                                R.color.mi_text_color_secondary_light));
-                    }
-                    if (buttonGrantPermissions != null) {
-                        buttonGrantPermissions.setTextColor(ContextCompat.getColor(getContext(),
-                                R.color.mi_text_color_primary_light));
-                    }
-                } else {
-                    //Use light text color
-                    if (titleView != null) {
-                        titleView.setTextColor(ContextCompat.getColor(getContext(),
-                                R.color.mi_text_color_primary_dark));
-                    }
-                    if (descriptionView != null) {
-                        descriptionView.setTextColor(ContextCompat.getColor(getContext(),
-                                R.color.mi_text_color_secondary_dark));
-                    }
-                    if (buttonGrantPermissions != null) {
-                        buttonGrantPermissions.setTextColor(ContextCompat.getColor(getContext(),
-                                R.color.mi_text_color_primary_dark));
-                    }
-                }
+            if (backgroundRes != 0 &&
+                    ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) < 0.6) {
+                //Use light text color
+                textColorPrimary = ContextCompat.getColor(getContext(), R.color.mi_text_color_primary_dark);
+                textColorSecondary = ContextCompat.getColor(getContext(), R.color.mi_text_color_secondary_dark);
+            } else {
+                //Use dark text color
+                textColorPrimary = ContextCompat.getColor(getContext(), R.color.mi_text_color_primary_light);
+                textColorSecondary = ContextCompat.getColor(getContext(), R.color.mi_text_color_secondary_light);
+            }
+            
+            if (titleView != null) {
+                titleView.setTextColor(textColorPrimary);
+            }
+            if (descriptionView != null) {
+                descriptionView.setTextColor(textColorSecondary);
+            }
+            if (buttonGrantPermissions != null) {
+                buttonGrantPermissions.setTextColor(textColorPrimary);
             }
 
             updatePermissions(permissions);
