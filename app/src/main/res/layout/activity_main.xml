@@ -77,6 +77,14 @@
                 android:text="@string/label_option_permissions"/>
 
             <CheckBox
+                android:id="@+id/option_permissions_required"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/baseline"
+                android:checked="true"
+                android:text="@string/label_option_permissions_required"/>
+
+            <CheckBox
                 android:id="@+id/option_skip_enabled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

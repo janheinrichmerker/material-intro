@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
                 CheckBox optionScrollable = (CheckBox) findViewById(R.id.option_scrollable);
                 CheckBox optionCustomFragments = (CheckBox) findViewById(R.id.option_custom_fragments);
                 CheckBox optionPermissions = (CheckBox) findViewById(R.id.option_permissions);
+                CheckBox optionPermissionsRequired = (CheckBox) findViewById(R.id.option_permissions_required);
                 CheckBox optionSkipEnabled = (CheckBox) findViewById(R.id.option_skip_enabled);
                 CheckBox optionFinishEnabled = (CheckBox) findViewById(R.id.option_finish_enabled);
                 CheckBox optionStartNewActivity = (CheckBox) findViewById(R.id.option_start_new_activity);
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_SCROLLABLE, optionScrollable.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_CUSTOM_FRAGMENTS, optionCustomFragments.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_PERMISSIONS, optionPermissions.isChecked());
+                introIntent.putExtra(MaterialIntroActivity.EXTRA_PERMISSIONS_REQUIRED, optionPermissionsRequired.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_SKIP_ENABLED, optionSkipEnabled.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_FINISH_ENABLED, optionFinishEnabled.isChecked());
 

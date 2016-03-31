@@ -22,6 +22,8 @@ public class MaterialIntroActivity extends IntroActivity {
 
     public static final String EXTRA_PERMISSIONS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_PERMISSIONS";
 
+    public static final String EXTRA_PERMISSIONS_REQUIRED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_PERMISSIONS_REQUIRED";
+
     public static final String EXTRA_SKIP_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SKIP_ENABLED";
 
     public static final String EXTRA_FINISH_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FINISH_ENABLED";
@@ -34,6 +36,7 @@ public class MaterialIntroActivity extends IntroActivity {
         boolean scrollable = intent.getBooleanExtra(EXTRA_SCROLLABLE, false);
         boolean customFragments = intent.getBooleanExtra(EXTRA_CUSTOM_FRAGMENTS, true);
         boolean permissions = intent.getBooleanExtra(EXTRA_PERMISSIONS, true);
+        boolean permissionRequired = intent.getBooleanExtra(EXTRA_PERMISSIONS_REQUIRED, true);
         boolean skipEnabled = intent.getBooleanExtra(EXTRA_SKIP_ENABLED, true);
         boolean finishEnabled = intent.getBooleanExtra(EXTRA_FINISH_ENABLED, true);
 
@@ -90,6 +93,7 @@ public class MaterialIntroActivity extends IntroActivity {
                     .scrollable(scrollable)
                     .permissions(new String[]{Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE})
+                    .permissionRequired(permissionRequired)
                     .build();
             addSlide(permissionsSlide);
         } else {
