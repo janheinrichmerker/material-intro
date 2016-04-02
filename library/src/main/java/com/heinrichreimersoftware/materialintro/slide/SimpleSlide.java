@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewCompat;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,10 +95,12 @@ public class SimpleSlide extends RestorableSlide {
         private int backgroundRes = 0;
         @ColorRes
         private int backgroundDarkRes = 0;
-        private String title = null;
+
+        private CharSequence title = null;
         @StringRes
         private int titleRes = 0;
-        private String description = null;
+
+        private CharSequence description = null;
         @StringRes
         private int descriptionRes = 0;
         @DrawableRes
@@ -120,8 +123,14 @@ public class SimpleSlide extends RestorableSlide {
             return this;
         }
 
-        public Builder title(String title) {
+        public Builder title(CharSequence title) {
             this.title = title;
+            this.titleRes = 0;
+            return this;
+        }
+
+        public Builder titleHtml(String titleHtml) {
+            this.title = Html.fromHtml(titleHtml);
             this.titleRes = 0;
             return this;
         }
@@ -132,8 +141,14 @@ public class SimpleSlide extends RestorableSlide {
             return this;
         }
 
-        public Builder description(String description) {
+        public Builder description(CharSequence description) {
             this.description = description;
+            this.descriptionRes = 0;
+            return this;
+        }
+
+        public Builder descriptionHtml(String descriptionHtml) {
+            this.description = Html.fromHtml(descriptionHtml);
             this.descriptionRes = 0;
             return this;
         }
@@ -220,17 +235,17 @@ public class SimpleSlide extends RestorableSlide {
         public SimpleSlideFragment() {
         }
 
-        public static SimpleSlideFragment newInstance(String title, @StringRes int titleRes,
-                                           String description, @StringRes int descriptionRes,
+        public static SimpleSlideFragment newInstance(CharSequence title, @StringRes int titleRes,
+                                                      CharSequence description, @StringRes int descriptionRes,
                                            @DrawableRes int imageRes, @ColorRes int background,
                                            @ColorRes int backgroundDark, @LayoutRes int layout,
                                                       String[] permissions, int permissionsRequestCode) {
             SimpleSlideFragment fragment = new SimpleSlideFragment();
 
             Bundle arguments = new Bundle();
-            arguments.putString(ARGUMENT_TITLE, title);
+            arguments.putCharSequence(ARGUMENT_TITLE, title);
             arguments.putInt(ARGUMENT_TITLE_RES, titleRes);
-            arguments.putString(ARGUMENT_DESCRIPTION, description);
+            arguments.putCharSequence(ARGUMENT_DESCRIPTION, description);
             arguments.putInt(ARGUMENT_DESCRIPTION_RES, descriptionRes);
             arguments.putInt(ARGUMENT_IMAGE_RES, imageRes);
             arguments.putInt(ARGUMENT_BACKGROUND_RES, background);
@@ -278,13 +293,13 @@ public class SimpleSlide extends RestorableSlide {
             buttonGrantPermissions = (Button) fragment.findViewById(R.id.mi_button_grant_permissions);
             ImageView imageView = (ImageView) fragment.findViewById(R.id.mi_image);
 
-            String title = arguments.getString(ARGUMENT_TITLE, null);
-            int titleRes = arguments.getInt(ARGUMENT_TITLE_RES, 0);
-            String description = arguments.getString(ARGUMENT_DESCRIPTION, null);
-            int descriptionRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES, 0);
-            int imageRes = arguments.getInt(ARGUMENT_IMAGE_RES, 0);
-            int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES, 0);
-            int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES, 0);
+            CharSequence title = arguments.getCharSequence(ARGUMENT_TITLE);
+            int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
+            CharSequence description = arguments.getCharSequence(ARGUMENT_DESCRIPTION);
+            int descriptionRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES);
+            int imageRes = arguments.getInt(ARGUMENT_IMAGE_RES);
+            int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
+            int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES);
 
             //Title
             if (titleView != null) {

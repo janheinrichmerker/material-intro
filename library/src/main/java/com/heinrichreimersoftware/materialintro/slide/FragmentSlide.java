@@ -149,7 +149,7 @@ public class FragmentSlide extends RestorableSlide {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            int themeRes = getArguments().getInt(ARGUMENT_THEME_RES, 0);
+            int themeRes = getArguments().getInt(ARGUMENT_THEME_RES);
             Context contextThemeWrapper;
             if (themeRes != 0) {
                 contextThemeWrapper = new ContextThemeWrapper(getActivity(), themeRes);
@@ -158,7 +158,7 @@ public class FragmentSlide extends RestorableSlide {
             }
             LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
 
-            return localInflater.inflate(getArguments().getInt(ARGUMENT_LAYOUT_RES, 0), container, false);
+            return localInflater.inflate(getArguments().getInt(ARGUMENT_LAYOUT_RES), container, false);
         }
     }
 }
