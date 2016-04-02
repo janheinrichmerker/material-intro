@@ -7,7 +7,10 @@
     android:fitsSystemWindows="false"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="@dimen/mi_baseline">
+    android:paddingLeft="@dimen/mi_baseline"
+    android:paddingRight="@dimen/mi_baseline"
+    android:paddingTop="@dimen/mi_baseline"
+    android:paddingBottom="@dimen/mi_pager_margin_bottom">
 
     <TextView
         android:id="@id/mi_title"
@@ -45,9 +48,5 @@
         android:layout_margin="@dimen/mi_baseline"
         android:gravity="center"
         android:text="@plurals/mi_label_grant_permission"/>
-
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/mi_pager_margin_bottom" />
 
 </LinearLayout>
