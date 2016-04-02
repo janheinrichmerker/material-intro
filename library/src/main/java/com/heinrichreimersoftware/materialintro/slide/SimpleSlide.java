@@ -1,5 +1,6 @@
 package com.heinrichreimersoftware.materialintro.slide;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -8,12 +9,13 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +29,11 @@ import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleSlide extends Slide {
+public class SimpleSlide extends RestorableSlide {
 
-    private static final int PERMISSIONS_REQUEST_CODE = 34;
+    private static final int DEFAULT_PERMISSIONS_REQUEST_CODE = 34; //Random number
 
-    private final Fragment fragment;
+    private Fragment fragment;
 
     @ColorRes
     private final int background;
@@ -44,9 +46,10 @@ public class SimpleSlide extends Slide {
     private final boolean canGoBackward;
 
     private SimpleSlide(Builder builder) {
-        fragment = Fragment.newInstance(builder.title, builder.titleRes, builder.description,
-                builder.descriptionRes, builder.imageRes, builder.backgroundRes,
-                builder.backgroundDarkRes, builder.layoutRes, builder.permissions);
+        fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
+                builder.description, builder.descriptionRes, builder.imageRes,
+                builder.backgroundRes, builder.backgroundDarkRes, builder.layoutRes,
+                builder.permissions, builder.permissionsRequestCode);
         background = builder.backgroundRes;
         backgroundDark = builder.backgroundDarkRes;
         canGoForward = builder.canGoForward;
@@ -56,6 +59,11 @@ public class SimpleSlide extends Slide {
     @Override
     public Fragment getFragment() {
         return fragment;
+    }
+
+    @Override
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
     }
 
     @Override
@@ -70,8 +78,8 @@ public class SimpleSlide extends Slide {
 
     @Override
     public boolean canGoForward() {
-        if (fragment != null) {
-            return canGoForward && fragment.canGoForward();
+        if (fragment instanceof SlideFragment) {
+            return canGoForward && ((SlideFragment) fragment).canGoForward();
         }
         return canGoForward;
     }
@@ -84,31 +92,23 @@ public class SimpleSlide extends Slide {
     public static class Builder {
         @ColorRes
         private int backgroundRes = 0;
-
         @ColorRes
         private int backgroundDarkRes = 0;
-
         private String title = null;
-
         @StringRes
         private int titleRes = 0;
-
         private String description = null;
-
         @StringRes
         private int descriptionRes = 0;
-
         @DrawableRes
         private int imageRes = 0;
-
         @LayoutRes
         private int layoutRes = R.layout.fragment_simple_slide;
-
         private boolean canGoForward = true;
-
         private boolean canGoBackward = true;
-
         private String[] permissions = null;
+
+        private int permissionsRequestCode = DEFAULT_PERMISSIONS_REQUEST_CODE;
 
         public Builder background(@ColorRes int backgroundRes) {
             this.backgroundRes = backgroundRes;
@@ -180,52 +180,52 @@ public class SimpleSlide extends Slide {
             return this;
         }
 
+        public Builder permissionsRequestCode(int permissionsRequestCode) {
+            this.permissionsRequestCode = permissionsRequestCode;
+            return this;
+        }
+
         public SimpleSlide build() {
             return new SimpleSlide(this);
         }
     }
 
-    public static class Fragment extends SlideFragment {
+    public static class SimpleSlideFragment extends SlideFragment {
         private static final String ARGUMENT_TITLE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_TITLE";
-
         private static final String ARGUMENT_TITLE_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_TITLE_RES";
-
         private static final String ARGUMENT_DESCRIPTION =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_DESCRIPTION";
-
         private static final String ARGUMENT_DESCRIPTION_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_DESCRIPTION_RES";
-
         private static final String ARGUMENT_IMAGE_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_IMAGE_RES";
-
         private static final String ARGUMENT_BACKGROUND_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_BACKGROUND_RES";
-
         private static final String ARGUMENT_BACKGROUND_DARK_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_BACKGROUND_DARK_RES";
-
         private static final String ARGUMENT_LAYOUT_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_LAYOUT_RES";
-
         private static final String ARGUMENT_PERMISSIONS =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_PERMISSIONS";
 
+        private static final String ARGUMENT_PERMISSIONS_REQUEST_CODE =
+                "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_PERMISSIONS_REQUEST_CODE";
+
         private Button buttonGrantPermissions;
 
-        private boolean permissionsGranted = true;
+        private String[] permissions = null;
 
-        public Fragment() {
+        public SimpleSlideFragment() {
         }
 
-        public static Fragment newInstance(String title, @StringRes int titleRes,
+        public static SimpleSlideFragment newInstance(String title, @StringRes int titleRes,
                                            String description, @StringRes int descriptionRes,
                                            @DrawableRes int imageRes, @ColorRes int background,
                                            @ColorRes int backgroundDark, @LayoutRes int layout,
-                                           String[] permissions) {
-            Fragment fragment = new Fragment();
+                                                      String[] permissions, int permissionsRequestCode) {
+            SimpleSlideFragment fragment = new SimpleSlideFragment();
 
             Bundle arguments = new Bundle();
             arguments.putString(ARGUMENT_TITLE, title);
@@ -237,11 +237,32 @@ public class SimpleSlide extends Slide {
             arguments.putInt(ARGUMENT_BACKGROUND_DARK_RES, backgroundDark);
             arguments.putInt(ARGUMENT_LAYOUT_RES, layout);
             arguments.putStringArray(ARGUMENT_PERMISSIONS, permissions);
+            arguments.putInt(ARGUMENT_PERMISSIONS_REQUEST_CODE, permissionsRequestCode);
             fragment.setArguments(arguments);
 
-            fragment.permissionsGranted = permissions == null || permissions.length <= 0;
-
             return fragment;
+        }
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+            Bundle arguments = getArguments();
+            String[] newPermissions = arguments.getStringArray(ARGUMENT_PERMISSIONS);
+            updatePermissions(newPermissions != null ? newPermissions : permissions);
+        }
+
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            //Lock scroll for the case that users revoke accepted permission settings while in the intro
+            updatePermissions();
+            updateNavigation();
         }
 
         @Override
@@ -264,7 +285,6 @@ public class SimpleSlide extends Slide {
             int imageRes = arguments.getInt(ARGUMENT_IMAGE_RES, 0);
             int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES, 0);
             int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES, 0);
-            String[] permissions = arguments.getStringArray(ARGUMENT_PERMISSIONS);
 
             //Title
             if (titleView != null) {
@@ -333,23 +353,26 @@ public class SimpleSlide extends Slide {
                 buttonGrantPermissions.setTextColor(textColorPrimary);
             }
 
-            updatePermissions(permissions);
-
             return fragment;
         }
 
-        private void updatePermissions(String[] permissions) {
-            Log.d("SimpleSlide", "Updating permissions...");
-            if (permissions != null) {
+        private void updatePermissions() {
+            updatePermissions(permissions);
+        }
+
+        private synchronized void updatePermissions(@Nullable String[] newPermissions) {
+            if (newPermissions != null) {
                 final List<String> permissionsNotGranted = new ArrayList<>();
-                for (String permission : permissions) {
-                    if (ContextCompat.checkSelfPermission(getActivity(), permission) !=
-                            PackageManager.PERMISSION_GRANTED) {
+                for (String permission : newPermissions) {
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            permission) != PackageManager.PERMISSION_GRANTED) {
                         permissionsNotGranted.add(permission);
                     }
                 }
 
                 if (permissionsNotGranted.size() > 0) {
+                    this.permissions = permissionsNotGranted.toArray(
+                            new String[permissionsNotGranted.size()]);
                     if (buttonGrantPermissions != null) {
                         buttonGrantPermissions.setVisibility(View.VISIBLE);
                         buttonGrantPermissions.setText(getResources().getQuantityText(
@@ -357,40 +380,52 @@ public class SimpleSlide extends Slide {
                         buttonGrantPermissions.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ActivityCompat.requestPermissions(getActivity(),
-                                        permissionsNotGranted.toArray(
-                                                new String[permissionsNotGranted.size()]),
-                                        PERMISSIONS_REQUEST_CODE);
+                                int permissionsRequestCode = getArguments() == null ? DEFAULT_PERMISSIONS_REQUEST_CODE :
+                                        getArguments().getInt(ARGUMENT_PERMISSIONS_REQUEST_CODE,
+                                                DEFAULT_PERMISSIONS_REQUEST_CODE);
+                                ActivityCompat.requestPermissions(getActivity(), permissions,
+                                        permissionsRequestCode);
                             }
                         });
                     }
                 } else {
+                    this.permissions = null;
                     if (buttonGrantPermissions != null) {
                         buttonGrantPermissions.setVisibility(View.GONE);
                     }
-                    permissionsGranted = true;
-                    updateNavigation();
                 }
             } else {
+                this.permissions = null;
                 if (buttonGrantPermissions != null) {
                     buttonGrantPermissions.setVisibility(View.GONE);
                 }
-                permissionsGranted = true;
-                updateNavigation();
             }
         }
 
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                @NonNull int[] grantResults) {
-            if (requestCode == PERMISSIONS_REQUEST_CODE) {
-                updatePermissions(permissions);
+            int permissionsRequestCode = getArguments() == null ? DEFAULT_PERMISSIONS_REQUEST_CODE :
+                    getArguments().getInt(ARGUMENT_PERMISSIONS_REQUEST_CODE,
+                            DEFAULT_PERMISSIONS_REQUEST_CODE);
+            if (requestCode == permissionsRequestCode) {
+                updatePermissions();
+                updateNavigation();
             }
         }
 
         @Override
-        public boolean canGoForward() {
-            return permissionsGranted;
+        public synchronized boolean canGoForward() {
+            final List<String> permissionsNotGranted = new ArrayList<>();
+            if (permissions != null) {
+                for (String permission : permissions) {
+                    if (getActivity() == null || ContextCompat.checkSelfPermission(getActivity(),
+                            permission) != PackageManager.PERMISSION_GRANTED) {
+                        permissionsNotGranted.add(permission);
+                    }
+                }
+            }
+            return permissionsNotGranted.size() <= 0;
         }
     }
 }

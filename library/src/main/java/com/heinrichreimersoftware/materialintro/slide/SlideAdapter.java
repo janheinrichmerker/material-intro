@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
+
+import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,6 +72,20 @@ public class SlideAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return data.get(position).getFragment();
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment instantiatedFragment = (Fragment) super.instantiateItem(container, position);
+        Slide slide = data.get(position);
+        if (slide instanceof RestorableSlide) {
+            //Load old fragment from fragment manager
+            ((RestorableSlide) slide).setFragment(instantiatedFragment);
+            data.set(position, slide);
+            if (instantiatedFragment instanceof SlideFragment)
+                ((SlideFragment) instantiatedFragment).updateNavigation();
+        }
+        return instantiatedFragment;
     }
 
     @ColorRes

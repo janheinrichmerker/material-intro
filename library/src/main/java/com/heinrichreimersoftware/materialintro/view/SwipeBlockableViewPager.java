@@ -25,9 +25,9 @@ public class SwipeBlockableViewPager extends ViewPager {
 
     private float initialX;
 
-    private boolean swipeRightEnabled = false;
+    private boolean swipeRightEnabled = true;
 
-    private boolean swipeLeftEnabled = false;
+    private boolean swipeLeftEnabled = true;
 
     public SwipeBlockableViewPager(Context context) {
         super(context);

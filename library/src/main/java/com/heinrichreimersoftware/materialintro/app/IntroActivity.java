@@ -39,6 +39,11 @@ import java.util.List;
 
 @SuppressLint("Registered")
 public class IntroActivity extends AppCompatActivity {
+    private static final String KEY_CURRENT_ITEM =
+            "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_CURRENT_ITEM";
+
+    private static final String KEY_SLIDES =
+            "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_SLIDES";
 
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private FrameLayout frame;
@@ -68,6 +73,10 @@ public class IntroActivity extends AppCompatActivity {
             setFullscreenFlags(fullscreen);
         }
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CURRENT_ITEM)) {
+            position = savedInstanceState.getInt(KEY_CURRENT_ITEM, position);
+        }
+
         setContentView(R.layout.activity_intro);
         findViews();
     }
@@ -82,18 +91,24 @@ public class IntroActivity extends AppCompatActivity {
         updateButtonSkipDrawable();
         frame.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
                 updateViewPositions();
                 v.removeOnLayoutChangeListener(this);
             }
         });
-        lockSwipeIfNeeded();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setFullscreenFlags(fullscreen);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_CURRENT_ITEM, pager.getCurrentItem());
     }
 
     @Override
@@ -133,10 +148,12 @@ public class IntroActivity extends AppCompatActivity {
         buttonNext = findViewById(R.id.mi_button_next);
         buttonSkip = findViewById(R.id.mi_button_skip);
 
-        adapter = new SlideAdapter(getSupportFragmentManager());
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        adapter = new SlideAdapter(fragmentManager);
 
         pager.setAdapter(adapter);
         pager.addOnPageChangeListener(listener);
+        pager.setCurrentItem(position);
 
         pagerIndicator.setViewPager(pager);
 
@@ -533,7 +550,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     protected int getCount() {
-        return adapter.getCount();
+        return adapter == null ? 0 : adapter.getCount();
     }
 
     protected int lastIndexOfSlide(Object object) {
@@ -570,6 +587,11 @@ public class IntroActivity extends AppCompatActivity {
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             IntroActivity.this.position = position;
             IntroActivity.this.positionOffset = positionOffset;
+
+            //Lock while scrolling a slide near its edges to lock (uncommon) multiple page swipes
+            if (Math.abs(positionOffset) < 0.1f) {
+                lockSwipeIfNeeded();
+            }
 
             updateBackground();
             updateViewPositions();

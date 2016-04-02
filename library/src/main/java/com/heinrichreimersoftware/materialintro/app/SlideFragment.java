@@ -12,7 +12,7 @@ public class SlideFragment extends Fragment {
         return true;
     }
 
-    protected void updateNavigation() {
+    public void updateNavigation() {
         if (getActivity() instanceof IntroActivity) {
             ((IntroActivity) getActivity()).lockSwipeIfNeeded();
         }

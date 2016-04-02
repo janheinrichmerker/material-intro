@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StyleRes;
+import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +13,9 @@ import android.view.ViewGroup;
 
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 
-public class FragmentSlide extends Slide{
+public class FragmentSlide extends RestorableSlide {
 
-    private final android.support.v4.app.Fragment fragment;
+    private Fragment fragment;
     @ColorRes
     private final int background;
     @ColorRes
@@ -33,8 +34,13 @@ public class FragmentSlide extends Slide{
     }
 
     @Override
-    public android.support.v4.app.Fragment getFragment() {
+    public Fragment getFragment() {
         return fragment;
+    }
+
+    @Override
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
     }
 
     @Override
@@ -49,22 +55,22 @@ public class FragmentSlide extends Slide{
 
     @Override
     public boolean canGoForward() {
-        if (fragment instanceof SlideFragment) {
-            return ((SlideFragment) fragment).canGoForward();
+        if (getFragment() instanceof SlideFragment) {
+            return ((SlideFragment) getFragment()).canGoForward();
         }
         return canGoForward;
     }
 
     @Override
     public boolean canGoBackward() {
-        if (fragment instanceof SlideFragment) {
-            return ((SlideFragment) fragment).canGoBackward();
+        if (getFragment() instanceof SlideFragment) {
+            return ((SlideFragment) getFragment()).canGoBackward();
         }
         return canGoBackward;
     }
 
     public static class Builder{
-        private android.support.v4.app.Fragment fragment;
+        private Fragment fragment;
         @ColorRes
         private int background;
         @ColorRes
@@ -74,18 +80,18 @@ public class FragmentSlide extends Slide{
 
         private boolean canGoBackward = true;
 
-        public Builder fragment(android.support.v4.app.Fragment fragment) {
+        public Builder fragment(Fragment fragment) {
             this.fragment = fragment;
             return this;
         }
 
         public Builder fragment(@LayoutRes int layoutRes, @StyleRes int themeRes) {
-            this.fragment = Fragment.newInstance(layoutRes, themeRes);
+            this.fragment = FragmentSlideFragment.newInstance(layoutRes, themeRes);
             return this;
         }
 
         public Builder fragment(@LayoutRes int layoutRes) {
-            this.fragment = Fragment.newInstance(layoutRes);
+            this.fragment = FragmentSlideFragment.newInstance(layoutRes);
             return this;
         }
 
@@ -116,17 +122,17 @@ public class FragmentSlide extends Slide{
         }
     }
 
-    public static class Fragment extends android.support.v4.app.Fragment{
+    public static class FragmentSlideFragment extends Fragment {
         private static final String ARGUMENT_LAYOUT_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_LAYOUT_RES";
         private static final String ARGUMENT_THEME_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_THEME_RES";
 
-        public Fragment() {
+        public FragmentSlideFragment() {
         }
 
-        public static Fragment newInstance(@LayoutRes int layoutRes, @StyleRes int themeRes) {
-            Fragment fragment = new Fragment();
+        public static FragmentSlideFragment newInstance(@LayoutRes int layoutRes, @StyleRes int themeRes) {
+            FragmentSlideFragment fragment = new FragmentSlideFragment();
 
             Bundle arguments = new Bundle();
             arguments.putInt(ARGUMENT_LAYOUT_RES, layoutRes);
@@ -136,7 +142,7 @@ public class FragmentSlide extends Slide{
             return fragment;
         }
 
-        public static Fragment newInstance(@LayoutRes int layoutRes) {
+        public static FragmentSlideFragment newInstance(@LayoutRes int layoutRes) {
             return newInstance(layoutRes, 0);
         }
 
