@@ -112,6 +112,12 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setResult(RESULT_CANCELED);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -234,6 +240,7 @@ public class IntroActivity extends AppCompatActivity {
 
     private void finishIfNeeded() {
         if (positionOffset == 0 && position == adapter.getCount()) {
+            setResult(RESULT_OK);
             finish();
             overridePendingTransition(0, 0);
         }
