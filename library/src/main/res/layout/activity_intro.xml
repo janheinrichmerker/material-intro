@@ -34,9 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:dotDiameter="10dp"
-            app:dotGap="8dp"
-            app:pageIndicatorColor="@color/mi_pager_indicator_color"
-            app:currentPageIndicatorColor="@android:color/white"/>
+            app:dotGap="8dp"/>
 
         <ImageButton
             android:id="@id/mi_button_next"

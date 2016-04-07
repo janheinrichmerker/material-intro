@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
@@ -123,17 +124,17 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         animDuration = (long) a.getInteger(R.styleable.InkPageIndicator_animationDuration,
                 DEFAULT_ANIM_DURATION);
         animHalfDuration = animDuration / 2;
-        int unselectedColour = a.getColor(R.styleable.InkPageIndicator_pageIndicatorColor,
+        int unselectedColor = a.getColor(R.styleable.InkPageIndicator_pageIndicatorColor,
                 DEFAULT_UNSELECTED_COLOUR);
-        int selectedColour = a.getColor(R.styleable.InkPageIndicator_currentPageIndicatorColor,
+        int selectedColor = a.getColor(R.styleable.InkPageIndicator_currentPageIndicatorColor,
                 DEFAULT_SELECTED_COLOUR);
 
         a.recycle();
 
         unselectedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        unselectedPaint.setColor(unselectedColour);
+        unselectedPaint.setColor(unselectedColor);
         selectedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        selectedPaint.setColor(selectedColour);
+        selectedPaint.setColor(selectedColor);
         interpolator = AnimUtils.getFastOutSlowInInterpolator(context);
 
         // create paths & rect now – reuse & rewind later
@@ -144,6 +145,24 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         rectF = new RectF();
 
         addOnAttachStateChangeListener(this);
+    }
+
+    @ColorInt
+    public int getPageIndicatorColor(){
+        return unselectedPaint.getColor();
+    }
+    public void setPageIndicatorColor(@ColorInt int pageIndicatorColor){
+        unselectedPaint.setColor(pageIndicatorColor);
+        invalidate();
+    }
+
+    @ColorInt
+    public int getCurrentPageIndicatorColor(){
+        return selectedPaint.getColor();
+    }
+    public void setCurrentPageIndicatorColor(@ColorInt int currentPageIndicatorColor){
+        selectedPaint.setColor(currentPageIndicatorColor);
+        invalidate();
     }
 
     public void setViewPager(ViewPager viewPager) {
@@ -234,7 +253,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void resetState() {
-        joiningFractions = new float[Math.max(1, pageCount - 1)];
+        joiningFractions = new float[Math.max(1, pageCount)];
         Arrays.fill(joiningFractions, 0f);
         dotRevealFractions = new float[pageCount];
         Arrays.fill(dotRevealFractions, 0f);
@@ -316,7 +335,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             combinedUnselectedPath.addPath(getUnselectedPath(page,
                     dotCenterX[page],
                     dotCenterX[nextXIndex],
-                    page == pageCount - 1 ? INVALID_FRACTION : joiningFractions[page],
+                    joiningFractions[page],
                     dotRevealFractions[page]));
         }
         // draw any retreating joins

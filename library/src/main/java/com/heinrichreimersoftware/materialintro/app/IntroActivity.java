@@ -3,6 +3,7 @@ package com.heinrichreimersoftware.materialintro.app;
 import android.animation.ArgbEvaluator;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -18,6 +19,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
@@ -49,8 +52,8 @@ public class IntroActivity extends AppCompatActivity {
     private FrameLayout frame;
     private FadeableViewPager pager;
     private InkPageIndicator pagerIndicator;
-    private View buttonNext;
-    private View buttonSkip;
+    private ImageButton buttonNext;
+    private ImageButton buttonSkip;
     private SlideAdapter adapter;
     private IntroPageChangeListener listener = new IntroPageChangeListener();
     private boolean fullscreen = false;
@@ -151,8 +154,8 @@ public class IntroActivity extends AppCompatActivity {
         frame = (FrameLayout) findViewById(R.id.mi_frame);
         pager = (FadeableViewPager) findViewById(R.id.mi_pager);
         pagerIndicator = (InkPageIndicator) findViewById(R.id.mi_pager_indicator);
-        buttonNext = findViewById(R.id.mi_button_next);
-        buttonSkip = findViewById(R.id.mi_button_skip);
+        buttonNext = (ImageButton) findViewById(R.id.mi_button_next);
+        buttonSkip = (ImageButton) findViewById(R.id.mi_button_skip);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         adapter = new SlideAdapter(fragmentManager);
@@ -282,10 +285,14 @@ public class IntroActivity extends AppCompatActivity {
     private void updateBackground() {
         int background;
         int backgroundNext;
+        int backgroundDark;
+        int backgroundDarkNext;
 
         if (position == getCount()) {
             background = Color.TRANSPARENT;
             backgroundNext = Color.TRANSPARENT;
+            backgroundDark = Color.TRANSPARENT;
+            backgroundDarkNext = Color.TRANSPARENT;
         } else {
             background = ContextCompat.getColor(IntroActivity.this,
                     getBackground(position));
@@ -294,42 +301,55 @@ public class IntroActivity extends AppCompatActivity {
 
             background = ColorUtils.setAlphaComponent(background, 0xFF);
             backgroundNext = ColorUtils.setAlphaComponent(backgroundNext, 0xFF);
+
+            try {
+                backgroundDark = ContextCompat.getColor(IntroActivity.this,
+                        getBackgroundDark(position));
+            } catch (Resources.NotFoundException e) {
+                backgroundDark = ContextCompat.getColor(IntroActivity.this,
+                        R.color.mi_status_bar_background);
+            }
+            try {
+                backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
+                        getBackgroundDark(Math.min(position + 1, getCount() - 1)));
+            } catch (Resources.NotFoundException e) {
+                backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
+                        R.color.mi_status_bar_background);
+            }
         }
 
         if (position + positionOffset >= adapter.getCount() - 1) {
             backgroundNext = ColorUtils.setAlphaComponent(background, 0x00);
+            backgroundDarkNext = Color.TRANSPARENT;
         }
 
-        frame.setBackgroundColor((Integer) evaluator.evaluate(positionOffset, background, backgroundNext));
+        background = (Integer) evaluator.evaluate(positionOffset, background, backgroundNext);
+        backgroundDark = (Integer) evaluator.evaluate(positionOffset, backgroundDark, backgroundDarkNext);
+
+        frame.setBackgroundColor(background);
+
+        float[] backgroundDarkHsv = new float[3];
+        Color.colorToHSV(backgroundDark, backgroundDarkHsv);
+        //Slightly darken the background color a bit for more contrast
+        backgroundDarkHsv[2] *= 0.95;
+        int backgroundDarker = Color.HSVToColor(backgroundDarkHsv);
+        pagerIndicator.setPageIndicatorColor(backgroundDarker);
+        ViewCompat.setBackgroundTintList(buttonNext, ColorStateList.valueOf(backgroundDarker));
+        ViewCompat.setBackgroundTintList(buttonSkip, ColorStateList.valueOf(backgroundDarker));
+
+        int iconColor;
+        if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
+            //Light background
+            iconColor = ContextCompat.getColor(this, R.color.mi_icon_color_light);
+        } else {
+            //Dark background
+            iconColor = ContextCompat.getColor(this, R.color.mi_icon_color_dark);
+        }
+        pagerIndicator.setCurrentPageIndicatorColor(iconColor);
+        DrawableCompat.setTint(buttonNext.getDrawable(), iconColor);
+        DrawableCompat.setTint(buttonSkip.getDrawable(), iconColor);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int backgroundDark;
-            int backgroundDarkNext;
-
-            if (position == getCount()) {
-                backgroundDark = Color.TRANSPARENT;
-                backgroundDarkNext = Color.TRANSPARENT;
-            } else {
-                try {
-                    backgroundDark = ContextCompat.getColor(IntroActivity.this,
-                            getBackgroundDark(position));
-                } catch (Resources.NotFoundException e) {
-                    backgroundDark = ContextCompat.getColor(IntroActivity.this,
-                            R.color.mi_status_bar_background);
-                }
-                try {
-                    backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
-                            getBackgroundDark(Math.min(position + 1, getCount() - 1)));
-                } catch (Resources.NotFoundException e) {
-                    backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
-                            R.color.mi_status_bar_background);
-                }
-            }
-            if (position + positionOffset >= adapter.getCount() - 1) {
-                backgroundDarkNext = Color.TRANSPARENT;
-            }
-
-            backgroundDark = (Integer) evaluator.evaluate(positionOffset, backgroundDark, backgroundDarkNext);
             getWindow().setStatusBarColor(backgroundDark);
 
             if (position == adapter.getCount()) {
@@ -350,8 +370,10 @@ public class IntroActivity extends AppCompatActivity {
                 int systemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
                 int flagLightStatusBar = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
                 if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
+                    //Light background
                     systemUiVisibility |= flagLightStatusBar;
                 } else {
+                    //Dark background
                     systemUiVisibility &= ~flagLightStatusBar;
                 }
                 getWindow().getDecorView().setSystemUiVisibility(systemUiVisibility);
@@ -418,37 +440,31 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void updateButtonNextDrawable() {
-        if (buttonNext != null && buttonNext instanceof ImageButton) {
-            ImageButton button = (ImageButton) buttonNext;
-            float offset = 0;
-            if (finishEnabled && position + positionOffset >= adapter.getCount() - 2) {
-                offset = Math.min(position + positionOffset - adapter.getCount() + 2, 1);
-            }
+        float offset = 0;
+        if (finishEnabled && position + positionOffset >= adapter.getCount() - 2) {
+            offset = Math.min(position + positionOffset - adapter.getCount() + 2, 1);
+        }
 
-            if (offset <= 0) {
-                button.setImageResource(R.drawable.ic_next);
-                button.getDrawable().setAlpha(0xFF);
+        if (offset <= 0) {
+            buttonNext.setImageResource(R.drawable.ic_next);
+            buttonNext.getDrawable().setAlpha(0xFF);
+        } else {
+            buttonNext.setImageResource(R.drawable.ic_next_finish);
+            if (buttonNext.getDrawable() != null && buttonNext.getDrawable() instanceof LayerDrawable) {
+                LayerDrawable drawable = (LayerDrawable) buttonNext.getDrawable();
+                drawable.getDrawable(0).setAlpha((int) (0xFF * (1 - offset)));
+                drawable.getDrawable(1).setAlpha((int) (0xFF * offset));
             } else {
-                button.setImageResource(R.drawable.ic_next_finish);
-                if (button.getDrawable() != null && button.getDrawable() instanceof LayerDrawable) {
-                    LayerDrawable drawable = (LayerDrawable) button.getDrawable();
-                    drawable.getDrawable(0).setAlpha((int) (0xFF * (1 - offset)));
-                    drawable.getDrawable(1).setAlpha((int) (0xFF * offset));
-                } else {
-                    button.setImageResource(offset > 0 ? R.drawable.ic_finish : R.drawable.ic_next);
-                }
+                buttonNext.setImageResource(offset > 0 ? R.drawable.ic_finish : R.drawable.ic_next);
             }
         }
     }
 
     private void updateButtonSkipDrawable() {
-        if (buttonSkip != null && buttonSkip instanceof ImageButton) {
-            ImageButton button = (ImageButton) buttonSkip;
-            if (skipEnabled) {
-                button.setImageResource(R.drawable.ic_skip);
-            } else {
-                button.setImageResource(R.drawable.ic_previous);
-            }
+        if (skipEnabled) {
+            buttonSkip.setImageResource(R.drawable.ic_skip);
+        } else {
+            buttonSkip.setImageResource(R.drawable.ic_previous);
         }
     }
 
