@@ -116,8 +116,12 @@ public class IntroActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (position > 0) {
+            previousSlide();
+            return;
+        }
         setResult(RESULT_CANCELED);
+        super.onBackPressed();
     }
 
     @Override
@@ -201,7 +205,7 @@ public class IntroActivity extends AppCompatActivity {
             pager.setCurrentItem(--currentItem, true);
         }
         else {
-            AnimUtils.applyShakeAnimation(getApplicationContext(), buttonSkip);
+            AnimUtils.applyShakeAnimation(this, buttonSkip);
 
         }
     }
