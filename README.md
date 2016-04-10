@@ -1,7 +1,7 @@
 material-intro
 =======================
 
-[![Android Arsenal][23]][24]
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-material--intro-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3206)
 [![jitpack.io][18]][4]
 [![Build Status][19]][20]
 [![Apache License 2.0][21]][22]
