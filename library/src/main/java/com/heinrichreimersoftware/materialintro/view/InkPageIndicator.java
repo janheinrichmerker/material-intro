@@ -173,6 +173,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             @Override
             public void onChanged() {
                 setPageCount(InkPageIndicator.this.viewPager.getAdapter().getCount());
+                invalidate();
             }
         });
         setCurrentPageImmediate();
