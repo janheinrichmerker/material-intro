@@ -43,7 +43,7 @@ allprojects {
 ````
 ````gradle
 dependencies {
-    compile 'com.heinrichreimersoftware:material-intro:1.2.1'
+    compile 'com.heinrichreimersoftware:material-intro:1.4'
 }
 ````
 
