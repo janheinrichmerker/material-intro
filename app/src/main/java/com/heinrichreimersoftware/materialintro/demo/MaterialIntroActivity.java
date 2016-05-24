@@ -15,16 +15,14 @@ import com.heinrichreimersoftware.materialintro.slide.Slide;
 public class MaterialIntroActivity extends IntroActivity {
 
     public static final String EXTRA_FULLSCREEN = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FULLSCREEN";
-
     public static final String EXTRA_SCROLLABLE = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SCROLLABLE";
-
     public static final String EXTRA_CUSTOM_FRAGMENTS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_CUSTOM_FRAGMENTS";
-
     public static final String EXTRA_PERMISSIONS = "com.heinrichreimersoftware.materialintro.demo.EXTRA_PERMISSIONS";
-
+    public static final String EXTRA_SHOW_BACK = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SHOW_BACK";
+    public static final String EXTRA_SHOW_NEXT = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SHOW_NEXT";
     public static final String EXTRA_SKIP_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SKIP_ENABLED";
-
     public static final String EXTRA_FINISH_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FINISH_ENABLED";
+    public static final String EXTRA_GET_STARTED_ENABLED = "com.heinrichreimersoftware.materialintro.demo.EXTRA_GET_STARTED_ENABLED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +32,21 @@ public class MaterialIntroActivity extends IntroActivity {
         boolean scrollable = intent.getBooleanExtra(EXTRA_SCROLLABLE, false);
         boolean customFragments = intent.getBooleanExtra(EXTRA_CUSTOM_FRAGMENTS, true);
         boolean permissions = intent.getBooleanExtra(EXTRA_PERMISSIONS, true);
+        boolean showBack = intent.getBooleanExtra(EXTRA_SHOW_BACK, true);
+        boolean showNext = intent.getBooleanExtra(EXTRA_SHOW_NEXT, true);
         boolean skipEnabled = intent.getBooleanExtra(EXTRA_SKIP_ENABLED, true);
         boolean finishEnabled = intent.getBooleanExtra(EXTRA_FINISH_ENABLED, true);
+        boolean getStartedEnabled = intent.getBooleanExtra(EXTRA_GET_STARTED_ENABLED, true);
 
         setFullscreen(fullscreen);
 
         super.onCreate(savedInstanceState);
 
-        setSkipEnabled(skipEnabled);
-        setFinishEnabled(finishEnabled);
+        setButtonBackFunction(skipEnabled ? BUTTON_BACK_FUNCTION_SKIP : BUTTON_BACK_FUNCTION_BACK);
+        setButtonNextFunction(finishEnabled ? BUTTON_NEXT_FUNCTION_NEXT_FINISH : BUTTON_NEXT_FUNCTION_NEXT);
+        setButtonBackVisible(showBack);
+        setButtonNextVisible(showNext);
+        setButtonCtaVisible(getStartedEnabled);
 
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title_material_metaphor)

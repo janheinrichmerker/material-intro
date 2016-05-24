@@ -37,8 +37,4 @@
         android:text="@string/label_fake_login"
         android:theme="@style/AppThemeDark"/>
 
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/mi_pager_margin_bottom"/>
-
 </LinearLayout>

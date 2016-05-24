@@ -7,10 +7,16 @@
     android:fitsSystemWindows="false"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/mi_baseline"
-    android:paddingRight="@dimen/mi_baseline"
-    android:paddingTop="@dimen/mi_baseline"
-    android:paddingBottom="@dimen/mi_pager_margin_bottom">
+    android:padding="@dimen/mi_baseline">
+
+    <ImageView
+        android:id="@id/mi_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/mi_baseline"
+        android:gravity="center"
+        tools:ignore="ContentDescription"
+        tools:src="@android:drawable/sym_action_call"/>
 
     <TextView
         android:id="@id/mi_title"
@@ -31,22 +37,5 @@
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …" />
-
-    <ImageView
-        android:id="@id/mi_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mi_baseline"
-        android:gravity="center"
-        tools:ignore="ContentDescription"
-        tools:src="@android:drawable/sym_action_call" />
-
-    <Button
-        android:id="@id/mi_button_grant_permissions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mi_baseline"
-        android:gravity="center"
-        android:text="@plurals/mi_label_grant_permission"/>
 
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.heinrichreimersoftware.materialintro.slide;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -15,42 +14,39 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
-import android.support.v4.view.ViewCompat;
+import android.support.v4.util.Pair;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.heinrichreimersoftware.materialintro.R;
+import com.heinrichreimersoftware.materialintro.app.ButtonCtaFragment;
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleSlide extends RestorableSlide {
+public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     private static final int DEFAULT_PERMISSIONS_REQUEST_CODE = 34; //Random number
-
-    private Fragment fragment;
-
+    private SimpleSlideFragment fragment;
     @ColorRes
     private final int background;
-
     @ColorRes
     private final int backgroundDark;
-
     private final boolean canGoForward;
-
     private final boolean canGoBackward;
+
+    private Pair<Integer, View.OnClickListener> button = null;
 
     private SimpleSlide(Builder builder) {
         fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
                 builder.description, builder.descriptionRes, builder.imageRes,
-                builder.backgroundRes, builder.backgroundDarkRes, builder.layoutRes,
-                builder.permissions, builder.permissionsRequestCode);
+                builder.backgroundRes, builder.layoutRes, builder.permissions,
+                builder.permissionsRequestCode);
         background = builder.backgroundRes;
         backgroundDark = builder.backgroundDarkRes;
         canGoForward = builder.canGoForward;
@@ -64,7 +60,8 @@ public class SimpleSlide extends RestorableSlide {
 
     @Override
     public void setFragment(Fragment fragment) {
-        this.fragment = fragment;
+        if (fragment instanceof SimpleSlideFragment)
+            this.fragment = (SimpleSlideFragment) fragment;
     }
 
     @Override
@@ -79,15 +76,28 @@ public class SimpleSlide extends RestorableSlide {
 
     @Override
     public boolean canGoForward() {
-        if (fragment instanceof SlideFragment) {
-            return canGoForward && ((SlideFragment) fragment).canGoForward();
-        }
-        return canGoForward;
+        return canGoForward && fragment.canGoForward();
+
     }
 
     @Override
     public boolean canGoBackward() {
         return canGoBackward;
+    }
+
+    @Override
+    public View.OnClickListener getButtonCtaClickListener() {
+        return fragment.getButtonCtaClickListener();
+    }
+
+    @Override
+    public String getButtonCtaLabel() {
+        return fragment.getButtonCtaLabel();
+    }
+
+    @Override
+    public int getButtonCtaLabelRes() {
+        return fragment.getButtonCtaLabelRes();
     }
 
     public static class Builder {
@@ -205,7 +215,7 @@ public class SimpleSlide extends RestorableSlide {
         }
     }
 
-    public static class SimpleSlideFragment extends SlideFragment {
+    public static class SimpleSlideFragment extends SlideFragment implements ButtonCtaFragment {
         private static final String ARGUMENT_TITLE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_TITLE";
         private static final String ARGUMENT_TITLE_RES =
@@ -218,8 +228,6 @@ public class SimpleSlide extends RestorableSlide {
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_IMAGE_RES";
         private static final String ARGUMENT_BACKGROUND_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_BACKGROUND_RES";
-        private static final String ARGUMENT_BACKGROUND_DARK_RES =
-                "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_BACKGROUND_DARK_RES";
         private static final String ARGUMENT_LAYOUT_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_LAYOUT_RES";
         private static final String ARGUMENT_PERMISSIONS =
@@ -228,18 +236,19 @@ public class SimpleSlide extends RestorableSlide {
         private static final String ARGUMENT_PERMISSIONS_REQUEST_CODE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_PERMISSIONS_REQUEST_CODE";
 
-        private Button buttonGrantPermissions;
-
         private String[] permissions = null;
+
+        private View.OnClickListener buttonClickListener = null;
+        private String buttonLabel;
 
         public SimpleSlideFragment() {
         }
 
         public static SimpleSlideFragment newInstance(CharSequence title, @StringRes int titleRes,
                                                       CharSequence description, @StringRes int descriptionRes,
-                                           @DrawableRes int imageRes, @ColorRes int background,
-                                           @ColorRes int backgroundDark, @LayoutRes int layout,
-                                                      String[] permissions, int permissionsRequestCode) {
+                                                      @DrawableRes int imageRes, @ColorRes int backgroundRes,
+                                                      @LayoutRes int layout, String[] permissions,
+                                                      int permissionsRequestCode) {
             SimpleSlideFragment fragment = new SimpleSlideFragment();
 
             Bundle arguments = new Bundle();
@@ -248,8 +257,7 @@ public class SimpleSlide extends RestorableSlide {
             arguments.putCharSequence(ARGUMENT_DESCRIPTION, description);
             arguments.putInt(ARGUMENT_DESCRIPTION_RES, descriptionRes);
             arguments.putInt(ARGUMENT_IMAGE_RES, imageRes);
-            arguments.putInt(ARGUMENT_BACKGROUND_RES, background);
-            arguments.putInt(ARGUMENT_BACKGROUND_DARK_RES, backgroundDark);
+            arguments.putInt(ARGUMENT_BACKGROUND_RES, backgroundRes);
             arguments.putInt(ARGUMENT_LAYOUT_RES, layout);
             arguments.putStringArray(ARGUMENT_PERMISSIONS, permissions);
             arguments.putInt(ARGUMENT_PERMISSIONS_REQUEST_CODE, permissionsRequestCode);
@@ -290,7 +298,6 @@ public class SimpleSlide extends RestorableSlide {
 
             TextView titleView = (TextView) fragment.findViewById(R.id.mi_title);
             TextView descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
-            buttonGrantPermissions = (Button) fragment.findViewById(R.id.mi_button_grant_permissions);
             ImageView imageView = (ImageView) fragment.findViewById(R.id.mi_image);
 
             CharSequence title = arguments.getCharSequence(ARGUMENT_TITLE);
@@ -299,7 +306,6 @@ public class SimpleSlide extends RestorableSlide {
             int descriptionRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES);
             int imageRes = arguments.getInt(ARGUMENT_IMAGE_RES);
             int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
-            int backgroundDarkRes = arguments.getInt(ARGUMENT_BACKGROUND_DARK_RES);
 
             //Title
             if (titleView != null) {
@@ -336,11 +342,6 @@ public class SimpleSlide extends RestorableSlide {
                     imageView.setVisibility(View.GONE);
                 }
             }
-
-            if (backgroundDarkRes != 0 && buttonGrantPermissions != null) {
-                ViewCompat.setBackgroundTintList(buttonGrantPermissions, ColorStateList.valueOf(
-                        ContextCompat.getColor(getContext(), backgroundDarkRes)));
-            }
             
             @ColorInt
             int textColorPrimary;
@@ -364,9 +365,6 @@ public class SimpleSlide extends RestorableSlide {
             if (descriptionView != null) {
                 descriptionView.setTextColor(textColorSecondary);
             }
-            if (buttonGrantPermissions != null) {
-                buttonGrantPermissions.setTextColor(textColorPrimary);
-            }
 
             return fragment;
         }
@@ -386,34 +384,30 @@ public class SimpleSlide extends RestorableSlide {
                 }
 
                 if (permissionsNotGranted.size() > 0) {
-                    this.permissions = permissionsNotGranted.toArray(
+                    permissions = permissionsNotGranted.toArray(
                             new String[permissionsNotGranted.size()]);
-                    if (buttonGrantPermissions != null) {
-                        buttonGrantPermissions.setVisibility(View.VISIBLE);
-                        buttonGrantPermissions.setText(getResources().getQuantityText(
-                                R.plurals.mi_label_grant_permission, permissionsNotGranted.size()));
-                        buttonGrantPermissions.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                int permissionsRequestCode = getArguments() == null ? DEFAULT_PERMISSIONS_REQUEST_CODE :
-                                        getArguments().getInt(ARGUMENT_PERMISSIONS_REQUEST_CODE,
-                                                DEFAULT_PERMISSIONS_REQUEST_CODE);
-                                ActivityCompat.requestPermissions(getActivity(), permissions,
-                                        permissionsRequestCode);
-                            }
-                        });
-                    }
+                    buttonLabel = getResources().getQuantityText(
+                            R.plurals.mi_label_grant_permission, permissionsNotGranted.size())
+                            .toString();
+                    buttonClickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int permissionsRequestCode = getArguments() == null ? DEFAULT_PERMISSIONS_REQUEST_CODE :
+                                    getArguments().getInt(ARGUMENT_PERMISSIONS_REQUEST_CODE,
+                                            DEFAULT_PERMISSIONS_REQUEST_CODE);
+                            ActivityCompat.requestPermissions(getActivity(), permissions,
+                                    permissionsRequestCode);
+                        }
+                    };
                 } else {
-                    this.permissions = null;
-                    if (buttonGrantPermissions != null) {
-                        buttonGrantPermissions.setVisibility(View.GONE);
-                    }
+                    permissions = null;
+                    buttonLabel = null;
+                    buttonClickListener = null;
                 }
             } else {
-                this.permissions = null;
-                if (buttonGrantPermissions != null) {
-                    buttonGrantPermissions.setVisibility(View.GONE);
-                }
+                permissions = null;
+                buttonLabel = null;
+                buttonClickListener = null;
             }
         }
 
@@ -441,6 +435,21 @@ public class SimpleSlide extends RestorableSlide {
                 }
             }
             return permissionsNotGranted.size() <= 0;
+        }
+
+        @Override
+        public View.OnClickListener getButtonCtaClickListener() {
+            return buttonClickListener;
+        }
+
+        @Override
+        public String getButtonCtaLabel() {
+            return buttonLabel;
+        }
+
+        @Override
+        public int getButtonCtaLabelRes() {
+            return 0;
         }
     }
 }

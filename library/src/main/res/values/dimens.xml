@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="mi_baseline">16dp</dimen>
-    <dimen name="mi_pager_margin_bottom">72dp</dimen>
+    <dimen name="mi_baseline_half">8dp</dimen>
+    <dimen name="mi_margin_bottom_pager_indicator">39dp</dimen>
 </resources>

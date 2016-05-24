@@ -1,8 +1,11 @@
 <resources>
     <string name="mi_content_description_skip">Skip</string>
+    <string name="mi_content_description_back">Skip</string>
     <string name="mi_content_description_next">Next</string>
+    <string name="mi_content_description_next_finish">Next/Finish</string>
     <plurals name="mi_label_grant_permission">
         <item quantity="one">Grant permission</item>
         <item quantity="other">Grant permissions</item>
     </plurals>
+    <string name="mi_label_button_cta">Get started</string>
 </resources>

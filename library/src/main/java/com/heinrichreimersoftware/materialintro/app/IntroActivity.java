@@ -14,21 +14,25 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import com.heinrichreimersoftware.materialintro.R;
+import com.heinrichreimersoftware.materialintro.slide.ButtonCtaSlide;
 import com.heinrichreimersoftware.materialintro.slide.Slide;
 import com.heinrichreimersoftware.materialintro.slide.SlideAdapter;
 import com.heinrichreimersoftware.materialintro.util.AnimUtils;
@@ -36,6 +40,8 @@ import com.heinrichreimersoftware.materialintro.util.CheatSheet;
 import com.heinrichreimersoftware.materialintro.view.FadeableViewPager;
 import com.heinrichreimersoftware.materialintro.view.InkPageIndicator;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,20 +51,37 @@ public class IntroActivity extends AppCompatActivity {
     private static final String KEY_CURRENT_ITEM =
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_CURRENT_ITEM";
 
-    private static final String KEY_SLIDES =
-            "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_SLIDES";
+    @IntDef({BUTTON_NEXT_FUNCTION_NEXT, BUTTON_NEXT_FUNCTION_NEXT_FINISH})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface ButtonNextFunction {
+    }
+
+    public static final int BUTTON_NEXT_FUNCTION_NEXT = 1;
+    public static final int BUTTON_NEXT_FUNCTION_NEXT_FINISH = 2;
+
+    @IntDef({BUTTON_BACK_FUNCTION_BACK, BUTTON_BACK_FUNCTION_SKIP})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface ButtonBackFunction {
+    }
+
+    public static final int BUTTON_BACK_FUNCTION_BACK = 1;
+    public static final int BUTTON_BACK_FUNCTION_SKIP = 2;
 
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
-    private FrameLayout frame;
+    private LinearLayout frame;
     private FadeableViewPager pager;
+    private Button buttonCta;
     private InkPageIndicator pagerIndicator;
     private ImageButton buttonNext;
-    private ImageButton buttonSkip;
+    private ImageButton buttonBack;
     private SlideAdapter adapter;
     private IntroPageChangeListener listener = new IntroPageChangeListener();
     private boolean fullscreen = false;
-    private boolean skipEnabled = true;
-    private boolean finishEnabled = true;
+    private boolean buttonCtaVisible = false;
+    @ButtonNextFunction
+    private int buttonNextFunction = BUTTON_NEXT_FUNCTION_NEXT_FINISH;
+    @ButtonBackFunction
+    private int buttonBackFunction = BUTTON_BACK_FUNCTION_SKIP;
     private int position = 0;
     private float positionOffset = 0;
 
@@ -91,7 +114,7 @@ public class IntroActivity extends AppCompatActivity {
         updateBackground();
         updateTaskDescription();
         updateButtonNextDrawable();
-        updateButtonSkipDrawable();
+        updateButtonBackDrawable();
         frame.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
@@ -155,11 +178,12 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void findViews(){
-        frame = (FrameLayout) findViewById(R.id.mi_frame);
+        frame = (LinearLayout) findViewById(R.id.mi_frame);
         pager = (FadeableViewPager) findViewById(R.id.mi_pager);
+        buttonCta = (Button) findViewById(R.id.mi_button_cta);
         pagerIndicator = (InkPageIndicator) findViewById(R.id.mi_pager_indicator);
         buttonNext = (ImageButton) findViewById(R.id.mi_button_next);
-        buttonSkip = (ImageButton) findViewById(R.id.mi_button_skip);
+        buttonBack = (ImageButton) findViewById(R.id.mi_button_skip);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         adapter = new SlideAdapter(fragmentManager);
@@ -176,14 +200,14 @@ public class IntroActivity extends AppCompatActivity {
                 nextSlide();
             }
         });
-        buttonSkip.setOnClickListener(new View.OnClickListener() {
+        buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                skipIfEnabled();
+                performButtonBackPress();
             }
         });
         CheatSheet.setup(buttonNext);
-        CheatSheet.setup(buttonSkip);
+        CheatSheet.setup(buttonBack);
     }
 
     public void nextSlide() {
@@ -205,25 +229,29 @@ public class IntroActivity extends AppCompatActivity {
             pager.setCurrentItem(--currentItem, true);
         }
         else {
-            AnimUtils.applyShakeAnimation(this, buttonSkip);
+            AnimUtils.applyShakeAnimation(this, buttonBack);
 
         }
     }
 
-    private void skipIfEnabled() {
-        if (skipEnabled) {
+    private void performButtonBackPress() {
+        if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
             int count = getCount();
             int endPosition = pager.getCurrentItem();
             while (endPosition < count && canGoForward(endPosition, true)) {
                 endPosition++;
             }
             pager.setCurrentItem(endPosition);
-        } else {
+        } else if (buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
             previousSlide();
         }
     }
 
     private boolean canGoForward(int position, boolean notifyListeners) {
+        if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT && position >= getCount() - 1)
+            //Block finishing when button "next" function is not "finish".
+            return false;
+
         boolean canGoForward = (navigationPolicy == null || navigationPolicy.canGoForward(position)) &&
                 getSlide(position).canGoForward();
         if (!canGoForward && notifyListeners) {
@@ -251,6 +279,27 @@ public class IntroActivity extends AppCompatActivity {
             finish();
             overridePendingTransition(0, 0);
         }
+    }
+
+    private Pair<String, ? extends View.OnClickListener> getButtonCta(int position) {
+        if (getSlide(position) instanceof ButtonCtaSlide) {
+            ButtonCtaSlide slide = (ButtonCtaSlide) getSlide(position);
+            if (slide.getButtonCtaClickListener() != null &&
+                    (slide.getButtonCtaLabel() != null || slide.getButtonCtaLabelRes() != 0)) {
+                if (slide.getButtonCtaLabel() != null) {
+                    return Pair.create(slide.getButtonCtaLabel(),
+                            slide.getButtonCtaClickListener());
+                } else {
+                    return Pair.create(getString(slide.getButtonCtaLabelRes()),
+                            slide.getButtonCtaClickListener());
+                }
+            }
+        }
+        if (buttonCtaVisible) {
+            return Pair.create(getString(R.string.mi_label_button_cta),
+                    new ButtonCtaClickListener());
+        }
+        return null;
     }
 
     private void updateFullscreen() {
@@ -337,9 +386,10 @@ public class IntroActivity extends AppCompatActivity {
         //Slightly darken the background color a bit for more contrast
         backgroundDarkHsv[2] *= 0.95;
         int backgroundDarker = Color.HSVToColor(backgroundDarkHsv);
+        ViewCompat.setBackgroundTintList(buttonCta, ColorStateList.valueOf(backgroundDarker));
         pagerIndicator.setPageIndicatorColor(backgroundDarker);
         ViewCompat.setBackgroundTintList(buttonNext, ColorStateList.valueOf(backgroundDarker));
-        ViewCompat.setBackgroundTintList(buttonSkip, ColorStateList.valueOf(backgroundDarker));
+        ViewCompat.setBackgroundTintList(buttonBack, ColorStateList.valueOf(backgroundDarker));
 
         int iconColor;
         if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
@@ -349,9 +399,10 @@ public class IntroActivity extends AppCompatActivity {
             //Dark background
             iconColor = ContextCompat.getColor(this, R.color.mi_icon_color_dark);
         }
+        buttonCta.setTextColor(iconColor);
         pagerIndicator.setCurrentPageIndicatorColor(iconColor);
         DrawableCompat.setTint(buttonNext.getDrawable(), iconColor);
-        DrawableCompat.setTint(buttonSkip.getDrawable(), iconColor);
+        DrawableCompat.setTint(buttonBack.getDrawable(), iconColor);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(backgroundDark);
@@ -390,32 +441,32 @@ public class IntroActivity extends AppCompatActivity {
             //Between first and second item
             float offset = position + positionOffset;
 
-            if (skipEnabled) {
-                buttonSkip.setTranslationY(0);
+            if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
+                buttonBack.setTranslationY(0);
             } else {
-                buttonSkip.setTranslationY((1 - offset) * 2 * buttonNext.getHeight());
+                buttonBack.setTranslationY((1 - offset) * 2 * buttonNext.getHeight());
             }
             updateButtonNextDrawable();
         } else if (position + positionOffset >= 1 && position + positionOffset < adapter.getCount() - 2) {
             //Between second and second last item
             //Reset buttons
-            buttonSkip.setTranslationY(0);
-            buttonSkip.setTranslationX(0);
+            buttonBack.setTranslationY(0);
+            buttonBack.setTranslationX(0);
             buttonNext.setTranslationY(0);
             updateButtonNextDrawable();
         } else if (position + positionOffset >= adapter.getCount() - 2 && position + positionOffset < adapter.getCount() - 1) {
             //Between second last and last item
             float offset = position + positionOffset - adapter.getCount() + 2;
 
-            if (skipEnabled) {
+            if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
                 boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
                         View.LAYOUT_DIRECTION_RTL;
-                buttonSkip.setTranslationX(offset * (rtl ? 1 : -1) * pager.getWidth());
+                buttonBack.setTranslationX(offset * (rtl ? 1 : -1) * pager.getWidth());
             } else {
-                buttonSkip.setTranslationX(0);
+                buttonBack.setTranslationX(0);
             }
 
-            if (finishEnabled) {
+            if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
                 buttonNext.setTranslationY(0);
             } else {
                 buttonNext.setTranslationY(offset * 2 * buttonNext.getHeight());
@@ -425,15 +476,15 @@ public class IntroActivity extends AppCompatActivity {
             //Fade
             float offset = position + positionOffset - adapter.getCount() + 1;
 
-            if (skipEnabled) {
+            if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
                 boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
                         View.LAYOUT_DIRECTION_RTL;
-                buttonSkip.setTranslationX((rtl ? 1 : -1) * pager.getWidth());
+                buttonBack.setTranslationX((rtl ? 1 : -1) * pager.getWidth());
             } else {
-                buttonSkip.setTranslationY(offset * 2 * buttonNext.getHeight());
+                buttonBack.setTranslationY(offset * 2 * buttonNext.getHeight());
             }
 
-            if (finishEnabled) {
+            if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
                 buttonNext.setTranslationY(offset * 2 * buttonNext.getHeight());
             } else {
                 buttonNext.setTranslationY(-2 * buttonNext.getHeight());
@@ -441,11 +492,50 @@ public class IntroActivity extends AppCompatActivity {
             pagerIndicator.setTranslationY(offset * 2 * buttonNext.getWidth());
             updateButtonNextDrawable();
         }
+
+        if (position + positionOffset < adapter.getCount() - 1) {
+            //Before fade
+            float offset = position + positionOffset - adapter.getCount() + 2;
+            Pair<String, ? extends View.OnClickListener> button = getButtonCta(position);
+            Pair<String, ? extends View.OnClickListener> buttonNext = getButtonCta(position + 1);
+
+            if (button == null) {
+                if (buttonNext == null) {
+                    //Hide button
+                    buttonCta.setVisibility(View.INVISIBLE);
+                } else {
+                    buttonCta.setVisibility(View.VISIBLE);
+                    //Fade in
+                    buttonCta.setText(buttonNext.first);
+                    buttonCta.setOnClickListener(buttonNext.second);
+                    buttonCta.setAlpha(offset);
+                }
+            } else {
+                if (buttonNext == null) {
+                    buttonCta.setVisibility(View.VISIBLE);
+                    //Fade out
+                    buttonCta.setText(button.first);
+                    buttonCta.setOnClickListener(button.second);
+                    buttonCta.setAlpha(1 - offset);
+                } else {
+                    buttonCta.setVisibility(View.VISIBLE);
+                    //Fade text
+                    if (offset >= 0.5f) {
+                        buttonCta.setText(buttonNext.first);
+                        buttonCta.setOnClickListener(buttonNext.second);
+                    } else {
+                        buttonCta.setText(button.first);
+                        buttonCta.setOnClickListener(button.second);
+                    }
+                }
+            }
+        }
     }
 
     private void updateButtonNextDrawable() {
         float offset = 0;
-        if (finishEnabled && position + positionOffset >= adapter.getCount() - 2) {
+        if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH &&
+                position + positionOffset >= adapter.getCount() - 2) {
             offset = Math.min(position + positionOffset - adapter.getCount() + 2, 1);
         }
 
@@ -464,11 +554,11 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
-    private void updateButtonSkipDrawable() {
-        if (skipEnabled) {
-            buttonSkip.setImageResource(R.drawable.ic_skip);
+    private void updateButtonBackDrawable() {
+        if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
+            buttonBack.setImageResource(R.drawable.ic_skip);
         } else {
-            buttonSkip.setImageResource(R.drawable.ic_previous);
+            buttonBack.setImageResource(R.drawable.ic_previous);
         }
     }
 
@@ -481,24 +571,87 @@ public class IntroActivity extends AppCompatActivity {
         this.fullscreen = fullscreen;
     }
 
-    public boolean isSkipEnabled() {
-        return skipEnabled;
+    public boolean isButtonCtaVisible() {
+        return buttonCtaVisible;
     }
 
-    public void setSkipEnabled(boolean skipEnabled) {
-        this.skipEnabled = skipEnabled;
-        updateButtonSkipDrawable();
+    public void setButtonCtaVisible(boolean buttonCtaVisible) {
+        this.buttonCtaVisible = buttonCtaVisible;
         updateViewPositions();
     }
 
-    public boolean isFinishEnabled() {
-        return finishEnabled;
+    @ButtonBackFunction
+    public int getButtonBackFunction() {
+        return buttonBackFunction;
     }
 
-    public void setFinishEnabled(boolean finishEnabled) {
-        this.finishEnabled = finishEnabled;
+    public void setButtonBackFunction(@ButtonBackFunction int buttonBackFunction) {
+        this.buttonBackFunction = buttonBackFunction;
+        switch (buttonBackFunction) {
+            case BUTTON_BACK_FUNCTION_BACK:
+                CheatSheet.setup(buttonBack, R.string.mi_content_description_back);
+                break;
+            case BUTTON_BACK_FUNCTION_SKIP:
+                CheatSheet.setup(buttonBack, R.string.mi_content_description_skip);
+                break;
+        }
+        updateButtonBackDrawable();
+        updateViewPositions();
+    }
+
+    @Deprecated
+    public boolean isSkipEnabled() {
+        return buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP;
+    }
+
+    @Deprecated
+    public void setSkipEnabled(boolean skipEnabled) {
+        setButtonBackFunction(skipEnabled ? BUTTON_BACK_FUNCTION_SKIP : BUTTON_BACK_FUNCTION_BACK);
+    }
+
+    @ButtonNextFunction
+    public int getButtonNextFunction() {
+        return buttonNextFunction;
+    }
+
+    public void setButtonNextFunction(@ButtonNextFunction int buttonNextFunction) {
+        this.buttonNextFunction = buttonNextFunction;
+        switch (buttonNextFunction) {
+            case BUTTON_NEXT_FUNCTION_NEXT_FINISH:
+                CheatSheet.setup(buttonNext, R.string.mi_content_description_next_finish);
+                break;
+            case BUTTON_NEXT_FUNCTION_NEXT:
+                CheatSheet.setup(buttonNext, R.string.mi_content_description_next);
+                break;
+        }
         updateButtonNextDrawable();
         updateViewPositions();
+    }
+
+    @Deprecated
+    public boolean isFinishEnabled() {
+        return buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH;
+    }
+
+    @Deprecated
+    public void setFinishEnabled(boolean finishEnabled) {
+        setButtonNextFunction(finishEnabled ? BUTTON_NEXT_FUNCTION_NEXT_FINISH : BUTTON_NEXT_FUNCTION_NEXT);
+    }
+
+    public boolean isButtonBackVisible() {
+        return buttonBack.getVisibility() == View.VISIBLE;
+    }
+
+    public void setButtonBackVisible(boolean visible) {
+        buttonBack.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public boolean isButtonNextVisible() {
+        return buttonNext.getVisibility() == View.VISIBLE;
+    }
+
+    public void setButtonNextVisible(boolean visible) {
+        buttonNext.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     @SuppressWarnings("deprecation")
@@ -609,6 +762,29 @@ public class IntroActivity extends AppCompatActivity {
     }
 
 
+    public void setNavigationPolicy(NavigationPolicy navigationPolicy) {
+        this.navigationPolicy = navigationPolicy;
+    }
+
+    public void addOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
+        navigationBlockedListeners.add(listener);
+    }
+
+    public void removeOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
+        navigationBlockedListeners.remove(listener);
+    }
+
+    public void clearOnNavigationBlockedListeners() {
+        navigationBlockedListeners.clear();
+    }
+
+    public void lockSwipeIfNeeded() {
+        if (position < getCount()) {
+            pager.setSwipeLeftEnabled(canGoForward(position, false));
+            pager.setSwipeRightEnabled(canGoBackward(position, false));
+        }
+    }
+
     private class IntroPageChangeListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -635,26 +811,15 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
-    public void setNavigationPolicy(NavigationPolicy navigationPolicy) {
-        this.navigationPolicy = navigationPolicy;
-    }
-
-    public void addOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
-        navigationBlockedListeners.add(listener);
-    }
-
-    public void removeOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
-        navigationBlockedListeners.remove(listener);
-    }
-
-    public void clearOnNavigationBlockedListeners() {
-        navigationBlockedListeners.clear();
-    }
-
-    public void lockSwipeIfNeeded() {
-        if (position < getCount()) {
-            pager.setSwipeLeftEnabled(canGoForward(position, false));
-            pager.setSwipeRightEnabled(canGoBackward(position, false));
+    private class ButtonCtaClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            int count = getCount();
+            int endPosition = pager.getCurrentItem();
+            while (endPosition < count && canGoForward(endPosition, true)) {
+                endPosition++;
+            }
+            pager.setCurrentItem(endPosition);
         }
     }
 }

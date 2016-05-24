@@ -30,8 +30,4 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/baseline"/>
 
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/mi_pager_margin_bottom"/>
-
 </LinearLayout>

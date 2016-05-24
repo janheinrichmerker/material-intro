@@ -6,10 +6,7 @@
     android:baselineAligned="false"
     android:clipToPadding="false"
     android:fitsSystemWindows="false"
-    android:paddingLeft="@dimen/mi_baseline"
-    android:paddingRight="@dimen/mi_baseline"
-    android:paddingTop="@dimen/mi_baseline"
-    android:paddingBottom="@dimen/mi_pager_margin_bottom">
+    android:padding="@dimen/mi_baseline">
 
     <ImageView
         android:id="@id/mi_image"
@@ -48,14 +45,6 @@
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …"/>
-
-        <Button
-            android:id="@id/mi_button_grant_permissions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mi_baseline"
-            android:gravity="center"
-            android:text="@plurals/mi_label_grant_permission"/>
 
     </LinearLayout>
 

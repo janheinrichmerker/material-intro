@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 
-public class FragmentSlide extends RestorableSlide {
+public class FragmentSlide implements Slide, RestorableSlide {
 
     private Fragment fragment;
     @ColorRes

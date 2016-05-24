@@ -3,22 +3,16 @@ package com.heinrichreimersoftware.materialintro.slide;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
 
-public abstract class Slide {
-
-    public abstract Fragment getFragment();
+public interface Slide {
+    Fragment getFragment();
 
     @ColorRes
-    public abstract int getBackground();
+    int getBackground();
+
     @ColorRes
-    public int getBackgroundDark(){
-        return android.R.color.black;
-    }
+    int getBackgroundDark();
 
-    public boolean canGoForward() {
-        return true;
-    }
+    boolean canGoForward();
 
-    public boolean canGoBackward() {
-        return true;
-    }
+    boolean canGoBackward();
 }

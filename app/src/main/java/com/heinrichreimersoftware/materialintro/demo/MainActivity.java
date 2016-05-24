@@ -30,8 +30,11 @@ public class MainActivity extends AppCompatActivity {
                 CheckBox optionScrollable = (CheckBox) findViewById(R.id.option_scrollable);
                 CheckBox optionCustomFragments = (CheckBox) findViewById(R.id.option_custom_fragments);
                 CheckBox optionPermissions = (CheckBox) findViewById(R.id.option_permissions);
+                CheckBox optionShowBack = (CheckBox) findViewById(R.id.option_show_back);
+                CheckBox optionShowNext = (CheckBox) findViewById(R.id.option_show_next);
                 CheckBox optionSkipEnabled = (CheckBox) findViewById(R.id.option_skip_enabled);
                 CheckBox optionFinishEnabled = (CheckBox) findViewById(R.id.option_finish_enabled);
+                CheckBox optionGetStartedEnabled = (CheckBox) findViewById(R.id.option_get_started_enabled);
                 CheckBox optionStartNewActivity = (CheckBox) findViewById(R.id.option_start_new_activity);
 
                 Intent introIntent;
@@ -47,7 +50,10 @@ public class MainActivity extends AppCompatActivity {
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_CUSTOM_FRAGMENTS, optionCustomFragments.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_PERMISSIONS, optionPermissions.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_SKIP_ENABLED, optionSkipEnabled.isChecked());
+                introIntent.putExtra(MaterialIntroActivity.EXTRA_SHOW_BACK, optionShowBack.isChecked());
+                introIntent.putExtra(MaterialIntroActivity.EXTRA_SHOW_NEXT, optionShowNext.isChecked());
                 introIntent.putExtra(MaterialIntroActivity.EXTRA_FINISH_ENABLED, optionFinishEnabled.isChecked());
+                introIntent.putExtra(MaterialIntroActivity.EXTRA_GET_STARTED_ENABLED, optionGetStartedEnabled.isChecked());
 
                 startActivity(introIntent);
 

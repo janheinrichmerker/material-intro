@@ -34,7 +34,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/baseline"
+            android:padding="@dimen/baseline"
             android:orientation="vertical">
 
             <TextView
@@ -77,6 +77,22 @@
                 android:text="@string/label_option_permissions"/>
 
             <CheckBox
+                android:id="@+id/option_show_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/baseline"
+                android:checked="true"
+                android:text="@string/label_option_show_back"/>
+
+            <CheckBox
+                android:id="@+id/option_show_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/baseline"
+                android:checked="true"
+                android:text="@string/label_option_show_next"/>
+
+            <CheckBox
                 android:id="@+id/option_skip_enabled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,6 +107,14 @@
                 android:layout_marginTop="@dimen/baseline"
                 android:checked="true"
                 android:text="@string/label_option_finish_enabled"/>
+
+            <CheckBox
+                android:id="@+id/option_get_started_enabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/baseline"
+                android:checked="true"
+                android:text="@string/label_option_get_started_enabled"/>
 
             <CheckBox
                 android:id="@+id/option_start_new_activity"

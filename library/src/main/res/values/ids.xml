@@ -2,12 +2,12 @@
 <resources>
     <item name="mi_frame" type="id"/>
     <item name="mi_pager" type="id"/>
+    <item name="mi_button_cta" type="id"/>
     <item name="mi_pager_indicator" type="id"/>
     <item name="mi_button_next" type="id"/>
     <item name="mi_button_skip" type="id"/>
 
     <item name="mi_title" type="id"/>
     <item name="mi_description" type="id"/>
-    <item name="mi_button_grant_permissions" type="id"/>
     <item name="mi_image" type="id"/>
 </resources>
