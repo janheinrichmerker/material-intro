@@ -589,6 +589,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void setSelectedPage(int now) {
+        now = Math.min(now, pageCount - 1);
+
         if (now == currentPage) return;
 
         pageChanging = true;
