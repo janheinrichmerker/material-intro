@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -67,6 +68,14 @@ public class IntroActivity extends AppCompatActivity {
     public static final int BUTTON_BACK_FUNCTION_BACK = 1;
     public static final int BUTTON_BACK_FUNCTION_SKIP = 2;
 
+    @IntDef({BUTTON_CTA_TINT_MODE_BACKGROUND, BUTTON_CTA_TINT_MODE_TEXT})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface ButtonCtaTintMode {
+    }
+
+    public static final int BUTTON_CTA_TINT_MODE_BACKGROUND = 1;
+    public static final int BUTTON_CTA_TINT_MODE_TEXT = 2;
+
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private LinearLayout frame;
     private FadeableViewPager pager;
@@ -82,6 +91,8 @@ public class IntroActivity extends AppCompatActivity {
     private int buttonNextFunction = BUTTON_NEXT_FUNCTION_NEXT_FINISH;
     @ButtonBackFunction
     private int buttonBackFunction = BUTTON_BACK_FUNCTION_SKIP;
+    @ButtonCtaTintMode
+    private int buttonCtaTintMode = BUTTON_CTA_TINT_MODE_BACKGROUND;
     private int position = 0;
     private float positionOffset = 0;
 
@@ -336,9 +347,13 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void updateBackground() {
+        @ColorInt
         int background;
+        @ColorInt
         int backgroundNext;
+        @ColorInt
         int backgroundDark;
+        @ColorInt
         int backgroundDarkNext;
 
         if (position == getCount()) {
@@ -373,7 +388,7 @@ public class IntroActivity extends AppCompatActivity {
 
         if (position + positionOffset >= adapter.getCount() - 1) {
             backgroundNext = ColorUtils.setAlphaComponent(background, 0x00);
-            backgroundDarkNext = Color.TRANSPARENT;
+            backgroundDarkNext = ColorUtils.setAlphaComponent(backgroundDark, 0x00);
         }
 
         background = (Integer) evaluator.evaluate(positionOffset, background, backgroundNext);
@@ -386,10 +401,14 @@ public class IntroActivity extends AppCompatActivity {
         //Slightly darken the background color a bit for more contrast
         backgroundDarkHsv[2] *= 0.95;
         int backgroundDarker = Color.HSVToColor(backgroundDarkHsv);
-        ViewCompat.setBackgroundTintList(buttonCta, ColorStateList.valueOf(backgroundDarker));
         pagerIndicator.setPageIndicatorColor(backgroundDarker);
         ViewCompat.setBackgroundTintList(buttonNext, ColorStateList.valueOf(backgroundDarker));
         ViewCompat.setBackgroundTintList(buttonBack, ColorStateList.valueOf(backgroundDarker));
+
+        @ColorInt
+        int backgroundButtonCta = buttonCtaTintMode == BUTTON_CTA_TINT_MODE_TEXT ?
+                ContextCompat.getColor(this, android.R.color.white) : backgroundDarker;
+        ViewCompat.setBackgroundTintList(buttonCta, ColorStateList.valueOf(backgroundButtonCta));
 
         int iconColor;
         if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
@@ -399,10 +418,14 @@ public class IntroActivity extends AppCompatActivity {
             //Dark background
             iconColor = ContextCompat.getColor(this, R.color.mi_icon_color_dark);
         }
-        buttonCta.setTextColor(iconColor);
         pagerIndicator.setCurrentPageIndicatorColor(iconColor);
         DrawableCompat.setTint(buttonNext.getDrawable(), iconColor);
         DrawableCompat.setTint(buttonBack.getDrawable(), iconColor);
+
+        @ColorInt
+        int textColorButtonCta = buttonCtaTintMode == BUTTON_CTA_TINT_MODE_TEXT ?
+                backgroundDarker : iconColor;
+        buttonCta.setTextColor(textColorButtonCta);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(backgroundDark);
@@ -489,6 +512,7 @@ public class IntroActivity extends AppCompatActivity {
             } else {
                 buttonNext.setTranslationY(-2 * buttonNext.getHeight());
             }
+            buttonCta.setTranslationY(offset * 2 * buttonNext.getWidth());
             pagerIndicator.setTranslationY(offset * 2 * buttonNext.getWidth());
             updateButtonNextDrawable();
         }
@@ -506,7 +530,8 @@ public class IntroActivity extends AppCompatActivity {
                 } else {
                     buttonCta.setVisibility(View.VISIBLE);
                     //Fade in
-                    buttonCta.setText(buttonNext.first);
+                    if (!buttonCta.getText().equals(buttonNext.first))
+                        buttonCta.setText(buttonNext.first);
                     buttonCta.setOnClickListener(buttonNext.second);
                     buttonCta.setAlpha(offset);
                 }
@@ -514,17 +539,20 @@ public class IntroActivity extends AppCompatActivity {
                 if (buttonNext == null) {
                     buttonCta.setVisibility(View.VISIBLE);
                     //Fade out
-                    buttonCta.setText(button.first);
+                    if (!buttonCta.getText().equals(button.first))
+                        buttonCta.setText(button.first);
                     buttonCta.setOnClickListener(button.second);
                     buttonCta.setAlpha(1 - offset);
                 } else {
                     buttonCta.setVisibility(View.VISIBLE);
                     //Fade text
                     if (offset >= 0.5f) {
-                        buttonCta.setText(buttonNext.first);
+                        if (!buttonCta.getText().equals(buttonNext.first))
+                            buttonCta.setText(buttonNext.first);
                         buttonCta.setOnClickListener(buttonNext.second);
                     } else {
-                        buttonCta.setText(button.first);
+                        if (!buttonCta.getText().equals(button.first))
+                            buttonCta.setText(button.first);
                         buttonCta.setOnClickListener(button.second);
                     }
                 }
@@ -578,6 +606,15 @@ public class IntroActivity extends AppCompatActivity {
     public void setButtonCtaVisible(boolean buttonCtaVisible) {
         this.buttonCtaVisible = buttonCtaVisible;
         updateViewPositions();
+    }
+
+    @ButtonCtaTintMode
+    public int getButtonCtaTintMode() {
+        return buttonCtaTintMode;
+    }
+
+    public void setButtonCtaTintMode(@ButtonCtaTintMode int buttonCtaTintMode) {
+        this.buttonCtaTintMode = buttonCtaTintMode;
     }
 
     @ButtonBackFunction

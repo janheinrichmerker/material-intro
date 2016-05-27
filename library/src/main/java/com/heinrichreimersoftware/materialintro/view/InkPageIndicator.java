@@ -31,7 +31,6 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
 
@@ -76,8 +75,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private ViewPager viewPager;
 
     // state
-    private int pageCount;
-    private int currentPage;
+    private int pageCount = 0;
+    private int currentPage = -1;
     private int previousPage;
     private float selectedDotX;
     private boolean selectedDotInPosition;
@@ -222,8 +221,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     @Override
     public void onPageSelected(int position) {
         if (isAttachedToWindow) {
-            // this is the main event we're interested in!
             setSelectedPage(position);
+            // this is the main event we're interested in!
         } else {
             // when not attached, don't animate the move, just store immediately
             setCurrentPageImmediate();
@@ -237,6 +236,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     private void setPageCount(int pages) {
         pageCount = pages;
+        calculateDotPositions(getWidth(), getHeight());
         resetState();
         requestLayout();
     }
@@ -245,12 +245,11 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         int left = getPaddingLeft();
         int top = getPaddingTop();
         int right = width - getPaddingRight();
-        int bottom = height - getPaddingBottom();
 
         int requiredWidth = getRequiredWidth();
         float startLeft = left + ((right - left - requiredWidth) / 2) + dotRadius;
 
-        dotCenterX = new float[pageCount];
+        dotCenterX = new float[Math.max(1, pageCount)];
         for (int i = 0; i < pageCount; i++) {
             dotCenterX[i] = startLeft + i * (dotDiameter + gap);
         }
@@ -263,14 +262,14 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     private void setCurrentPageImmediate() {
+        //if (viewPager.getCurrentItem() == currentPage) return;
+
         if (viewPager != null) {
             currentPage = viewPager.getCurrentItem();
         } else {
             currentPage = 0;
         }
-        if (dotCenterX != null) {
-            selectedDotX = dotCenterX[currentPage];
-        }
+        selectedDotX = dotCenterX[Math.max(0, Math.min(currentPage, dotCenterX.length - 1))];
     }
 
     private void resetState() {
@@ -285,7 +284,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
         int desiredHeight = getDesiredHeight();
         int height;
         switch (MeasureSpec.getMode(heightMeasureSpec)) {
@@ -676,11 +674,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     private void setJoiningFraction(int leftDot, float fraction) {
         if (leftDot < joiningFractions.length) {
-
-            if (leftDot == 1) {
-                Log.d("PageIndicator", "dot 1 fraction:\t" + fraction);
-            }
-
             joiningFractions[leftDot] = fraction;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                 postInvalidateOnAnimation();

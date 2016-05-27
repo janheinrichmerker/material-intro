@@ -21,7 +21,7 @@ public class SwipeBlockableViewPager extends ViewPager {
 
     private static final int SWIPE_DIRECTION_RIGHT = -1;
 
-    private static final int SWIPE_THRESHOLD = 10;
+    private static final int SWIPE_THRESHOLD = 5;
 
     private float initialX;
 

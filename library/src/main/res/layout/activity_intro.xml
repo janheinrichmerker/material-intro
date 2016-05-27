@@ -38,6 +38,10 @@
                 android:id="@id/mi_button_cta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="@dimen/mi_baseline_half"
+                android:paddingBottom="@dimen/mi_baseline_half"
+                android:paddingLeft="@dimen/mi_baseline"
+                android:paddingRight="@dimen/mi_baseline"
                 android:layout_marginBottom="@dimen/mi_baseline"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
@@ -50,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/mi_margin_bottom_pager_indicator"
                 app:dotDiameter="10dp"
-                app:dotGap="8dp"/>
+                app:dotGap="@dimen/mi_baseline_half"/>
 
         </LinearLayout>
 

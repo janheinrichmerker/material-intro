@@ -13,7 +13,7 @@
         android:id="@id/mi_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mi_baseline"
+        android:layout_marginBottom="@dimen/mi_baseline"
         android:gravity="center"
         tools:ignore="ContentDescription"
         tools:src="@android:drawable/sym_action_call"/>
@@ -22,10 +22,10 @@
         android:id="@id/mi_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mi_baseline"
-        android:fontFamily="sans-serif-light"
+        android:layout_marginTop="@dimen/mi_baseline"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+        android:fontFamily="sans-serif-medium"
         tools:ignore="UnusedAttribute"
         tools:text="Lorem ipsum" />
 
@@ -33,9 +33,9 @@
         android:id="@id/mi_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/mi_baseline"
+        android:layout_marginTop="@dimen/mi_baseline"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …" />
 
 </LinearLayout>

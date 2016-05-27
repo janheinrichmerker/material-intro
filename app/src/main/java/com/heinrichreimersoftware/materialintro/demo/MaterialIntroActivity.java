@@ -47,6 +47,7 @@ public class MaterialIntroActivity extends IntroActivity {
         setButtonBackVisible(showBack);
         setButtonNextVisible(showNext);
         setButtonCtaVisible(getStartedEnabled);
+        setButtonCtaTintMode(BUTTON_CTA_TINT_MODE_TEXT);
 
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.title_material_metaphor)
@@ -137,12 +138,14 @@ public class MaterialIntroActivity extends IntroActivity {
             @Override
             public void onNavigationBlocked(int position, int direction) {
                 View contentView = findViewById(android.R.id.content);
-                Slide slide = getSlide(position);
+                if (contentView != null) {
+                    Slide slide = getSlide(position);
 
-                if (slide == permissionsSlide) {
-                    Snackbar.make(contentView, R.string.label_grant_permissions, Snackbar.LENGTH_LONG).show();
-                } else if (slide == loginSlide) {
-                    Snackbar.make(contentView, R.string.label_fill_out_form, Snackbar.LENGTH_LONG).show();
+                    if (slide == permissionsSlide) {
+                        Snackbar.make(contentView, R.string.label_grant_permissions, Snackbar.LENGTH_LONG).show();
+                    } else if (slide == loginSlide) {
+                        Snackbar.make(contentView, R.string.label_fill_out_form, Snackbar.LENGTH_LONG).show();
+                    }
                 }
             }
         });

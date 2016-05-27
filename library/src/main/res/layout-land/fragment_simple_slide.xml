@@ -13,11 +13,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_margin="@dimen/mi_baseline"
         android:layout_gravity="center"
         android:gravity="center"
         tools:ignore="ContentDescription"
         tools:src="@android:drawable/sym_action_call"/>
+
+    <android.support.v4.widget.Space
+        android:layout_width="@dimen/mi_baseline"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -30,10 +33,9 @@
             android:id="@id/mi_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mi_baseline"
-            android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:fontFamily="sans-serif-medium"
             tools:ignore="UnusedAttribute"
             tools:text="Lorem ipsum"/>
 
@@ -41,9 +43,9 @@
             android:id="@id/mi_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mi_baseline"
+            android:layout_marginTop="@dimen/mi_baseline"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …"/>
 
     </LinearLayout>
