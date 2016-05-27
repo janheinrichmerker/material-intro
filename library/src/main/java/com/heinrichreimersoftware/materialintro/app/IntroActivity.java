@@ -223,6 +223,7 @@ public class IntroActivity extends AppCompatActivity {
 
     public void nextSlide() {
         int currentItem = pager.getCurrentItem();
+        if (currentItem >= adapter.getCount() - 1) return;
 
         if (canGoForward(currentItem, true)) {
             pager.setCurrentItem(++currentItem, true);
@@ -235,6 +236,7 @@ public class IntroActivity extends AppCompatActivity {
 
     public void previousSlide() {
         int currentItem = pager.getCurrentItem();
+        if (currentItem <= 0) return;
 
         if (canGoBackward(currentItem, true)) {
             pager.setCurrentItem(--currentItem, true);
