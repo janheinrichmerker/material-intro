@@ -12,51 +12,54 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.start_intro) Button startIntro;
+    @BindView(R.id.start_splash) Button startSplash;
+    @BindView(R.id.option_fullscreen) CheckBox optionFullscreen;
+    @BindView(R.id.option_scrollable) CheckBox optionScrollable;
+    @BindView(R.id.option_custom_fragments) CheckBox optionCustomFragments;
+    @BindView(R.id.option_permissions) CheckBox optionPermissions;
+    @BindView(R.id.option_show_back) CheckBox optionShowBack;
+    @BindView(R.id.option_show_next) CheckBox optionShowNext;
+    @BindView(R.id.option_skip_enabled) CheckBox optionSkipEnabled;
+    @BindView(R.id.option_finish_enabled) CheckBox optionFinishEnabled;
+    @BindView(R.id.option_get_started_enabled) CheckBox optionGetStartedEnabled;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button startIntro = (Button) findViewById(R.id.start_intro);
         startIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CheckBox optionFullscreen = (CheckBox) findViewById(R.id.option_fullscreen);
-                CheckBox optionScrollable = (CheckBox) findViewById(R.id.option_scrollable);
-                CheckBox optionCustomFragments = (CheckBox) findViewById(R.id.option_custom_fragments);
-                CheckBox optionPermissions = (CheckBox) findViewById(R.id.option_permissions);
-                CheckBox optionShowBack = (CheckBox) findViewById(R.id.option_show_back);
-                CheckBox optionShowNext = (CheckBox) findViewById(R.id.option_show_next);
-                CheckBox optionSkipEnabled = (CheckBox) findViewById(R.id.option_skip_enabled);
-                CheckBox optionFinishEnabled = (CheckBox) findViewById(R.id.option_finish_enabled);
-                CheckBox optionGetStartedEnabled = (CheckBox) findViewById(R.id.option_get_started_enabled);
-                CheckBox optionStartNewActivity = (CheckBox) findViewById(R.id.option_start_new_activity);
+                Intent intent = new Intent(MainActivity.this, MainIntroActivity.class);
+                intent.putExtra(MainIntroActivity.EXTRA_FULLSCREEN, optionFullscreen.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_SCROLLABLE, optionScrollable.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_CUSTOM_FRAGMENTS, optionCustomFragments.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_PERMISSIONS, optionPermissions.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_SKIP_ENABLED, optionSkipEnabled.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_SHOW_BACK, optionShowBack.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_SHOW_NEXT, optionShowNext.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_FINISH_ENABLED, optionFinishEnabled.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_GET_STARTED_ENABLED, optionGetStartedEnabled.isChecked());
+                startActivity(intent);
+            }
+        });
 
-                Intent introIntent;
-                if (optionStartNewActivity.isChecked()) {
-                    introIntent = new Intent(MainActivity.this, FinishActivity.class);
-                    introIntent.setAction(FinishActivity.ACTION_FORWARD_INTRO);
-                } else {
-                    introIntent = new Intent(MainActivity.this, MaterialIntroActivity.class);
-                }
-
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_FULLSCREEN, optionFullscreen.isChecked());
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_SCROLLABLE, optionScrollable.isChecked());
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_CUSTOM_FRAGMENTS, optionCustomFragments.isChecked());
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_PERMISSIONS, optionPermissions.isChecked());
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_SKIP_ENABLED, optionSkipEnabled.isChecked());
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_SHOW_BACK, optionShowBack.isChecked());
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_SHOW_NEXT, optionShowNext.isChecked());
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_FINISH_ENABLED, optionFinishEnabled.isChecked());
-                introIntent.putExtra(MaterialIntroActivity.EXTRA_GET_STARTED_ENABLED, optionGetStartedEnabled.isChecked());
-
-                startActivity(introIntent);
-
+        startSplash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SplashActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_activity_main, menu);
+        inflater.inflate(R.menu.menu_github, menu);
         return true;
     }
 

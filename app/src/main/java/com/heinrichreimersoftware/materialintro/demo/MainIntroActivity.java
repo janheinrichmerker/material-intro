@@ -12,7 +12,7 @@ import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 import com.heinrichreimersoftware.materialintro.slide.Slide;
 
-public class MaterialIntroActivity extends IntroActivity {
+public class MainIntroActivity extends IntroActivity {
 
     public static final String EXTRA_FULLSCREEN = "com.heinrichreimersoftware.materialintro.demo.EXTRA_FULLSCREEN";
     public static final String EXTRA_SCROLLABLE = "com.heinrichreimersoftware.materialintro.demo.EXTRA_SCROLLABLE";

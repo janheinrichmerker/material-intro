@@ -500,22 +500,23 @@ public class IntroActivity extends AppCompatActivity {
         } else if (position + positionOffset >= adapter.getCount() - 1) {
             //Fade
             float offset = position + positionOffset - adapter.getCount() + 1;
+            float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
 
             if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
                 boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
                         View.LAYOUT_DIRECTION_RTL;
                 buttonBack.setTranslationX((rtl ? 1 : -1) * pager.getWidth());
             } else {
-                buttonBack.setTranslationY(offset * 2 * buttonNext.getHeight());
+                buttonBack.setTranslationY(offset * yOffset);
             }
 
             if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
-                buttonNext.setTranslationY(offset * 2 * buttonNext.getHeight());
+                buttonNext.setTranslationY(offset * yOffset);
             } else {
-                buttonNext.setTranslationY(-2 * buttonNext.getHeight());
+                buttonNext.setTranslationY(-yOffset);
             }
-            buttonCta.setTranslationY(offset * 2 * buttonNext.getWidth());
-            pagerIndicator.setTranslationY(offset * 2 * buttonNext.getWidth());
+            buttonCta.setTranslationY(offset * yOffset);
+            pagerIndicator.setTranslationY(offset * yOffset);
             updateButtonNextDrawable();
         }
 

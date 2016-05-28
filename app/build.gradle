@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 def versionMajor = 1
 def versionMinor = 3
@@ -37,6 +47,9 @@ dependencies {
     //Firebase
     compile 'com.google.firebase:firebase-core:9.0.0'
     compile 'com.google.firebase:firebase-crash:9.0.0'
+    //Other
+    compile 'com.jakewharton:butterknife:8.0.1'
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

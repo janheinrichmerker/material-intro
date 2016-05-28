@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.heinrichreimersoftware.materialintro.demo"
+<manifest package="com.heinrichreimersoftware.materialintro.demo"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -15,24 +14,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".MaterialIntroActivity"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.Intro"
-            tools:ignore="UnusedAttribute">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
-        </activity>
-        <activity android:name=".FinishActivity">
-        </activity>
+            android:name=".MainIntroActivity"
+            android:theme="@style/Theme.Intro"/>
+
+        <activity android:name=".SplashActivity"/>
+
+        <activity
+            android:name=".SplashIntroActivity"
+            android:theme="@style/Theme.Intro"/>
+
+        <activity android:name=".FinishActivity"/>
+
     </application>
 
 </manifest>

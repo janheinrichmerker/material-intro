@@ -2,6 +2,7 @@
     <string name="app_name">material-intro</string>
 
     <string name="title_menu_github">View on GitHub</string>
+    <string name="title_menu_reset_first_start">Reset "First start" flag</string>
 
     <string name="label_options">Options:</string>
     <string name="label_option_fullscreen">Enable fullscreen</string>
@@ -13,8 +14,9 @@
     <string name="label_option_skip_enabled">Enable skip button</string>
     <string name="label_option_finish_enabled">Enable finish button</string>
     <string name="label_option_get_started_enabled">Enable \"Get Started\" button</string>
-    <string name="label_option_open_new_activity">Open new activity after intro</string>
     <string name="label_start_intro">Start intro</string>
+    <string name="label_or">or</string>
+    <string name="label_start_splash">Start fake splash screen</string>
 
     <string name="title_material_metaphor">Material is the metaphor</string>
     <string name="title_material_bold">Bold, graphic, intentional</string>
@@ -40,4 +42,6 @@
     <string name="label_fill_out_form">Please fill out the form before proceeding.</string>
 
     <string name="title_fragment_custom">Take off!</string>
+
+    <string name="label_activity_finish">Nothing here…\n…just a demo how to create a splash screen intro.</string>
 </resources>
