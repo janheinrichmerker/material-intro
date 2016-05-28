@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "100137339076",
+    "firebase_url": "https://material-intro.firebaseio.com",
+    "project_id": "material-intro",
+    "storage_bucket": "material-intro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100137339076:android:bba6091f41f7b56f",
+        "android_client_info": {
+          "package_name": "com.heinrichreimersoftware.materialintro.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100137339076-0cubcnmj7ifeoavd5q158i4iid1prifb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.heinrichreimersoftware.materialintro.demo",
+            "certificate_hash": "AB610B82A90448959588B7B3393DC2354D87B70E"
+          }
+        },
+        {
+          "client_id": "100137339076-19bavhqvigj2djlv1nf2oeq21lc8d18p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZX3ETblo71LlyXLMxbFnlSC0BYuhlE24"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100137339076-19bavhqvigj2djlv1nf2oeq21lc8d18p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
