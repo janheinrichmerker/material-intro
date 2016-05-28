@@ -24,10 +24,10 @@ A demo app is available on Google Play:
 Screenshots
 -----------
 
-| Simple slide | Custom slide | Fade effect | Fullscreen |
+| Simple slide | Custom slide | Fade effect | Permission request |
 |:-:|:-:|:-:|:-:|
-| ![Simple slide][12] | ![Custom slide][13] | ![Fade effect][14] | ![Fullscreen][15] |
-| [_SimpleSlide.java_][1] | [_FragmentSlide.java_][2] | [_IntroActivity.java_][3] | [_IntroActivity.java_][3] |
+| ![Simple slide][12] | ![Custom slide][13] | ![Fade effect][14] | ![Permission request][15] |
+| [_SimpleSlide.java_][1] | [_FragmentSlide.java_][2] | [_IntroActivity.java_][3] | [_SimpleSlide.java_][1] |
 
 Dependency
 ----------
@@ -215,10 +215,10 @@ License
 [9]: https://github.com/nickbutcher/plaid/blob/master/app/src/main/java/io/plaidapp/ui/widget/InkPageIndicator.java
 [10]: issues
 [11]: pulls
-[12]: http://i.imgur.com/1lne2ys.png
-[13]: http://i.imgur.com/J2iymrL.png
-[14]: http://i.imgur.com/Xyok5qh.png
-[15]: http://i.imgur.com/ft1wz2N.png
+[12]: http://i.imgur.com/cLWW5qm.png
+[13]: http://i.imgur.com/hmhnzUb.png
+[14]: http://i.imgur.com/7ujB0S4.png
+[15]: http://i.imgur.com/EDNLGy8.png
 [18]: https://jitpack.io/v/com.heinrichreimersoftware/material-intro.svg
 [19]: https://travis-ci.org/HeinrichReimer/material-intro.svg?branch=master
 [20]: https://travis-ci.org/HeinrichReimer/material-intro
