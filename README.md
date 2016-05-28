@@ -4,6 +4,7 @@ material-intro
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-material--intro-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3206)
 [![jitpack.io][18]][4]
 [![Build Status][19]][20]
+[![Methods & Size](https://img.shields.io/badge/Methods & Size-Core: 609, Deps: 15054, 104 KB-e91e63.svg)](http://www.methodscount.com/?lib=com.heinrichreimersoftware%3Amaterial-intro%3A1.4)
 [![Apache License 2.0][21]][22]
 
 A simple material design app intro with cool animations and a simple API.
