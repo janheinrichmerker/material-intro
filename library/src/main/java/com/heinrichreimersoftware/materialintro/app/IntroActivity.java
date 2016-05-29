@@ -40,6 +40,7 @@ import com.heinrichreimersoftware.materialintro.util.AnimUtils;
 import com.heinrichreimersoftware.materialintro.util.CheatSheet;
 import com.heinrichreimersoftware.materialintro.view.FadeableViewPager;
 import com.heinrichreimersoftware.materialintro.view.InkPageIndicator;
+import com.heinrichreimersoftware.materialintro.view.parallax.Parallaxable;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -563,6 +564,18 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
+    private void updateParallax() {
+        Fragment fragment = getSlide(position).getFragment();
+        Fragment fragmentNext = position < getCount() - 1 ?
+                getSlide(position + 1).getFragment() : null;
+        if (fragment instanceof Parallaxable) {
+            ((Parallaxable) fragment).setOffset(positionOffset);
+        }
+        if (fragmentNext instanceof Parallaxable) {
+            ((Parallaxable) fragmentNext).setOffset(-1 + positionOffset);
+        }
+    }
+
     private void updateButtonNextDrawable() {
         float offset = 0;
         if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH &&
@@ -838,6 +851,7 @@ public class IntroActivity extends AppCompatActivity {
 
             updateBackground();
             updateViewPositions();
+            updateParallax();
             updateFullscreen();
 
             finishIfNeeded();

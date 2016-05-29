@@ -3,15 +3,22 @@ package com.heinrichreimersoftware.materialintro.slide;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
+import android.support.annotation.FloatRange;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
+import com.heinrichreimersoftware.materialintro.view.parallax.Parallaxable;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class FragmentSlide implements Slide, RestorableSlide {
 
@@ -122,11 +129,14 @@ public class FragmentSlide implements Slide, RestorableSlide {
         }
     }
 
-    public static class FragmentSlideFragment extends Fragment {
+    public static class FragmentSlideFragment extends Fragment implements Parallaxable {
         private static final String ARGUMENT_LAYOUT_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_LAYOUT_RES";
         private static final String ARGUMENT_THEME_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_THEME_RES";
+
+        @Nullable
+        private Parallaxable parallaxLayout;
 
         public FragmentSlideFragment() {
         }
@@ -158,7 +168,33 @@ public class FragmentSlide implements Slide, RestorableSlide {
             }
             LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
 
-            return localInflater.inflate(getArguments().getInt(ARGUMENT_LAYOUT_RES), container, false);
+            View root = localInflater.inflate(getArguments().getInt(ARGUMENT_LAYOUT_RES), container, false);
+            parallaxLayout = findParallaxLayout(root);
+            Log.i("FragmentSlide", "parallaxLayout: " + parallaxLayout);
+            return root;
+        }
+
+        public Parallaxable findParallaxLayout(View root) {
+            Queue<View> queue = new LinkedList<>();
+            queue.add(root);
+            while (!queue.isEmpty()) {
+                View child = queue.remove();
+                if (child instanceof Parallaxable) {
+                    return (Parallaxable) child;
+                } else if (child instanceof ViewGroup) {
+                    ViewGroup viewGroup = (ViewGroup) child;
+                    for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
+                        queue.add(viewGroup.getChildAt(i));
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public void setOffset(@FloatRange(from = -1.0, to = 1.0) float offset) {
+            if (parallaxLayout != null)
+                parallaxLayout.setOffset(offset);
         }
     }
 }
