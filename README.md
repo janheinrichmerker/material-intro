@@ -29,49 +29,59 @@ Screenshots
 | ![Simple slide][12] | ![Custom slide][13] | ![Fade effect][14] | ![Permission request][15] |
 | [_SimpleSlide.java_][1] | [_FragmentSlide.java_][2] | [_IntroActivity.java_][3] | [_SimpleSlide.java_][1] |
 
+Features
+--------
+
+* Material design ([check the docs][30])
+* Easy customization
+* Predefined slide layouts
+* Custom slides
+* Parallax slides
+* Fluent API
+
 Dependency
 ----------
 
 *material-intro* is available on [**jitpack.io**][4]
 
 **Gradle dependency:**
-````gradle
+```gradle
 allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
     }
 }
-````
-````gradle
+```
+```gradle
 dependencies {
     compile 'com.heinrichreimersoftware:material-intro:1.5'
 }
-````
+```
 
 How-To-Use
 -----
 
 **Step 1:** Your `Activity` must extend [`IntroActivity`][3] and be in your *AndroidManifest.java*:
-````java
+```java
 public class MainIntroActivity extends IntroActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
     }
 }
-````
+```
 
-````xml
+```xml
 <manifest ...>
     <application ...>
         <activity android:name=".MainIntroActivity"
             android:theme="@style/Theme.Intro"/>
     </application>
 </manifest>
-````
+```
 
 **Step 2:** Add Slides:
-````java
+```java
 public class MainIntroActivity extends IntroActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -99,7 +109,7 @@ public class MainIntroActivity extends IntroActivity{
                 .build());
     }
 }
-````
+```
 Slide types:
 
 - [`SimpleSlide`][2]: Standard slide featuring a title, short description and image like Google's intros.
@@ -108,7 +118,7 @@ Slide types:
 - Feel free to submit an [issue][10] or [pull request][11] if you think any slide types are missing
 
 **Step 3:** Enable features:
-````java
+```java
 public class MainIntroActivity extends IntroActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -158,24 +168,43 @@ public class MainIntroActivity extends IntroActivity{
         });
     }
 }
-````
+```
+
+###Pro Tip: Parallax slides
+
+You can easily acheive a nice looking parallax effect for any slide by using either [_ParallaxFrameLayout.java_][31], [_ParallaxLinearLayout.java_][32] or [_ParallaxRelativeLayout.java_][33] and defining `layout_parallaxFactor` for its childrens.  
+A higher factor means a stronger parallax effect, `0` means no parallax effect at all.
+
+```xml
+<com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    ... >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_parallaxFactor="0"
+        ... />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_parallaxFactor="1.25"
+        ... />
+
+</com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout>
+```
+
+###Pro Tip: Splash screens
+
+Check out the [*sample*][26] if you want to show the intro on first start.  
+([_SplashActivity.java_][27], [_SplashIntroActivity.java_][28], [_FinishActivity.java_][29])
 
 Changes
 -------
 
-* **Version 1.2.1:**
-    * Fixed annotation bug
-* **Version 1.2:**
-    * Validation feature (#7, 55d2d08)
-    * Permission requests (55d2d08)
-    * Bug fixes
-* **Version 1.1:**
-    * Bug fixes (#1, #4, #5, #6, #21)
-    * Option to disable skip button / finish button (#3)
-    * Added demo on how to open a new activity after completing the inro (#14)
-    * Added scrollable slides (#22)
-* **Version 1.0:**
-    * Initial release
+See the [releases section][25] for detailed changelogs.
 
 Open source libraries
 -------
@@ -226,3 +255,12 @@ License
 [22]: https://www.apache.org/licenses/LICENSE-2.0.html
 [23]: https://img.shields.io/badge/Android%20Arsenal-material--intro-green.svg?style=true
 [24]: https://android-arsenal.com/details/1/3206
+[25]: https://github.com/HeinrichReimer/material-intro/releases
+[26]: https://github.com/HeinrichReimer/material-intro/tree/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo
+[27]: https://github.com/HeinrichReimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/SplashActivity.java
+[28]: https://github.com/HeinrichReimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/SplashIntroActivity.java
+[29]: https://github.com/HeinrichReimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/FinishActivity.java
+[30]: https://www.google.com/design/spec/growth-communications/onboarding.html#onboarding-quickstart
+[31]: https://github.com/HeinrichReimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxFrameLayout.java
+[32]: https://github.com/HeinrichReimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxLinearLayout.java
+[33]: https://github.com/HeinrichReimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxRelativeLayout.java
