@@ -46,7 +46,8 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:text="@string/mi_label_button_cta"
-                android:textColor="?android:textColorPrimaryInverse"/>
+                android:textColor="?android:textColorPrimaryInverse"
+                android:visibility="gone"/>
 
             <com.heinrichreimersoftware.materialintro.view.InkPageIndicator
                 android:id="@id/mi_pager_indicator"

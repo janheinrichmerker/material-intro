@@ -311,7 +311,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private Pair<String, ? extends View.OnClickListener> getButtonCta(int position) {
-        if (getSlide(position) instanceof ButtonCtaSlide) {
+        if (position < getCount() && getSlide(position) instanceof ButtonCtaSlide) {
             ButtonCtaSlide slide = (ButtonCtaSlide) getSlide(position);
             if (slide.getButtonCtaClickListener() != null &&
                     (slide.getButtonCtaLabel() != null || slide.getButtonCtaLabelRes() != 0)) {
@@ -478,6 +478,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void updateViewPositions() {
+
         if (position + positionOffset < 1) {
             //Between first and second item
             float offset = position + positionOffset;
@@ -542,7 +543,8 @@ public class IntroActivity extends AppCompatActivity {
             updateButtonNextDrawable();
         }
 
-        if (position + positionOffset < adapter.getCount() - 1) {
+        //Button CTA transition
+        if (position + positionOffset < adapter.getCount()) {
             //Before fade
             float offset = position + positionOffset - adapter.getCount() + 2;
             Pair<String, ? extends View.OnClickListener> button = getButtonCta(position);
@@ -872,7 +874,7 @@ public class IntroActivity extends AppCompatActivity {
 
             updateBackground();
             updateViewPositions();
-            if (position!=getCount())
+            if (position != getCount())
             updateParallax();
             updateFullscreen();
 
