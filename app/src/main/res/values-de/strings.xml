@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">material-intro</string>
+
+    <string name="title_menu_github">Auf GitHub ansehen</string>
+    <string name="title_menu_reset_first_start">"Erster Start"-Flag zurücksetzen</string>
+
+    <string name="label_options">Optionen:</string>
+    <string name="label_option_fullscreen">Volbild aktivieren</string>
+    <string name="label_option_scrollable">Scrollbare Seiten</string>
+    <string name="label_option_custom_fragments">Eigene Fragments aktivieren</string>
+    <string name="label_option_permissions">Berechtigungs-Aufforderung aktivieren</string>
+    <string name="label_option_show_back">Zurück-Button anzeigen</string>
+    <string name="label_option_show_next">Weiter-Button anzeigen</string>
+    <string name="label_option_skip_enabled">Überspringen-Button aktivieren</string>
+    <string name="label_option_finish_enabled">Fertig-Button aktivieren</string>
+    <string name="label_option_get_started_enabled">\"Los geht\'s\"-Button aktivieren</string>
+    <string name="label_start_intro">Intro starten</string>
+    <string name="label_or">oder</string>
+    <string name="label_start_splash">Fake-Splashscreen starten</string>
+
+    <string name="title_material_metaphor">Material ist die Metapher</string>
+    <string name="title_material_bold">Kräftig, graphisch, bewusst</string>
+    <string name="title_material_motion">Bewegung schafft Sinn</string>
+    <string name="title_material_shadow">Licht und Schatten</string>
+
+    <string name="description_material_metaphor">Die Material-Metapher ist die umfassende Theorie eines rationalisierten Raumes und ein Bewegungssystem. Das Material gründet sich auf einer fühlbaren Realität, inspiriert von der Beobachtung von Papier und Tinte und dennoch technologisch fortgeschritten und offen für Phantasie und Magie.</string>
+    <string name="description_material_bold">Die fundamentalen Elemente von Druckdesign – Typographie, Raster, Raum, Größe, Farbe und die Verwendung von Bildern – leiten die visuelle Empfindung.</string>
+    <string name="description_material_motion">Bewegung respektiert und bestärkt den Benutzer als wesentliche Treibkraft. Wichtige Nutzerinteraktionen sind Wendepunkte, die das ganze Design verwandelnde Bewegungen auslösen.</string>
+    <string name="description_material_shadow">In der Material-Umgebung beleuchten virtuelle Lichter die Kulisse. Führungslichter bilden gerichtete Schatten, während gedämpftes Licht weiche Schatten aus jedem Winkel bildet.</string>
+
+    <string name="title_permissions">Berechtigungen anfordern war noch nie so einfach.</string>
+    <string name="description_permissions">Diese App braucht die Kamera- und Speicher-Berechtigung.\nDas ist nur, um zu zeigen, wie Berechtigungsanfragen in dieser Bibliothek funktionieren und wir werden nichts mit den Berechtigungen machen.</string>
+    <string name="label_grant_permissions">Bitte gewähre die Berechtigungen, um fortzufahren.</string>
+
+    <string name="title_fragment_login">Das ist ein eigenes Fragment.</string>
+    <string name="hint_fake_username">Fake Benutzername</string>
+    <string name="hint_fake_password">Fake Password</string>
+    <string name="label_fake_login">Fake Anmeldung</string>
+    <string name="label_fake_login_loading">Lädt…</string>
+    <string name="label_fake_login_success">Angemeldet ☺</string>
+    <string name="label_fake_login_success_message">Erfolgreich angemeldet.</string>
+    <string name="label_fill_out_form">Bitte melde dich an, um fortzufahren.</string>
+
+    <string name="title_fragment_custom">Abheben!</string>
+
+    <string name="label_activity_finish">Hier ist nichts…\n…nur ein Beispiel, wie man ein Splashscreen-Intro erstellt.</string>
+</resources>
