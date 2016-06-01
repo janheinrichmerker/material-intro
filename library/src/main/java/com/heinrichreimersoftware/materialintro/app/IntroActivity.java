@@ -52,6 +52,10 @@ import java.util.List;
 public class IntroActivity extends AppCompatActivity {
     private static final String KEY_CURRENT_ITEM =
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_CURRENT_ITEM";
+    private static final String KEY_FULLSCREEN =
+            "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_FULLSCREEN";
+    private static final String KEY_BUTTON_CTA_VISIBLE =
+            "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_BUTTON_CTA_VISIBLE";
 
     @IntDef({BUTTON_NEXT_FUNCTION_NEXT, BUTTON_NEXT_FUNCTION_NEXT_FINISH})
     @Retention(RetentionPolicy.SOURCE)
@@ -105,14 +109,22 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(KEY_CURRENT_ITEM)) {
+                position = savedInstanceState.getInt(KEY_CURRENT_ITEM, position);
+            }
+            if (savedInstanceState.containsKey(KEY_FULLSCREEN)) {
+                fullscreen = savedInstanceState.getBoolean(KEY_FULLSCREEN, fullscreen);
+            }
+            if (savedInstanceState.containsKey(KEY_BUTTON_CTA_VISIBLE)) {
+                buttonCtaVisible = savedInstanceState.getBoolean(KEY_BUTTON_CTA_VISIBLE, buttonCtaVisible);
+            }
+        }
+
         if (fullscreen && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             setSystemUiFlags(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, true);
             setFullscreenFlags(fullscreen);
-        }
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CURRENT_ITEM)) {
-            position = savedInstanceState.getInt(KEY_CURRENT_ITEM, position);
         }
 
         setContentView(R.layout.activity_intro);
@@ -127,6 +139,7 @@ public class IntroActivity extends AppCompatActivity {
         updateTaskDescription();
         updateButtonNextDrawable();
         updateButtonBackDrawable();
+        updateViewPositions();
         frame.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
@@ -147,6 +160,8 @@ public class IntroActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_CURRENT_ITEM, pager.getCurrentItem());
+        outState.putBoolean(KEY_FULLSCREEN, fullscreen);
+        outState.putBoolean(KEY_BUTTON_CTA_VISIBLE, buttonCtaVisible);
     }
 
     @Override
@@ -472,6 +487,8 @@ public class IntroActivity extends AppCompatActivity {
             } else {
                 buttonBack.setTranslationY((1 - offset) * 2 * buttonNext.getHeight());
             }
+            buttonCta.setTranslationY(0);
+            pagerIndicator.setTranslationY(0);
             updateButtonNextDrawable();
         } else if (position + positionOffset >= 1 && position + positionOffset < adapter.getCount() - 2) {
             //Between second and second last item
@@ -479,6 +496,8 @@ public class IntroActivity extends AppCompatActivity {
             buttonBack.setTranslationY(0);
             buttonBack.setTranslationX(0);
             buttonNext.setTranslationY(0);
+            buttonCta.setTranslationY(0);
+            pagerIndicator.setTranslationY(0);
             updateButtonNextDrawable();
         } else if (position + positionOffset >= adapter.getCount() - 2 && position + positionOffset < adapter.getCount() - 1) {
             //Between second last and last item
@@ -497,6 +516,8 @@ public class IntroActivity extends AppCompatActivity {
             } else {
                 buttonNext.setTranslationY(offset * 2 * buttonNext.getHeight());
             }
+            buttonCta.setTranslationY(0);
+            pagerIndicator.setTranslationY(0);
             updateButtonNextDrawable();
         } else if (position + positionOffset >= adapter.getCount() - 1) {
             //Fade
@@ -530,7 +551,7 @@ public class IntroActivity extends AppCompatActivity {
             if (button == null) {
                 if (buttonNext == null) {
                     //Hide button
-                    buttonCta.setVisibility(View.INVISIBLE);
+                    buttonCta.setVisibility(View.GONE);
                 } else {
                     buttonCta.setVisibility(View.VISIBLE);
                     //Fade in
