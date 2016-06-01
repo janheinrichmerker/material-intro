@@ -224,7 +224,7 @@ public class IntroActivity extends AppCompatActivity {
 
     public void nextSlide() {
         int currentItem = pager.getCurrentItem();
-        if (currentItem >= adapter.getCount() - 1) return;
+        if (currentItem >= adapter.getCount() - 1) finishIfNeeded();
 
         if (canGoForward(currentItem, true)) {
             pager.setCurrentItem(++currentItem, true);
