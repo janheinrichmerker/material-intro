@@ -1,0 +1,11 @@
+<resources>
+    <string name="mi_content_description_skip">Überspringen</string>
+    <string name="mi_content_description_back">Zurück</string>
+    <string name="mi_content_description_next">Weiter</string>
+    <string name="mi_content_description_next_finish">Weiter/Fertig</string>
+    <plurals name="mi_label_grant_permission">
+        <item quantity="one">Berechtigung geben</item>
+        <item quantity="other">Berechtigungen geben</item>
+    </plurals>
+    <string name="mi_label_button_cta">Los geht\'s</string>
+</resources>
