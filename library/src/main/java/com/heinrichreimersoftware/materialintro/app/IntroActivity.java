@@ -851,6 +851,7 @@ public class IntroActivity extends AppCompatActivity {
 
             updateBackground();
             updateViewPositions();
+            if (position!=getCount())
             updateParallax();
             updateFullscreen();
 
