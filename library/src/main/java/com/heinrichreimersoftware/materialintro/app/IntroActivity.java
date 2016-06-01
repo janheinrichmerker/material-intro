@@ -284,10 +284,6 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean canGoForward(int position, boolean notifyListeners) {
-        if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT && position >= getCount() - 1)
-            //Block finishing when button "next" function is not "finish".
-            return false;
-
         boolean canGoForward = (navigationPolicy == null || navigationPolicy.canGoForward(position)) &&
                 getSlide(position).canGoForward();
         if (!canGoForward && notifyListeners) {
