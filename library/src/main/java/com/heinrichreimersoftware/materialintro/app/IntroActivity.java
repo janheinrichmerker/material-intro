@@ -28,6 +28,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -121,10 +122,16 @@ public class IntroActivity extends AppCompatActivity {
             }
         }
 
-        if (fullscreen && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setSystemUiFlags(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, true);
-            setFullscreenFlags(fullscreen);
+        if (fullscreen) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                setSystemUiFlags(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, true);
+                updateFullscreen();
+            }
+            else {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
         }
 
         setContentView(R.layout.activity_intro);
@@ -153,7 +160,7 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setFullscreenFlags(fullscreen);
+        updateFullscreen();
     }
 
     @Override
@@ -332,10 +339,13 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void updateFullscreen() {
-        if (position + positionOffset > adapter.getCount() - 1) {
-            setFullscreenFlags(false);
-        } else {
-            setFullscreenFlags(fullscreen);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (adapter != null && position + positionOffset > adapter.getCount() - 1) {
+                setFullscreenFlags(false);
+            }
+            else {
+                setFullscreenFlags(fullscreen);
+            }
         }
     }
 
