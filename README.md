@@ -53,7 +53,7 @@ allprojects {
 ```
 ```gradle
 dependencies {
-    compile 'com.heinrichreimersoftware:material-intro:1.5.2'
+    compile 'com.heinrichreimersoftware:material-intro:1.5.3'
 }
 ```
 
