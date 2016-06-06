@@ -25,13 +25,16 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextSwitcher;
 
 import com.heinrichreimersoftware.materialintro.R;
 import com.heinrichreimersoftware.materialintro.slide.ButtonCtaSlide;
@@ -85,7 +88,7 @@ public class IntroActivity extends AppCompatActivity {
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private LinearLayout frame;
     private FadeableViewPager pager;
-    private Button buttonCta;
+    private TextSwitcher buttonCta;
     private InkPageIndicator pagerIndicator;
     private ImageButton buttonNext;
     private ImageButton buttonBack;
@@ -93,6 +96,8 @@ public class IntroActivity extends AppCompatActivity {
     private IntroPageChangeListener listener = new IntroPageChangeListener();
     private boolean fullscreen = false;
     private boolean buttonCtaVisible = false;
+    private ViewPropertyAnimatorCompat buttonCtaInAnimator = null;
+    private ViewPropertyAnimatorCompat buttonCtaOutAnimator = null;
     @ButtonNextFunction
     private int buttonNextFunction = BUTTON_NEXT_FUNCTION_NEXT_FINISH;
     @ButtonBackFunction
@@ -184,12 +189,8 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        for (Fragment fragment : fragmentManager.getFragments()) {
-            if (fragment != null) {
-                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        updateButtonCta();
     }
 
     private void setSystemUiFlags(int flags, boolean value){
@@ -214,10 +215,15 @@ public class IntroActivity extends AppCompatActivity {
     private void findViews(){
         frame = (LinearLayout) findViewById(R.id.mi_frame);
         pager = (FadeableViewPager) findViewById(R.id.mi_pager);
-        buttonCta = (Button) findViewById(R.id.mi_button_cta);
         pagerIndicator = (InkPageIndicator) findViewById(R.id.mi_pager_indicator);
         buttonNext = (ImageButton) findViewById(R.id.mi_button_next);
         buttonBack = (ImageButton) findViewById(R.id.mi_button_skip);
+
+        buttonCta = (TextSwitcher) findViewById(R.id.mi_button_cta);
+        if (buttonCta != null) {
+            buttonCta.setInAnimation(this, R.anim.fade_in);
+            buttonCta.setOutAnimation(this, R.anim.fade_out);
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         adapter = new SlideAdapter(fragmentManager);
@@ -436,7 +442,8 @@ public class IntroActivity extends AppCompatActivity {
         @ColorInt
         int backgroundButtonCta = buttonCtaTintMode == BUTTON_CTA_TINT_MODE_TEXT ?
                 ContextCompat.getColor(this, android.R.color.white) : backgroundDarker;
-        ViewCompat.setBackgroundTintList(buttonCta, ColorStateList.valueOf(backgroundButtonCta));
+        ViewCompat.setBackgroundTintList(buttonCta.getChildAt(0), ColorStateList.valueOf(backgroundButtonCta));
+        ViewCompat.setBackgroundTintList(buttonCta.getChildAt(1), ColorStateList.valueOf(backgroundButtonCta));
 
         int iconColor;
         if (ColorUtils.calculateLuminance(backgroundDark) > 0.4) {
@@ -453,7 +460,8 @@ public class IntroActivity extends AppCompatActivity {
         @ColorInt
         int textColorButtonCta = buttonCtaTintMode == BUTTON_CTA_TINT_MODE_TEXT ?
                 backgroundDarker : iconColor;
-        buttonCta.setTextColor(textColorButtonCta);
+        ((Button) buttonCta.getChildAt(0)).setTextColor(textColorButtonCta);
+        ((Button) buttonCta.getChildAt(1)).setTextColor(textColorButtonCta);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(backgroundDark);
@@ -491,12 +499,10 @@ public class IntroActivity extends AppCompatActivity {
 
         if (position + positionOffset < 1) {
             //Between first and second item
-            float offset = position + positionOffset;
-
             if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
                 buttonBack.setTranslationY(0);
             } else {
-                buttonBack.setTranslationY((1 - offset) * 2 * buttonNext.getHeight());
+                buttonBack.setTranslationY((1 - positionOffset) * 2 * buttonNext.getHeight());
             }
             buttonCta.setTranslationY(0);
             pagerIndicator.setTranslationY(0);
@@ -512,12 +518,10 @@ public class IntroActivity extends AppCompatActivity {
             updateButtonNextDrawable();
         } else if (position + positionOffset >= adapter.getCount() - 2 && position + positionOffset < adapter.getCount() - 1) {
             //Between second last and last item
-            float offset = position + positionOffset - adapter.getCount() + 2;
-
             if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
                 boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
                         View.LAYOUT_DIRECTION_RTL;
-                buttonBack.setTranslationX(offset * (rtl ? 1 : -1) * pager.getWidth());
+                buttonBack.setTranslationX(positionOffset * (rtl ? 1 : -1) * pager.getWidth());
             } else {
                 buttonBack.setTranslationX(0);
             }
@@ -525,76 +529,38 @@ public class IntroActivity extends AppCompatActivity {
             if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
                 buttonNext.setTranslationY(0);
             } else {
-                buttonNext.setTranslationY(offset * 2 * buttonNext.getHeight());
+                buttonNext.setTranslationY(positionOffset * 2 * buttonNext.getHeight());
             }
             buttonCta.setTranslationY(0);
             pagerIndicator.setTranslationY(0);
             updateButtonNextDrawable();
         } else if (position + positionOffset >= adapter.getCount() - 1) {
             //Fade
-            float offset = position + positionOffset - adapter.getCount() + 1;
             float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
+
+            float alpha = 1 - (positionOffset * 0.5f);
+            Log.i("alpha: ", "" + alpha);
+            frame.setAlpha(alpha);
 
             if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
                 boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
                         View.LAYOUT_DIRECTION_RTL;
                 buttonBack.setTranslationX((rtl ? 1 : -1) * pager.getWidth());
             } else {
-                buttonBack.setTranslationY(offset * yOffset);
+                buttonBack.setTranslationY(positionOffset * yOffset);
             }
 
             if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
-                buttonNext.setTranslationY(offset * yOffset);
+                buttonNext.setTranslationY(positionOffset * yOffset);
             } else {
                 buttonNext.setTranslationY(-yOffset);
             }
-            buttonCta.setTranslationY(offset * yOffset);
-            pagerIndicator.setTranslationY(offset * yOffset);
+            buttonCta.setTranslationY(positionOffset * yOffset);
+            pagerIndicator.setTranslationY(positionOffset * yOffset);
             updateButtonNextDrawable();
         }
 
-        //Button CTA transition
-        if (position + positionOffset < adapter.getCount()) {
-            //Before fade
-            float offset = position + positionOffset - adapter.getCount() + 2;
-            Pair<String, ? extends View.OnClickListener> button = getButtonCta(position);
-            Pair<String, ? extends View.OnClickListener> buttonNext = getButtonCta(position + 1);
-
-            if (button == null) {
-                if (buttonNext == null) {
-                    //Hide button
-                    buttonCta.setVisibility(View.GONE);
-                } else {
-                    buttonCta.setVisibility(View.VISIBLE);
-                    //Fade in
-                    if (!buttonCta.getText().equals(buttonNext.first))
-                        buttonCta.setText(buttonNext.first);
-                    buttonCta.setOnClickListener(buttonNext.second);
-                    buttonCta.setAlpha(offset);
-                }
-            } else {
-                if (buttonNext == null) {
-                    buttonCta.setVisibility(View.VISIBLE);
-                    //Fade out
-                    if (!buttonCta.getText().equals(button.first))
-                        buttonCta.setText(button.first);
-                    buttonCta.setOnClickListener(button.second);
-                    buttonCta.setAlpha(1 - offset);
-                } else {
-                    buttonCta.setVisibility(View.VISIBLE);
-                    //Fade text
-                    if (offset >= 0.5f) {
-                        if (!buttonCta.getText().equals(buttonNext.first))
-                            buttonCta.setText(buttonNext.first);
-                        buttonCta.setOnClickListener(buttonNext.second);
-                    } else {
-                        if (!buttonCta.getText().equals(button.first))
-                            buttonCta.setText(button.first);
-                        buttonCta.setOnClickListener(button.second);
-                    }
-                }
-            }
-        }
+        updateButtonCta();
     }
 
     private void updateParallax() {
@@ -609,11 +575,71 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
+    private void updateButtonCta() {
+        //Button CTA transition
+        if (position + positionOffset < adapter.getCount()) {
+            //Before fade
+            Pair<String, ? extends View.OnClickListener> button = getButtonCta(position);
+            Log.i("button cta", "button for position " + position + ": " + (button == null ? null : button.first));
+            Pair<String, ? extends View.OnClickListener> buttonNext = getButtonCta(position + 1);
+            Log.i("button cta", "button for position " + (position + 1) + ": " + (buttonNext == null ? null : buttonNext.first));
+
+            if (button == null) {
+                if (buttonNext == null) {
+                    //Hide button
+                    buttonCta.setVisibility(View.GONE);
+                }
+                else {
+                    buttonCta.setVisibility(View.VISIBLE);
+                    //Fade in
+                    if (!((Button) buttonCta.getCurrentView()).getText().equals(buttonNext.first))
+                        buttonCta.setText(buttonNext.first);
+                    buttonCta.getChildAt(0).setOnClickListener(buttonNext.second);
+                    buttonCta.getChildAt(1).setOnClickListener(buttonNext.second);
+                    Log.i("button cta", "alpha1: " + (positionOffset));
+                    buttonCta.setAlpha(positionOffset);
+                }
+            }
+            else {
+                if (buttonNext == null) {
+                    buttonCta.setVisibility(View.VISIBLE);
+                    //Fade out
+                    if (!((Button) buttonCta.getCurrentView()).getText().equals(button.first))
+                        buttonCta.setText(button.first);
+                    buttonCta.getChildAt(0).setOnClickListener(button.second);
+                    buttonCta.getChildAt(1).setOnClickListener(button.second);
+                    Log.i("button cta", "alpha2: " + (1 - positionOffset));
+                    buttonCta.setAlpha(1 - positionOffset);
+                }
+                else {
+                    buttonCta.setVisibility(View.VISIBLE);
+                    //Fade text
+                    if (positionOffset >= 0.5f) {
+                        if (!((Button) buttonCta.getCurrentView()).getText().equals(buttonNext.first))
+                            buttonCta.setText(buttonNext.first);
+                        buttonCta.getChildAt(0).setOnClickListener(buttonNext.second);
+                        buttonCta.getChildAt(1).setOnClickListener(buttonNext.second);
+                    }
+                    else {
+                        if (!((Button) buttonCta.getCurrentView()).getText().equals(button.first))
+                            buttonCta.setText(button.first);
+                        buttonCta.getChildAt(0).setOnClickListener(button.second);
+                        buttonCta.getChildAt(1).setOnClickListener(button.second);
+                    }
+                }
+            }
+        }
+    }
+
     private void updateButtonNextDrawable() {
         float offset = 0;
         if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH &&
+                position + positionOffset >= adapter.getCount() - 1) {
+            offset = 1;
+        }
+        else if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH &&
                 position + positionOffset >= adapter.getCount() - 2) {
-            offset = Math.min(position + positionOffset - adapter.getCount() + 2, 1);
+            offset = positionOffset;
         }
 
         if (offset <= 0) {
@@ -874,8 +900,8 @@ public class IntroActivity extends AppCompatActivity {
     private class IntroPageChangeListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            IntroActivity.this.position = position;
-            IntroActivity.this.positionOffset = positionOffset;
+            IntroActivity.this.position = (int) Math.floor(position + positionOffset);
+            IntroActivity.this.positionOffset = (((position + positionOffset) % 1) + 1) % 1;
 
             //Lock while scrolling a slide near its edges to lock (uncommon) multiple page swipes
             if (Math.abs(positionOffset) < 0.1f) {
@@ -885,7 +911,7 @@ public class IntroActivity extends AppCompatActivity {
             updateBackground();
             updateViewPositions();
             if (position != getCount())
-            updateParallax();
+                updateParallax();
             updateFullscreen();
 
             finishIfNeeded();

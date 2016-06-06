@@ -34,20 +34,41 @@
             android:layout_marginTop="@dimen/mi_baseline_half"
             android:orientation="vertical">
 
-            <Button
+            <TextSwitcher
                 android:id="@id/mi_button_cta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/mi_baseline_half"
-                android:paddingBottom="@dimen/mi_baseline_half"
-                android:paddingLeft="@dimen/mi_baseline"
-                android:paddingRight="@dimen/mi_baseline"
                 android:layout_marginBottom="@dimen/mi_baseline"
                 android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:text="@string/mi_label_button_cta"
-                android:textColor="?android:textColorPrimaryInverse"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:clipChildren="false">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/mi_baseline_half"
+                    android:paddingBottom="@dimen/mi_baseline_half"
+                    android:paddingLeft="@dimen/mi_baseline"
+                    android:paddingRight="@dimen/mi_baseline"
+                    android:gravity="center"
+                    android:text="@string/mi_label_button_cta"
+                    android:textColor="?android:textColorPrimaryInverse"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/mi_baseline_half"
+                    android:paddingBottom="@dimen/mi_baseline_half"
+                    android:paddingLeft="@dimen/mi_baseline"
+                    android:paddingRight="@dimen/mi_baseline"
+                    android:gravity="center"
+                    android:text="@string/mi_label_button_cta"
+                    android:textColor="?android:textColorPrimaryInverse"
+                    android:visibility="gone"/>
+
+            </TextSwitcher>
 
             <com.heinrichreimersoftware.materialintro.view.InkPageIndicator
                 android:id="@id/mi_pager_indicator"

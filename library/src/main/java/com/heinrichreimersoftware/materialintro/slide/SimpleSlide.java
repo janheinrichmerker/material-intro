@@ -51,6 +51,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         canGoBackward = builder.canGoBackward;
         permissions = builder.permissions;
         permissionsRequestCode = builder.permissionsRequestCode;
+        updatePermissions();
     }
 
     @Override
@@ -88,11 +89,13 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     @Override
     public View.OnClickListener getButtonCtaClickListener() {
+        updatePermissions();
         return buttonClickListener;
     }
 
     @Override
     public String getButtonCtaLabel() {
+        updatePermissions();
         return buttonLabel;
     }
 
@@ -101,14 +104,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         return 0;
     }
 
-    private void updatePermissions() {
-        updatePermissions(permissions);
-    }
-
-    private synchronized void updatePermissions(@Nullable String[] newPermissions) {
-        if (newPermissions != null) {
+    private synchronized void updatePermissions() {
+        if (permissions != null) {
             final List<String> permissionsNotGranted = new ArrayList<>();
-            for (String permission : newPermissions) {
+            for (String permission : permissions) {
                 if (fragment.getContext() == null ||
                         ContextCompat.checkSelfPermission(fragment.getContext(), permission) !=
                                 PackageManager.PERMISSION_GRANTED) {
@@ -119,18 +118,26 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             if (permissionsNotGranted.size() > 0) {
                 permissions = permissionsNotGranted.toArray(
                         new String[permissionsNotGranted.size()]);
-                if (fragment.getContext() != null)
+                if (fragment.getActivity() == null) {
+                    if (permissions.length == 0) {
+                        permissions = null;
+                        buttonLabel = null;
+                        buttonClickListener = null;
+                    }
+                }
+                else {
                     buttonLabel = fragment.getContext().getResources().getQuantityText(
                             R.plurals.mi_label_grant_permission, permissionsNotGranted.size())
                             .toString();
-                buttonClickListener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (fragment.getActivity() != null)
-                            ActivityCompat.requestPermissions(fragment.getActivity(), permissions,
-                                    permissionsRequestCode);
-                    }
-                };
+                    buttonClickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (fragment.getActivity() != null)
+                                ActivityCompat.requestPermissions(fragment.getActivity(), permissions,
+                                        permissionsRequestCode);
+                        }
+                    };
+                }
             } else {
                 permissions = null;
                 buttonLabel = null;
@@ -303,6 +310,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setRetainInstance(true);
+            updateNavigation();
         }
 
         @Override
