@@ -662,37 +662,45 @@ public class IntroActivity extends AppCompatActivity {
     }
 
 
+    @SuppressWarnings("unused")
     public boolean isFullscreen() {
         return fullscreen;
     }
 
+    @SuppressWarnings("unused")
     public void setFullscreen(boolean fullscreen) {
         this.fullscreen = fullscreen;
     }
 
+    @SuppressWarnings("unused")
     public boolean isButtonCtaVisible() {
         return buttonCtaVisible;
     }
 
+    @SuppressWarnings("unused")
     public void setButtonCtaVisible(boolean buttonCtaVisible) {
         this.buttonCtaVisible = buttonCtaVisible;
         updateViewPositions();
     }
 
     @ButtonCtaTintMode
+    @SuppressWarnings("unused")
     public int getButtonCtaTintMode() {
         return buttonCtaTintMode;
     }
 
+    @SuppressWarnings("unused")
     public void setButtonCtaTintMode(@ButtonCtaTintMode int buttonCtaTintMode) {
         this.buttonCtaTintMode = buttonCtaTintMode;
     }
 
     @ButtonBackFunction
+    @SuppressWarnings("unused")
     public int getButtonBackFunction() {
         return buttonBackFunction;
     }
 
+    @SuppressWarnings("unused")
     public void setButtonBackFunction(@ButtonBackFunction int buttonBackFunction) {
         this.buttonBackFunction = buttonBackFunction;
         switch (buttonBackFunction) {
@@ -708,16 +716,19 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     @Deprecated
+    @SuppressWarnings("unused")
     public boolean isSkipEnabled() {
         return buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP;
     }
 
     @Deprecated
+    @SuppressWarnings("unused")
     public void setSkipEnabled(boolean skipEnabled) {
         setButtonBackFunction(skipEnabled ? BUTTON_BACK_FUNCTION_SKIP : BUTTON_BACK_FUNCTION_BACK);
     }
 
     @ButtonNextFunction
+    @SuppressWarnings("unused")
     public int getButtonNextFunction() {
         return buttonNextFunction;
     }
@@ -737,186 +748,225 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     @Deprecated
+    @SuppressWarnings("unused")
     public boolean isFinishEnabled() {
         return buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH;
     }
 
     @Deprecated
+    @SuppressWarnings("unused")
     public void setFinishEnabled(boolean finishEnabled) {
         setButtonNextFunction(finishEnabled ? BUTTON_NEXT_FUNCTION_NEXT_FINISH : BUTTON_NEXT_FUNCTION_NEXT);
     }
 
+    @SuppressWarnings("unused")
     public boolean isButtonBackVisible() {
         return buttonBack.getVisibility() == View.VISIBLE;
     }
 
+    @SuppressWarnings("unused")
     public void setButtonBackVisible(boolean visible) {
         buttonBack.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
+    @SuppressWarnings("unused")
     public boolean isButtonNextVisible() {
         return buttonNext.getVisibility() == View.VISIBLE;
     }
 
+    @SuppressWarnings("unused")
     public void setButtonNextVisible(boolean visible) {
         buttonNext.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-    @SuppressWarnings("deprecation")
     @Deprecated
+    @SuppressWarnings("deprecation,unused")
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         pager.setOnPageChangeListener(listener);
         pager.addOnPageChangeListener(this.listener);
     }
 
+    @SuppressWarnings("unused")
     public void addOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         pager.addOnPageChangeListener(listener);
     }
 
+    @SuppressWarnings("unused")
     public void removeOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
         if (listener != this.listener)
             pager.removeOnPageChangeListener(listener);
     }
 
+    @SuppressWarnings("unused")
     public View.OnClickListener getButtonCtaClickListener() {
         return buttonCtaClickListener;
     }
 
+    @SuppressWarnings("unused")
     public void setButtonCtaClickListener(View.OnClickListener buttonCtaClickListener) {
         this.buttonCtaClickListener = buttonCtaClickListener;
         updateButtonCta();
     }
 
+    @SuppressWarnings("unused")
     public CharSequence getButtonCtaLabel() {
         if (buttonCtaLabel != null)
             return buttonCtaLabel;
         return getString(buttonCtaLabelRes);
     }
 
+    @SuppressWarnings("unused")
     public void setButtonCtaLabel(@StringRes int buttonCtaLabelRes) {
         this.buttonCtaLabelRes = buttonCtaLabelRes;
         this.buttonCtaLabel = null;
         updateButtonCta();
     }
 
+    @SuppressWarnings("unused")
     public void setButtonCtaLabel(CharSequence buttonCtaLabel) {
         this.buttonCtaLabel = buttonCtaLabel;
         this.buttonCtaLabelRes = 0;
         updateButtonCta();
     }
 
-    protected void addSlide(int location, Slide object) {
-        adapter.addSlide(location, object);
-    }
-
-    protected boolean addSlide(Slide object) {
-        return adapter.addSlide(object);
-    }
-
-    protected boolean addSlides(int location, @NonNull Collection<? extends Slide> collection) {
-        return adapter.addSlides(location, collection);
-    }
-
-    protected boolean addSlides(@NonNull Collection<? extends Slide> collection) {
-        return adapter.addSlides(collection);
-    }
-
-    protected void clearSlides() {
-        adapter.clearSlides();
-    }
-
-    protected boolean containsSlide(Object object) {
-        return adapter.containsSlide(object);
-    }
-
-    protected boolean containsSlides(@NonNull Collection<?> collection) {
-        return adapter.containsSlides(collection);
-    }
-
-    protected Slide getSlide(int location) {
-        return adapter.getSlide(location);
-    }
-
-    protected Fragment getItem(int position) {
-        return adapter.getItem(position);
-    }
-
-    @ColorRes
-    protected int getBackground(int position) {
-        return adapter.getBackground(position);
-    }
-
-    @ColorRes
-    protected int getBackgroundDark(int position) {
-        return adapter.getBackgroundDark(position);
-    }
-
-    protected List<Slide> getSlides() {
-        return adapter.getSlides();
-    }
-
-    protected int indexOfSlide(Object object) {
-        return adapter.indexOfSlide(object);
-    }
-
-    protected boolean isEmpty() {
-        return adapter.isEmpty();
-    }
-
-    protected int getCount() {
-        return adapter == null ? 0 : adapter.getCount();
-    }
-
-    protected int lastIndexOfSlide(Object object) {
-        return adapter.lastIndexOfSlide(object);
-    }
-
-    protected Slide removeSlide(int location) {
-        return adapter.removeSlide(location);
-    }
-
-    protected boolean removeSlide(Object object) {
-        return adapter.removeSlide(object);
-    }
-
-    protected boolean removeSlides(@NonNull Collection<?> collection) {
-        return adapter.removeSlides(collection);
-    }
-
-    protected boolean retainSlides(@NonNull Collection<?> collection) {
-        return adapter.retainSlides(collection);
-    }
-
-    protected Slide setSlide(int location, Slide object) {
-        return adapter.setSlide(location, object);
-    }
-
-    protected List<Slide> setSlides(List<? extends Slide> list) {
-        return adapter.setSlides(list);
-    }
-
-
+    @SuppressWarnings("unused")
     public void setNavigationPolicy(NavigationPolicy navigationPolicy) {
         this.navigationPolicy = navigationPolicy;
     }
 
+    @SuppressWarnings("unused")
     public void addOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
         navigationBlockedListeners.add(listener);
     }
 
+    @SuppressWarnings("unused")
     public void removeOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
         navigationBlockedListeners.remove(listener);
     }
 
+    @SuppressWarnings("unused")
     public void clearOnNavigationBlockedListeners() {
         navigationBlockedListeners.clear();
     }
 
+    @SuppressWarnings("unused")
     public void lockSwipeIfNeeded() {
         if (position < getCount()) {
             pager.setSwipeLeftEnabled(canGoForward(position, false));
             pager.setSwipeRightEnabled(canGoBackward(position, false));
         }
+    }
+
+    @SuppressWarnings("unused")
+    public void addSlide(int location, Slide object) {
+        adapter.addSlide(location, object);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean addSlide(Slide object) {
+        return adapter.addSlide(object);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean addSlides(int location, @NonNull Collection<? extends Slide> collection) {
+        return adapter.addSlides(location, collection);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean addSlides(@NonNull Collection<? extends Slide> collection) {
+        return adapter.addSlides(collection);
+    }
+
+    @SuppressWarnings("unused")
+    public void clearSlides() {
+        adapter.clearSlides();
+    }
+
+    @SuppressWarnings("unused")
+    public boolean containsSlide(Object object) {
+        return adapter.containsSlide(object);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean containsSlides(@NonNull Collection<?> collection) {
+        return adapter.containsSlides(collection);
+    }
+
+    @SuppressWarnings("unused")
+    public Slide getSlide(int location) {
+        return adapter.getSlide(location);
+    }
+
+    @SuppressWarnings("unused")
+    public Fragment getItem(int position) {
+        return adapter.getItem(position);
+    }
+
+    @ColorRes
+    @SuppressWarnings("unused")
+    public int getBackground(int position) {
+        return adapter.getBackground(position);
+    }
+
+    @ColorRes
+    @SuppressWarnings("unused")
+    public int getBackgroundDark(int position) {
+        return adapter.getBackgroundDark(position);
+    }
+
+    @SuppressWarnings("unused")
+    public List<Slide> getSlides() {
+        return adapter.getSlides();
+    }
+
+    @SuppressWarnings("unused")
+    public int indexOfSlide(Object object) {
+        return adapter.indexOfSlide(object);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean isEmpty() {
+        return adapter.isEmpty();
+    }
+
+    @SuppressWarnings("unused")
+    public int getCount() {
+        return adapter == null ? 0 : adapter.getCount();
+    }
+
+    @SuppressWarnings("unused")
+    public int lastIndexOfSlide(Object object) {
+        return adapter.lastIndexOfSlide(object);
+    }
+
+    @SuppressWarnings("unused")
+    public Slide removeSlide(int location) {
+        return adapter.removeSlide(location);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean removeSlide(Object object) {
+        return adapter.removeSlide(object);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean removeSlides(@NonNull Collection<?> collection) {
+        return adapter.removeSlides(collection);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean retainSlides(@NonNull Collection<?> collection) {
+        return adapter.retainSlides(collection);
+    }
+
+    @SuppressWarnings("unused")
+    public Slide setSlide(int location, Slide object) {
+        return adapter.setSlide(location, object);
+    }
+
+    @SuppressWarnings("unused")
+    public List<Slide> setSlides(List<? extends Slide> list) {
+        return adapter.setSlides(list);
     }
 
     private class IntroPageChangeListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener {
