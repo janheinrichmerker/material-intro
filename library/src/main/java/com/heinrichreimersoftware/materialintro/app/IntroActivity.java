@@ -17,6 +17,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +26,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
@@ -61,11 +61,11 @@ public class IntroActivity extends AppCompatActivity {
     private static final String KEY_BUTTON_CTA_VISIBLE =
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_BUTTON_CTA_VISIBLE";
 
+    //Settings constants
     @IntDef({BUTTON_NEXT_FUNCTION_NEXT, BUTTON_NEXT_FUNCTION_NEXT_FINISH})
     @Retention(RetentionPolicy.SOURCE)
     @interface ButtonNextFunction {
     }
-
     public static final int BUTTON_NEXT_FUNCTION_NEXT = 1;
     public static final int BUTTON_NEXT_FUNCTION_NEXT_FINISH = 2;
 
@@ -73,7 +73,6 @@ public class IntroActivity extends AppCompatActivity {
     @Retention(RetentionPolicy.SOURCE)
     @interface ButtonBackFunction {
     }
-
     public static final int BUTTON_BACK_FUNCTION_BACK = 1;
     public static final int BUTTON_BACK_FUNCTION_SKIP = 2;
 
@@ -81,7 +80,6 @@ public class IntroActivity extends AppCompatActivity {
     @Retention(RetentionPolicy.SOURCE)
     @interface ButtonCtaTintMode {
     }
-
     public static final int BUTTON_CTA_TINT_MODE_BACKGROUND = 1;
     public static final int BUTTON_CTA_TINT_MODE_TEXT = 2;
 
@@ -94,22 +92,24 @@ public class IntroActivity extends AppCompatActivity {
     private ImageButton buttonBack;
     private SlideAdapter adapter;
     private IntroPageChangeListener listener = new IntroPageChangeListener();
+    private int position = 0;
+    private float positionOffset = 0;
+
+    //Settings
     private boolean fullscreen = false;
     private boolean buttonCtaVisible = false;
-    private ViewPropertyAnimatorCompat buttonCtaInAnimator = null;
-    private ViewPropertyAnimatorCompat buttonCtaOutAnimator = null;
     @ButtonNextFunction
     private int buttonNextFunction = BUTTON_NEXT_FUNCTION_NEXT_FINISH;
     @ButtonBackFunction
     private int buttonBackFunction = BUTTON_BACK_FUNCTION_SKIP;
     @ButtonCtaTintMode
     private int buttonCtaTintMode = BUTTON_CTA_TINT_MODE_BACKGROUND;
-    private int position = 0;
-    private float positionOffset = 0;
-
     private NavigationPolicy navigationPolicy = null;
-
     private List<OnNavigationBlockedListener> navigationBlockedListeners = new ArrayList<>();
+    private CharSequence buttonCtaLabel = null;
+    @StringRes
+    private int buttonCtaLabelRes = 0;
+    private View.OnClickListener buttonCtaClickListener = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -778,6 +778,32 @@ public class IntroActivity extends AppCompatActivity {
             pager.removeOnPageChangeListener(listener);
     }
 
+    public View.OnClickListener getButtonCtaClickListener() {
+        return buttonCtaClickListener;
+    }
+
+    public void setButtonCtaClickListener(View.OnClickListener buttonCtaClickListener) {
+        this.buttonCtaClickListener = buttonCtaClickListener;
+        updateButtonCta();
+    }
+
+    public CharSequence getButtonCtaLabel() {
+        if (buttonCtaLabel != null)
+            return buttonCtaLabel;
+        return getString(buttonCtaLabelRes);
+    }
+
+    public void setButtonCtaLabel(@StringRes int buttonCtaLabelRes) {
+        this.buttonCtaLabelRes = buttonCtaLabelRes;
+        this.buttonCtaLabel = null;
+        updateButtonCta();
+    }
+
+    public void setButtonCtaLabel(CharSequence buttonCtaLabel) {
+        this.buttonCtaLabel = buttonCtaLabel;
+        this.buttonCtaLabelRes = 0;
+        updateButtonCta();
+    }
 
     protected void addSlide(int location, Slide object) {
         adapter.addSlide(location, object);
