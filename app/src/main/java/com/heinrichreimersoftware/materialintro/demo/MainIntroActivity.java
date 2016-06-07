@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.app.OnNavigationBlockedListener;
@@ -65,6 +67,17 @@ public class MainIntroActivity extends IntroActivity {
                 .background(R.color.color_material_bold)
                 .backgroundDark(R.color.color_dark_material_bold)
                 .scrollable(scrollable)
+                .buttonCtaLabel("Hello")
+                .buttonCtaClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast toast = Toast.makeText(MainIntroActivity.this, R.string.toast_button_cta, Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+
+                        nextSlide();
+                    }
+                })
                 .build());
 
         addSlide(new SimpleSlide.Builder()

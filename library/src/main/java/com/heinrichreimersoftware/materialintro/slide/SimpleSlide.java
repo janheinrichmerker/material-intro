@@ -1,5 +1,6 @@
 package com.heinrichreimersoftware.materialintro.slide;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -38,8 +39,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     private final boolean canGoBackward;
     private String[] permissions;
     private int permissionsRequestCode;
-    private View.OnClickListener buttonClickListener = null;
-    private String buttonLabel;
+    private CharSequence buttonCtaLabel = null;
+    @StringRes
+    private int buttonCtaLabelRes = 0;
+    private View.OnClickListener buttonCtaClickListener = null;
 
     private SimpleSlide(Builder builder) {
         fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
@@ -51,6 +54,9 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         canGoBackward = builder.canGoBackward;
         permissions = builder.permissions;
         permissionsRequestCode = builder.permissionsRequestCode;
+        buttonCtaLabel = builder.buttonCtaLabel;
+        buttonCtaLabelRes = builder.buttonCtaLabelRes;
+        buttonCtaClickListener = builder.buttonCtaClickListener;
         updatePermissions();
     }
 
@@ -90,17 +96,38 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     @Override
     public View.OnClickListener getButtonCtaClickListener() {
         updatePermissions();
-        return buttonClickListener;
+        if (permissions == null) {
+            return buttonCtaClickListener;
+        }
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fragment.getActivity() != null)
+                    ActivityCompat.requestPermissions(fragment.getActivity(), permissions,
+                            permissionsRequestCode);
+            }
+        };
     }
 
     @Override
-    public String getButtonCtaLabel() {
+    public CharSequence getButtonCtaLabel() {
         updatePermissions();
-        return buttonLabel;
+        if (permissions == null) {
+            return buttonCtaLabel;
+        }
+        Context context = fragment.getContext();
+        if (context != null)
+            return context.getResources().getQuantityText(
+                    R.plurals.mi_label_grant_permission, permissions.length);
+        return null;
     }
 
     @Override
     public int getButtonCtaLabelRes() {
+        updatePermissions();
+        if (permissions == null) {
+            return buttonCtaLabelRes;
+        }
         return 0;
     }
 
@@ -118,35 +145,11 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             if (permissionsNotGranted.size() > 0) {
                 permissions = permissionsNotGranted.toArray(
                         new String[permissionsNotGranted.size()]);
-                if (fragment.getActivity() == null) {
-                    if (permissions.length == 0) {
-                        permissions = null;
-                        buttonLabel = null;
-                        buttonClickListener = null;
-                    }
-                }
-                else {
-                    buttonLabel = fragment.getContext().getResources().getQuantityText(
-                            R.plurals.mi_label_grant_permission, permissionsNotGranted.size())
-                            .toString();
-                    buttonClickListener = new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (fragment.getActivity() != null)
-                                ActivityCompat.requestPermissions(fragment.getActivity(), permissions,
-                                        permissionsRequestCode);
-                        }
-                    };
-                }
             } else {
                 permissions = null;
-                buttonLabel = null;
-                buttonClickListener = null;
             }
         } else {
             permissions = null;
-            buttonLabel = null;
-            buttonClickListener = null;
         }
     }
 
@@ -155,11 +158,9 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         private int backgroundRes = 0;
         @ColorRes
         private int backgroundDarkRes = 0;
-
         private CharSequence title = null;
         @StringRes
         private int titleRes = 0;
-
         private CharSequence description = null;
         @StringRes
         private int descriptionRes = 0;
@@ -170,6 +171,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         private boolean canGoForward = true;
         private boolean canGoBackward = true;
         private String[] permissions = null;
+        private CharSequence buttonCtaLabel = null;
+        @StringRes
+        private int buttonCtaLabelRes = 0;
+        private View.OnClickListener buttonCtaClickListener = null;
 
         private int permissionsRequestCode = DEFAULT_PERMISSIONS_REQUEST_CODE;
 
@@ -257,6 +262,29 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
         public Builder permissionsRequestCode(int permissionsRequestCode) {
             this.permissionsRequestCode = permissionsRequestCode;
+            return this;
+        }
+
+        public Builder buttonCtaLabel(CharSequence buttonCtaLabel) {
+            this.buttonCtaLabel = buttonCtaLabel;
+            this.buttonCtaLabelRes = 0;
+            return this;
+        }
+
+        public Builder buttonCtaLabelHtml(String buttonCtaLabelHtml) {
+            this.buttonCtaLabel = Html.fromHtml(buttonCtaLabelHtml);
+            this.buttonCtaLabelRes = 0;
+            return this;
+        }
+
+        public Builder buttonCtaLabel(@StringRes int buttonCtaLabelRes) {
+            this.buttonCtaLabelRes = buttonCtaLabelRes;
+            this.buttonCtaLabel = null;
+            return this;
+        }
+
+        public Builder buttonCtaClickListener(View.OnClickListener buttonCtaClickListener) {
+            this.buttonCtaClickListener = buttonCtaClickListener;
             return this;
         }
 

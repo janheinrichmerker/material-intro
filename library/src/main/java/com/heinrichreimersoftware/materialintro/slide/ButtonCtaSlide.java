@@ -7,12 +7,12 @@ public interface ButtonCtaSlide extends Slide {
     View.OnClickListener getButtonCtaClickListener();
 
     /**
-     * Note: you must either define a {@link String} or a {@link StringRes} label
+     * Note: you must either define a {@link CharSequence} or a {@link StringRes} label
      */
-    String getButtonCtaLabel();
+    CharSequence getButtonCtaLabel();
 
     /**
-     * Note: you must either define a {@link String} or a {@link StringRes} label
+     * Note: you must either define a {@link CharSequence} or a {@link StringRes} label
      */
     @StringRes
     int getButtonCtaLabelRes();

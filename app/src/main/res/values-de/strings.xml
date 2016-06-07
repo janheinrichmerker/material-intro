@@ -32,6 +32,9 @@
     <string name="description_permissions">Diese App braucht die Kamera- und Speicher-Berechtigung.\nDas ist nur, um zu zeigen, wie Berechtigungsanfragen in dieser Bibliothek funktionieren und wir werden nichts mit den Berechtigungen machen.</string>
     <string name="label_grant_permissions">Bitte gewähre die Berechtigungen, um fortzufahren.</string>
 
+    <string name="label_button_cta">Klick mich!</string>
+    <string name="toast_button_cta">Hey, so funktionieren eigene CTA buttons in material-intro!</string>
+
     <string name="title_fragment_login">Das ist ein eigenes Fragment.</string>
     <string name="hint_fake_username">Fake Benutzername</string>
     <string name="hint_fake_password">Fake Password</string>

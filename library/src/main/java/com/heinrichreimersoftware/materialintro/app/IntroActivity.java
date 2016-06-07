@@ -323,7 +323,7 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
-    private Pair<String, ? extends View.OnClickListener> getButtonCta(int position) {
+    private Pair<CharSequence, ? extends View.OnClickListener> getButtonCta(int position) {
         if (position < getCount() && getSlide(position) instanceof ButtonCtaSlide) {
             ButtonCtaSlide slide = (ButtonCtaSlide) getSlide(position);
             if (slide.getButtonCtaClickListener() != null &&
@@ -332,13 +332,13 @@ public class IntroActivity extends AppCompatActivity {
                     return Pair.create(slide.getButtonCtaLabel(),
                             slide.getButtonCtaClickListener());
                 } else {
-                    return Pair.create(getString(slide.getButtonCtaLabelRes()),
+                    return Pair.create((CharSequence) getString(slide.getButtonCtaLabelRes()),
                             slide.getButtonCtaClickListener());
                 }
             }
         }
         if (buttonCtaVisible) {
-            return Pair.create(getString(R.string.mi_label_button_cta),
+            return Pair.create((CharSequence) getString(R.string.mi_label_button_cta),
                     new ButtonCtaClickListener());
         }
         return null;
@@ -579,10 +579,8 @@ public class IntroActivity extends AppCompatActivity {
         //Button CTA transition
         if (position + positionOffset < adapter.getCount()) {
             //Before fade
-            Pair<String, ? extends View.OnClickListener> button = getButtonCta(position);
-            Log.i("button cta", "button for position " + position + ": " + (button == null ? null : button.first));
-            Pair<String, ? extends View.OnClickListener> buttonNext = getButtonCta(position + 1);
-            Log.i("button cta", "button for position " + (position + 1) + ": " + (buttonNext == null ? null : buttonNext.first));
+            Pair<CharSequence, ? extends View.OnClickListener> button = getButtonCta(position);
+            Pair<CharSequence, ? extends View.OnClickListener> buttonNext = getButtonCta(position + 1);
 
             if (button == null) {
                 if (buttonNext == null) {
@@ -596,7 +594,6 @@ public class IntroActivity extends AppCompatActivity {
                         buttonCta.setText(buttonNext.first);
                     buttonCta.getChildAt(0).setOnClickListener(buttonNext.second);
                     buttonCta.getChildAt(1).setOnClickListener(buttonNext.second);
-                    Log.i("button cta", "alpha1: " + (positionOffset));
                     buttonCta.setAlpha(positionOffset);
                 }
             }
@@ -608,7 +605,6 @@ public class IntroActivity extends AppCompatActivity {
                         buttonCta.setText(button.first);
                     buttonCta.getChildAt(0).setOnClickListener(button.second);
                     buttonCta.getChildAt(1).setOnClickListener(button.second);
-                    Log.i("button cta", "alpha2: " + (1 - positionOffset));
                     buttonCta.setAlpha(1 - positionOffset);
                 }
                 else {

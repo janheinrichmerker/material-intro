@@ -32,6 +32,9 @@
     <string name="description_permissions">This app needs the camera and storage permission.\nIt\'s only to show how permission requests work in this library and we won\'t do anything with the granted permissions.</string>
     <string name="label_grant_permissions">Please grant the permissions before proceeding.</string>
 
+    <string name="label_button_cta">Click me!</string>
+    <string name="toast_button_cta">Hey, that\'s how custom CTA buttons work in material-intro!</string>
+
     <string name="title_fragment_login">This is a custom fragment.</string>
     <string name="hint_fake_username">Fake username</string>
     <string name="hint_fake_password">Fake password</string>
