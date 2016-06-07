@@ -18,7 +18,6 @@ package com.heinrichreimersoftware.materialintro.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -31,6 +30,7 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
 
@@ -76,7 +76,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     // state
     private int pageCount = 0;
-    private int currentPage = -1;
+    private int currentPage = 0;
     private int previousPage;
     private float selectedDotX;
     private boolean selectedDotInPosition;
@@ -97,9 +97,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     private final Path unselectedDotRightPath;
     private final RectF rectF;
 
-    // animation
-    private ValueAnimator moveAnimation;
-    private AnimatorSet joiningAnimationSet;
     private PendingRetreatAnimator retreatAnimation;
     private PendingRevealAnimator[] revealAnimations;
     private final Interpolator interpolator;
@@ -113,6 +110,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     float controlY1;
     float controlX2;
     float controlY2;
+
+    private boolean measured = false;
 
     public InkPageIndicator(Context context) {
         this(context, null, 0);
@@ -194,7 +193,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 invalidate();
             }
         });
-        setCurrentPageImmediate();
     }
 
     @Override
@@ -241,35 +239,44 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         requestLayout();
     }
 
+    protected void onSizeChanged(int w, int h, int oldW, int oldH) {
+        calculateDotPositions(w, h);
+    }
+
     private void calculateDotPositions(int width, int height) {
+        if (!measured)
+            return;
+
         int left = getPaddingLeft();
         int top = getPaddingTop();
         int right = width - getPaddingRight();
+        int bottom = height - getPaddingBottom();
+        float middle = top + bottom / 2f;
+        float center = left + right / 2f;
 
         int requiredWidth = getRequiredWidth();
-        float startLeft = left + ((right - left - requiredWidth) / 2) + dotRadius;
+        float startLeft = center - requiredWidth / 2f + dotRadius;
 
         dotCenterX = new float[Math.max(1, pageCount)];
         for (int i = 0; i < pageCount; i++) {
             dotCenterX[i] = startLeft + i * (dotDiameter + gap);
         }
-        // todo just top aligning for now… should make this smarter
-        dotTopY = top;
-        dotCenterY = top + dotRadius;
-        dotBottomY = top + dotDiameter;
+
+        dotTopY = middle - dotRadius;
+        dotCenterY = middle;
+        dotBottomY = middle + dotRadius;
 
         setCurrentPageImmediate();
     }
 
     private void setCurrentPageImmediate() {
-        //if (viewPager.getCurrentItem() == currentPage) return;
-
         if (viewPager != null) {
             currentPage = viewPager.getCurrentItem();
         } else {
             currentPage = 0;
         }
-        selectedDotX = dotCenterX[Math.max(0, Math.min(currentPage, dotCenterX.length - 1))];
+        if (dotCenterX != null)
+            selectedDotX = dotCenterX[Math.max(0, Math.min(currentPage, dotCenterX.length - 1))];
     }
 
     private void resetState() {
@@ -314,7 +321,10 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 break;
         }
         setMeasuredDimension(width, height);
-        calculateDotPositions(width, height);
+
+        if (!measured) {
+            measured = true;
+        }
     }
 
     private int getDesiredHeight() {
@@ -595,7 +605,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
         pageChanging = true;
         previousPage = currentPage;
+        Log.i("IPI", "setSelectedPage: currentPage(before): " + currentPage);
         currentPage = now;
+        Log.i("IPI", "setSelectedPage: currentPage(after): " + currentPage);
         final int steps = Math.abs(now - previousPage);
 
         if (steps > 1) {
@@ -614,8 +626,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         // retreat animations when it has moved 75% of the way.
         // The retreat animation in turn will kick of reveal anims when the
         // retreat has passed any dots to be revealed
-        moveAnimation = createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps);
-        moveAnimation.start();
+        createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps).start();
     }
 
     private ValueAnimator createMoveSelectedAnimator(
@@ -639,7 +650,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         moveSelected.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                // todo avoid autoboxing
                 selectedDotX = (Float) valueAnimator.getAnimatedValue();
                 retreatAnimation.startIfNecessary(selectedDotX);
 
@@ -701,12 +711,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             postInvalidateOnAnimation();
         } else {
             postInvalidate();
-        }
-    }
-
-    private void cancelJoiningAnimations() {
-        if (joiningAnimationSet != null && joiningAnimationSet.isRunning()) {
-            joiningAnimationSet.cancel();
         }
     }
 
@@ -772,7 +776,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        // todo avoid autoboxing
                         retreatingJoinX1 = (Float) valueAnimator.getAnimatedValue();
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             postInvalidateOnAnimation();
@@ -797,7 +800,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 addUpdateListener(new AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        // todo avoid autoboxing
                         retreatingJoinX2 = (Float) valueAnimator.getAnimatedValue();
                         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             postInvalidateOnAnimation();
@@ -816,7 +818,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
-                    cancelJoiningAnimations();
                     clearJoiningFractions();
                     // we need to set this so that the dots are hidden until the reveal anim runs
                     for (int dot : dotsToHide) {
@@ -862,7 +863,6 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
             addUpdateListener(new AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                    // todo avoid autoboxing
                     setDotRevealFraction(PendingRevealAnimator.this.dot,
                             (Float) valueAnimator.getAnimatedValue());
                 }
