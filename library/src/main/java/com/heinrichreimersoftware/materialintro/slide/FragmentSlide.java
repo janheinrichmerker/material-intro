@@ -32,7 +32,7 @@ public class FragmentSlide implements Slide, RestorableSlide {
 
     private final boolean canGoBackward;
 
-    private FragmentSlide(Builder builder) {
+    protected FragmentSlide(Builder builder) {
         fragment = builder.fragment;
         background = builder.background;
         backgroundDark = builder.backgroundDark;
