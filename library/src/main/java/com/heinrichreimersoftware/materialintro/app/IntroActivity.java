@@ -779,6 +779,16 @@ public class IntroActivity extends AppCompatActivity {
         buttonNext.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
+    @SuppressWarnings("unused")
+    public boolean isPagerIndicatorVisible() {
+        return pagerIndicator.getVisibility() == View.VISIBLE;
+    }
+
+    @SuppressWarnings("unused")
+    public void setPagerIndicatorVisible(boolean visible) {
+        pagerIndicator.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
     @Deprecated
     @SuppressWarnings("deprecation,unused")
     public void setOnPageChangeListener(ViewPager.OnPageChangeListener listener) {
