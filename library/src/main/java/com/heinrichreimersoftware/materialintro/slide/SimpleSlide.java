@@ -47,8 +47,8 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     protected SimpleSlide(Builder builder) {
         fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
                 builder.description, builder.descriptionRes, builder.imageRes,
-                builder.backgroundRes, builder.layoutRes, builder.permissionsRequestCode);
-        background = builder.backgroundRes;
+                builder.background, builder.layoutRes, builder.permissionsRequestCode);
+        background = builder.background;
         backgroundDark = builder.backgroundDarkRes;
         canGoForward = builder.canGoForward;
         canGoBackward = builder.canGoBackward;
@@ -155,7 +155,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     public static class Builder {
         @ColorRes
-        private int backgroundRes = 0;
+        private int background = 0;
         @ColorRes
         private int backgroundDarkRes = 0;
         private CharSequence title = null;
@@ -179,7 +179,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         private int permissionsRequestCode = DEFAULT_PERMISSIONS_REQUEST_CODE;
 
         public Builder background(@ColorRes int backgroundRes) {
-            this.backgroundRes = backgroundRes;
+            this.background = backgroundRes;
             return this;
         }
 
@@ -289,6 +289,8 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
 
         public SimpleSlide build() {
+            if (background == 0)
+                throw new IllegalArgumentException("You must set a background.");
             return new SimpleSlide(this);
         }
     }
