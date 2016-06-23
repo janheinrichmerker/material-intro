@@ -29,6 +29,7 @@ import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -388,8 +389,17 @@ public class IntroActivity extends AppCompatActivity {
             }
         }
         if (buttonCtaVisible) {
-            return Pair.create((CharSequence) getString(R.string.mi_label_button_cta),
-                    new ButtonCtaClickListener());
+            if (buttonCtaLabelRes != 0) {
+                return Pair.create((CharSequence) getString(buttonCtaLabelRes),
+                        new ButtonCtaClickListener());
+            }
+            if (!TextUtils.isEmpty(buttonCtaLabel)) {
+                return Pair.create(buttonCtaLabel, new ButtonCtaClickListener());
+            }
+            else {
+                return Pair.create((CharSequence) getString(R.string.mi_label_button_cta),
+                        new ButtonCtaClickListener());
+            }
         }
         return null;
     }
