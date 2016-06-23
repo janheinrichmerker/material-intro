@@ -1,3 +1,5 @@
+![Icon](http://i.imgur.com/biiZxND.png)
+
 material-intro
 =======================
 

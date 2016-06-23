@@ -44,7 +44,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     private int buttonCtaLabelRes = 0;
     private View.OnClickListener buttonCtaClickListener = null;
 
-    private SimpleSlide(Builder builder) {
+    protected SimpleSlide(Builder builder) {
         fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
                 builder.description, builder.descriptionRes, builder.imageRes,
                 builder.backgroundRes, builder.layoutRes, builder.permissionsRequestCode);
