@@ -366,12 +366,14 @@ public class IntroActivity extends AppCompatActivity {
         return canGoBackward;
     }
 
-    private void finishIfNeeded() {
+    private boolean finishIfNeeded() {
         if (positionOffset == 0 && position == adapter.getCount()) {
             setResult(RESULT_OK);
             finish();
             overridePendingTransition(0, 0);
+            return true;
         }
+        return false;
     }
 
     private Pair<CharSequence, ? extends View.OnClickListener> getButtonCta(int position) {
@@ -1089,6 +1091,9 @@ public class IntroActivity extends AppCompatActivity {
             IntroActivity.this.position = (int) Math.floor(position + positionOffset);
             IntroActivity.this.positionOffset = (((position + positionOffset) % 1) + 1) % 1;
 
+            if (finishIfNeeded())
+                return;
+
             //Lock while scrolling a slide near its edges to lock (uncommon) multiple page swipes
             if (Math.abs(positionOffset) < 0.1f) {
                 lockSwipeIfNeeded();
@@ -1099,8 +1104,6 @@ public class IntroActivity extends AppCompatActivity {
             if (position != getCount())
                 updateParallax();
             updateFullscreen();
-
-            finishIfNeeded();
         }
 
         @Override
