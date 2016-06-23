@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.heinrichreimersoftware.materialintro.R;
-import com.heinrichreimersoftware.materialintro.app.SlideFragment;
+import com.heinrichreimersoftware.materialintro.view.parallax.ParallaxSlideFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -314,7 +314,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
     }
 
-    public static class SimpleSlideFragment extends SlideFragment {
+    public static class SimpleSlideFragment extends ParallaxSlideFragment {
         private static final String ARGUMENT_TITLE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_TITLE";
         private static final String ARGUMENT_TITLE_RES =
