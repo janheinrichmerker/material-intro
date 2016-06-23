@@ -30,7 +30,6 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
 
@@ -605,9 +604,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
         pageChanging = true;
         previousPage = currentPage;
-        Log.i("IPI", "setSelectedPage: currentPage(before): " + currentPage);
         currentPage = now;
-        Log.i("IPI", "setSelectedPage: currentPage(after): " + currentPage);
         final int steps = Math.abs(now - previousPage);
 
         if (steps > 1) {

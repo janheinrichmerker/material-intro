@@ -29,7 +29,6 @@ import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -285,6 +284,8 @@ public class IntroActivity extends AppCompatActivity {
             while (endPosition >= 0 && canGoBackward(endPosition, true)) {
                 endPosition--;
             }
+            if (autoplayCounter > 0)
+                autoplayCounter--;
         }
         else if (canGoForward(endPosition, true)) {
             endPosition++;
@@ -295,12 +296,8 @@ public class IntroActivity extends AppCompatActivity {
 
         pager.setCurrentItem(endPosition);
 
-        if (autoplayCounter > 0)
-            autoplayCounter--;
-        else if (autoplayCounter == 0)
-            return false;
+        return autoplayCounter != 0;
 
-        return true;
     }
 
     public void previousSlide() {
@@ -579,7 +576,6 @@ public class IntroActivity extends AppCompatActivity {
             float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
 
             float alpha = 1 - (positionOffset * 0.5f);
-            Log.i("alpha: ", "" + alpha);
             frame.setAlpha(alpha);
 
             if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
