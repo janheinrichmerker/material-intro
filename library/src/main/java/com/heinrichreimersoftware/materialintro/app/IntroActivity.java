@@ -179,6 +179,19 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onUserInteraction() {
+        if (isAutoplaying())
+            cancelAutoplay();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        updateButtonCta();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(KEY_CURRENT_ITEM, pager.getCurrentItem());
@@ -197,10 +210,10 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        updateButtonCta();
+    protected void onDestroy() {
+        if (isAutoplaying())
+            cancelAutoplay();
+        super.onDestroy();
     }
 
     private void setSystemUiFlags(int flags, boolean value){
@@ -741,12 +754,6 @@ public class IntroActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public boolean isAutoplaying() {
         return autoplayCallback != null;
-    }
-
-    @Override
-    public void onUserInteraction() {
-        if (isAutoplaying())
-            cancelAutoplay();
     }
 
     @SuppressWarnings("unused")
