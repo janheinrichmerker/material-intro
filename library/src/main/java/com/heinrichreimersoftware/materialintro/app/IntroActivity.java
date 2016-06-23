@@ -13,9 +13,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -83,6 +85,10 @@ public class IntroActivity extends AppCompatActivity {
     public static final int BUTTON_CTA_TINT_MODE_BACKGROUND = 1;
     public static final int BUTTON_CTA_TINT_MODE_TEXT = 2;
 
+    public static final int DEFAULT_AUTOPLAY_DELAY = 1500;
+    public static final int INFINITE = -1;
+    public static final int DEFAULT_AUTOPLAY_REPEAT_COUNT = INFINITE;
+
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private LinearLayout frame;
     private FadeableViewPager pager;
@@ -110,6 +116,11 @@ public class IntroActivity extends AppCompatActivity {
     @StringRes
     private int buttonCtaLabelRes = 0;
     private View.OnClickListener buttonCtaClickListener = null;
+
+    private Handler autoplayHandler = new Handler();
+    private Runnable autoplayCallback = null;
+    private int autoplayCounter;
+    private long autoplayDelay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,6 +272,35 @@ public class IntroActivity extends AppCompatActivity {
             AnimUtils.applyShakeAnimation(this, buttonNext);
 
         }
+    }
+
+    private boolean nextSlideAuto() {
+        int endPosition = pager.getCurrentItem();
+        int count = getCount();
+
+        if (count == 1) {
+            return false;
+        }
+        else if (pager.getCurrentItem() >= count - 1) {
+            while (endPosition >= 0 && canGoBackward(endPosition, true)) {
+                endPosition--;
+            }
+        }
+        else if (canGoForward(endPosition, true)) {
+            endPosition++;
+        }
+
+        if (endPosition == pager.getCurrentItem())
+            return false;
+
+        pager.setCurrentItem(endPosition);
+
+        if (autoplayCounter > 0)
+            autoplayCounter--;
+        else if (autoplayCounter == 0)
+            return false;
+
+        return true;
     }
 
     public void previousSlide() {
@@ -661,6 +701,57 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("unused")
+    public void autoplay(@IntRange(from = 1) long delay, @IntRange(from = -1) int repeatCount) {
+        autoplayCounter = repeatCount;
+        autoplayDelay = delay;
+        autoplayCallback = new Runnable() {
+            @Override
+            public void run() {
+                if (autoplayCounter == 0) {
+                    cancelAutoplay();
+                    return;
+                }
+                if (nextSlideAuto())
+                    autoplayHandler.postDelayed(autoplayCallback, autoplayDelay);
+            }
+        };
+        autoplayHandler.postDelayed(autoplayCallback, autoplayDelay);
+    }
+
+    @SuppressWarnings("unused")
+    public void autoplay(@IntRange(from = 1) long delay) {
+        autoplay(delay, DEFAULT_AUTOPLAY_REPEAT_COUNT);
+    }
+
+    @SuppressWarnings("unused")
+    public void autoplay(@IntRange(from = -1) int repeatCount) {
+        autoplay(DEFAULT_AUTOPLAY_DELAY, repeatCount);
+    }
+
+    @SuppressWarnings("unused")
+    public void autoplay() {
+        autoplay(DEFAULT_AUTOPLAY_DELAY, DEFAULT_AUTOPLAY_REPEAT_COUNT);
+    }
+
+    @SuppressWarnings("unused")
+    public void cancelAutoplay() {
+        autoplayHandler.removeCallbacks(autoplayCallback);
+        autoplayCallback = null;
+        autoplayCounter = 0;
+        autoplayDelay = 0;
+    }
+
+    @SuppressWarnings("unused")
+    public boolean isAutoplaying() {
+        return autoplayCallback != null;
+    }
+
+    @Override
+    public void onUserInteraction() {
+        if (isAutoplaying())
+            cancelAutoplay();
+    }
 
     @SuppressWarnings("unused")
     public boolean isFullscreen() {
