@@ -11,6 +11,7 @@
     <color name="color_permissions">#FFEB3B</color>
     <color name="color_custom_fragment_1">#E64A19</color>
     <color name="color_custom_fragment_2">#3F51B5</color>
+    <color name="color_canteen">#fdfdfd</color>
 
     <color name="color_dark_material_metaphor">#0277BD</color>
     <color name="color_dark_material_bold">#D81B60</color>
@@ -19,4 +20,5 @@
     <color name="color_dark_permissions">#FBC02D</color>
     <color name="color_dark_custom_fragment_1">#BF360C</color>
     <color name="color_dark_custom_fragment_2">#303F9F</color>
+    <color name="color_dark_canteen">#ebeef0</color>
 </resources>

@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.start_intro) Button startIntro;
+    @BindView(R.id.start_canteen) Button startCanteen;
     @BindView(R.id.start_splash) Button startSplash;
     @BindView(R.id.option_fullscreen) CheckBox optionFullscreen;
     @BindView(R.id.option_scrollable) CheckBox optionScrollable;
@@ -51,6 +52,14 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(MainIntroActivity.EXTRA_SHOW_NEXT, optionShowNext.isChecked());
                 intent.putExtra(MainIntroActivity.EXTRA_FINISH_ENABLED, optionFinishEnabled.isChecked());
                 intent.putExtra(MainIntroActivity.EXTRA_GET_STARTED_ENABLED, optionGetStartedEnabled.isChecked());
+                startActivity(intent);
+            }
+        });
+
+        startCanteen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CanteenIntroActivity.class);
                 startActivity(intent);
             }
         });

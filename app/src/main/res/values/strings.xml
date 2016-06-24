@@ -16,7 +16,9 @@
     <string name="label_option_get_started_enabled">Enable \"Get Started\" button</string>
     <string name="label_start_intro">Start intro</string>
     <string name="label_or">or</string>
-    <string name="label_start_splash">Start fake splash screen</string>
+    <string name="label_demos">Demos: </string>
+    <string name="label_start_canteen">\"Canteen\" intro</string>
+    <string name="label_start_splash">Splash screen</string>
 
     <string name="title_material_metaphor">Material is the metaphor</string>
     <string name="title_material_bold">Bold, graphic, intentional</string>
@@ -47,4 +49,12 @@
     <string name="title_fragment_custom">Take off!</string>
 
     <string name="label_activity_finish">Nothing here…\n…just a demo how to create a splash screen intro.</string>
+
+    <string name="title_canteen_intro1" translatable="false">Menus right on your screen</string>
+    <string name="title_canteen_intro2" translatable="false">Cash on delivery</string>
+    <string name="title_canteen_intro3" translatable="false">Choose what you like</string>
+    <string name="description_canteen_intro1" translatable="false">Looking for something to eat? Just browse the feed wherever you are.</string>
+    <string name="description_canteen_intro2" translatable="false">Order and we\'ll deliver the menu right in front of your door.</string>
+    <string name="description_canteen_intro3" translatable="false">Bookmark a menu you wanted to save and keep track of its status whether it\'s available or not.</string>
+    <string name="label_button_cta_canteen_intro" translatable="false">Get started</string>
 </resources>

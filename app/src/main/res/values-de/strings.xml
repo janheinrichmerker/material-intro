@@ -16,7 +16,9 @@
     <string name="label_option_get_started_enabled">\"Los geht\'s\"-Button aktivieren</string>
     <string name="label_start_intro">Intro starten</string>
     <string name="label_or">oder</string>
-    <string name="label_start_splash">Fake-Splashscreen</string>
+    <string name="label_demos">Demos: </string>
+    <string name="label_start_canteen">\"Canteen\"-Intro</string>
+    <string name="label_start_splash">Splashscreen</string>
 
     <string name="title_material_metaphor">Material ist die Metapher</string>
     <string name="title_material_bold">Kräftig, graphisch, bewusst</string>

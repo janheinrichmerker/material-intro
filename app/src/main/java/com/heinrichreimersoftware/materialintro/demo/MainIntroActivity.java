@@ -182,8 +182,6 @@ public class MainIntroActivity extends IntroActivity {
             }
         });
         */
-
-        autoplay(500, 2);
     }
 
 }

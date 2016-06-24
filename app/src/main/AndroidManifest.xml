@@ -26,6 +26,10 @@
             android:name=".MainIntroActivity"
             android:theme="@style/Theme.Intro"/>
 
+        <activity
+            android:name=".CanteenIntroActivity"
+            android:theme="@style/Theme.Intro"/>
+
         <activity android:name=".SplashActivity"/>
 
         <activity
