@@ -128,15 +128,15 @@ public class IntroActivity extends AppCompatActivity {
     private int autoplayCounter;
     private long autoplayDelay;
 
-    private Interpolator pagerInterpolator;
-    private long pagerScrollDuration;
+    private Interpolator pageScrollInterpolator;
+    private long pageScrollDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        pagerInterpolator = AnimationUtils.loadInterpolator(this, android.R.interpolator.accelerate_decelerate);
-        pagerScrollDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        pageScrollInterpolator = AnimationUtils.loadInterpolator(this, android.R.interpolator.accelerate_decelerate);
+        pageScrollDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_CURRENT_ITEM)) {
@@ -329,8 +329,8 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
-        animator.setInterpolator(pagerInterpolator);
-        animator.setDuration(pagerScrollDuration);
+        animator.setInterpolator(pageScrollInterpolator);
+        animator.setDuration(pageScrollDuration);
         animator.start();
     }
 
@@ -828,24 +828,24 @@ public class IntroActivity extends AppCompatActivity {
         return autoplayCallback != null;
     }
 
-    public long getPagerScrollDuration() {
-        return pagerScrollDuration;
+    public long getPageScrollDuration() {
+        return pageScrollDuration;
     }
 
-    public void setPagerScrollDuration(@IntRange(from = 1) long pagerScrollDuration) {
-        this.pagerScrollDuration = pagerScrollDuration;
+    public void setPageScrollDuration(@IntRange(from = 1) long pageScrollDuration) {
+        this.pageScrollDuration = pageScrollDuration;
     }
 
-    public Interpolator getPagerInterpolator() {
-        return pagerInterpolator;
+    public Interpolator getPageScrollInterpolator() {
+        return pageScrollInterpolator;
     }
 
-    public void setPagerInterpolator(Interpolator pagerInterpolator) {
-        this.pagerInterpolator = pagerInterpolator;
+    public void setPageScrollInterpolator(Interpolator pageScrollInterpolator) {
+        this.pageScrollInterpolator = pageScrollInterpolator;
     }
 
     public void setPagerInterpolator(@InterpolatorRes int interpolatorRes) {
-        this.pagerInterpolator = AnimationUtils.loadInterpolator(this, interpolatorRes);
+        this.pageScrollInterpolator = AnimationUtils.loadInterpolator(this, interpolatorRes);
     }
 
     @SuppressWarnings("unused")
