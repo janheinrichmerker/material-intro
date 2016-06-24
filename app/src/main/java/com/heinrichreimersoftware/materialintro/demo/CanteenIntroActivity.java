@@ -24,7 +24,7 @@ public class CanteenIntroActivity extends IntroActivity {
         label.setSpan(labelSpan, 0, label.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         setButtonCtaLabel(label);
 
-        setPageScrollDuration(800);
+        setPageScrollDuration(500);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setPagerInterpolator(android.R.interpolator.fast_out_slow_in);
         }

@@ -287,6 +287,9 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void smoothScrollPagerTo(final int position) {
+        if (pager.isFakeDragging())
+            return;
+
         ValueAnimator animator = ValueAnimator.ofFloat(pager.getCurrentItem(), position);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -329,9 +332,15 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
+        int distance = Math.abs(position - pager.getCurrentItem());
+
         animator.setInterpolator(pageScrollInterpolator);
-        animator.setDuration(pageScrollDuration);
+        animator.setDuration(calculateScrollDuration(distance));
         animator.start();
+    }
+
+    private long calculateScrollDuration(int distance) {
+        return Math.round(pageScrollDuration * (distance + Math.sqrt(distance)) / 2);
     }
 
     public void nextSlide() {
@@ -343,16 +352,15 @@ public class IntroActivity extends AppCompatActivity {
         }
         else {
             AnimUtils.applyShakeAnimation(this, buttonNext);
-
         }
     }
 
-    private boolean nextSlideAuto() {
+    private int nextSlideAuto() {
         int endPosition = pager.getCurrentItem();
         int count = getCount();
 
         if (count == 1) {
-            return false;
+            return 0;
         }
         else if (pager.getCurrentItem() >= count - 1) {
             while (endPosition >= 0 && canGoBackward(endPosition, true)) {
@@ -365,12 +373,16 @@ public class IntroActivity extends AppCompatActivity {
             endPosition++;
         }
 
+        int distance = Math.abs(endPosition - pager.getCurrentItem());
+
         if (endPosition == pager.getCurrentItem())
-            return false;
+            return 0;
 
         smoothScrollPagerTo(endPosition);
 
-        return autoplayCounter != 0;
+        if (autoplayCounter == 0)
+            return 0;
+        return distance;
 
     }
 
@@ -793,8 +805,9 @@ public class IntroActivity extends AppCompatActivity {
                     cancelAutoplay();
                     return;
                 }
-                if (nextSlideAuto())
-                    autoplayHandler.postDelayed(autoplayCallback, autoplayDelay);
+                int distance = nextSlideAuto();
+                if (distance != 0)
+                    autoplayHandler.postDelayed(autoplayCallback, autoplayDelay + calculateScrollDuration(distance));
             }
         };
         autoplayHandler.postDelayed(autoplayCallback, autoplayDelay);
