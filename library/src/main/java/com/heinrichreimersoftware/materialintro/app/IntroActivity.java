@@ -1,6 +1,9 @@
 package com.heinrichreimersoftware.materialintro.app;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.res.ColorStateList;
@@ -18,6 +21,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
+import android.support.annotation.InterpolatorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -33,6 +37,8 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -122,9 +128,15 @@ public class IntroActivity extends AppCompatActivity {
     private int autoplayCounter;
     private long autoplayDelay;
 
+    private Interpolator pagerInterpolator;
+    private long pagerScrollDuration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        pagerInterpolator = AnimationUtils.loadInterpolator(this, android.R.interpolator.accelerate_decelerate);
+        pagerScrollDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(KEY_CURRENT_ITEM)) {
@@ -254,7 +266,7 @@ public class IntroActivity extends AppCompatActivity {
 
         pager.setAdapter(adapter);
         pager.addOnPageChangeListener(listener);
-        pager.setCurrentItem(position);
+        pager.setCurrentItem(position, false);
 
         pagerIndicator.setViewPager(pager);
 
@@ -274,12 +286,60 @@ public class IntroActivity extends AppCompatActivity {
         CheatSheet.setup(buttonBack);
     }
 
+    private void smoothScrollPagerTo(final int position) {
+        ValueAnimator animator = ValueAnimator.ofFloat(pager.getCurrentItem(), position);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                pager.endFakeDrag();
+                pager.setCurrentItem(position);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                pager.endFakeDrag();
+            }
+        });
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float position = (Float) animation.getAnimatedValue();
+
+                fakeDragToPosition(position);
+            }
+
+            private boolean fakeDragToPosition(float position) {
+                // The following mimics the underlying calculations in ViewPager
+                float scrollX = pager.getScrollX();
+                int pagerWidth = pager.getWidth();
+                int currentPosition = pager.getCurrentItem();
+
+                if (position > currentPosition && Math.floor(position) != currentPosition && position % 1 != 0) {
+                    pager.setCurrentItem((int) Math.floor(position), false);
+                }
+                else if (position < currentPosition && Math.ceil(position) != currentPosition && position % 1 != 0) {
+                    pager.setCurrentItem((int) Math.ceil(position), false);
+                }
+
+                if (!pager.isFakeDragging() && !pager.beginFakeDrag())
+                    return false;
+
+                pager.fakeDragBy(scrollX - pagerWidth * position);
+                return true;
+            }
+        });
+
+        animator.setInterpolator(pagerInterpolator);
+        animator.setDuration(pagerScrollDuration);
+        animator.start();
+    }
+
     public void nextSlide() {
         int currentItem = pager.getCurrentItem();
         if (currentItem > adapter.getCount() - 1) finishIfNeeded();
 
         if (canGoForward(currentItem, true)) {
-            pager.setCurrentItem(++currentItem, true);
+            smoothScrollPagerTo(++currentItem);
         }
         else {
             AnimUtils.applyShakeAnimation(this, buttonNext);
@@ -308,7 +368,7 @@ public class IntroActivity extends AppCompatActivity {
         if (endPosition == pager.getCurrentItem())
             return false;
 
-        pager.setCurrentItem(endPosition);
+        smoothScrollPagerTo(endPosition);
 
         return autoplayCounter != 0;
 
@@ -319,7 +379,7 @@ public class IntroActivity extends AppCompatActivity {
         if (currentItem <= 0) return;
 
         if (canGoBackward(currentItem, true)) {
-            pager.setCurrentItem(--currentItem, true);
+            smoothScrollPagerTo(--currentItem);
         }
         else {
             AnimUtils.applyShakeAnimation(this, buttonBack);
@@ -334,7 +394,7 @@ public class IntroActivity extends AppCompatActivity {
             while (endPosition < count && canGoForward(endPosition, true)) {
                 endPosition++;
             }
-            pager.setCurrentItem(endPosition);
+            smoothScrollPagerTo(endPosition);
         } else if (buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
             previousSlide();
         }
@@ -768,6 +828,26 @@ public class IntroActivity extends AppCompatActivity {
         return autoplayCallback != null;
     }
 
+    public long getPagerScrollDuration() {
+        return pagerScrollDuration;
+    }
+
+    public void setPagerScrollDuration(@IntRange(from = 1) long pagerScrollDuration) {
+        this.pagerScrollDuration = pagerScrollDuration;
+    }
+
+    public Interpolator getPagerInterpolator() {
+        return pagerInterpolator;
+    }
+
+    public void setPagerInterpolator(Interpolator pagerInterpolator) {
+        this.pagerInterpolator = pagerInterpolator;
+    }
+
+    public void setPagerInterpolator(@InterpolatorRes int interpolatorRes) {
+        this.pagerInterpolator = AnimationUtils.loadInterpolator(this, interpolatorRes);
+    }
+
     @SuppressWarnings("unused")
     public boolean isFullscreen() {
         return fullscreen;
@@ -1122,7 +1202,7 @@ public class IntroActivity extends AppCompatActivity {
             while (endPosition < count && canGoForward(endPosition, true)) {
                 endPosition++;
             }
-            pager.setCurrentItem(endPosition);
+            smoothScrollPagerTo(endPosition);
         }
     }
 }
