@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -162,6 +163,7 @@ public class IntroActivity extends AppCompatActivity {
             }
         }
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_intro);
         findViews();
     }
@@ -239,13 +241,14 @@ public class IntroActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(systemUiVisibility);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setFullscreenFlags(boolean fullscreen){
+        int fullscreenFlags = View.SYSTEM_UI_FLAG_FULLSCREEN;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            int fullscreenFlags = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                    View.SYSTEM_UI_FLAG_FULLSCREEN;
-
-            setSystemUiFlags(fullscreenFlags, fullscreen);
+            fullscreenFlags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         }
+
+        setSystemUiFlags(fullscreenFlags, fullscreen);
     }
 
     private void findViews(){
@@ -841,23 +844,28 @@ public class IntroActivity extends AppCompatActivity {
         return autoplayCallback != null;
     }
 
+    @SuppressWarnings("unused")
     public long getPageScrollDuration() {
         return pageScrollDuration;
     }
 
+    @SuppressWarnings("unused")
     public void setPageScrollDuration(@IntRange(from = 1) long pageScrollDuration) {
         this.pageScrollDuration = pageScrollDuration;
     }
 
+    @SuppressWarnings("unused")
     public Interpolator getPageScrollInterpolator() {
         return pageScrollInterpolator;
     }
 
+    @SuppressWarnings("unused")
     public void setPageScrollInterpolator(Interpolator pageScrollInterpolator) {
         this.pageScrollInterpolator = pageScrollInterpolator;
     }
 
-    public void setPagerInterpolator(@InterpolatorRes int interpolatorRes) {
+    @SuppressWarnings("unused")
+    public void setPageScrollInterpolator(@InterpolatorRes int interpolatorRes) {
         this.pageScrollInterpolator = AnimationUtils.loadInterpolator(this, interpolatorRes);
     }
 

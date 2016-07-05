@@ -26,7 +26,7 @@ public class CanteenIntroActivity extends IntroActivity {
 
         setPageScrollDuration(500);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setPagerInterpolator(android.R.interpolator.fast_out_slow_in);
+            setPageScrollInterpolator(android.R.interpolator.fast_out_slow_in);
         }
 
         addSlide(new SimpleSlide.Builder()
