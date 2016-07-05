@@ -17,7 +17,7 @@ def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '24.0.0'
 
     defaultConfig {
         applicationId "com.heinrichreimersoftware.materialintro.demo"
@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':library')
     //Support
     compile 'com.android.support:appcompat-v7:24.0.0'
