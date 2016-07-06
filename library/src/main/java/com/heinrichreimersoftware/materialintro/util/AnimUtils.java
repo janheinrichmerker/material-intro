@@ -53,5 +53,4 @@ public class AnimUtils {
         shake = AnimationUtils.loadAnimation(context, R.anim.shake);
         view.startAnimation(shake);
     }
-
 }

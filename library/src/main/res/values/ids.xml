@@ -2,6 +2,7 @@
 <resources>
     <item name="mi_frame" type="id"/>
     <item name="mi_pager" type="id"/>
+    <item name="mi_button_cta_wrapper" type="id"/>
     <item name="mi_button_cta" type="id"/>
     <item name="mi_pager_indicator" type="id"/>
     <item name="mi_button_next" type="id"/>

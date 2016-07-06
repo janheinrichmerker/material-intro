@@ -37,7 +37,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.Button;
@@ -95,6 +97,8 @@ public class IntroActivity extends AppCompatActivity {
     public static final int DEFAULT_AUTOPLAY_DELAY = 1500;
     public static final int INFINITE = -1;
     public static final int DEFAULT_AUTOPLAY_REPEAT_COUNT = INFINITE;
+
+    public static final Interpolator ACCELERATE_DECELERATE_INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
     private final ArgbEvaluator evaluator = new ArgbEvaluator();
     private LinearLayout frame;
@@ -716,7 +720,7 @@ public class IntroActivity extends AppCompatActivity {
         if (position + positionOffset < adapter.getCount()) {
             //Before fade
             Pair<CharSequence, ? extends View.OnClickListener> button = getButtonCta(position);
-            Pair<CharSequence, ? extends View.OnClickListener> buttonNext = getButtonCta(position + 1);
+            Pair<CharSequence, ? extends View.OnClickListener> buttonNext = positionOffset == 0 ? null : getButtonCta(position + 1);
 
             if (button == null) {
                 if (buttonNext == null) {
@@ -731,6 +735,11 @@ public class IntroActivity extends AppCompatActivity {
                     buttonCta.getChildAt(0).setOnClickListener(buttonNext.second);
                     buttonCta.getChildAt(1).setOnClickListener(buttonNext.second);
                     buttonCta.setAlpha(positionOffset);
+                    buttonCta.setScaleX(positionOffset);
+                    buttonCta.setScaleY(positionOffset);
+                    ViewGroup.LayoutParams layoutParams = buttonCta.getLayoutParams();
+                    layoutParams.height = Math.round(getResources().getDimensionPixelSize(R.dimen.mi_button_cta_height) * ACCELERATE_DECELERATE_INTERPOLATOR.getInterpolation(positionOffset));
+                    buttonCta.setLayoutParams(layoutParams);
                 }
             }
             else {
@@ -742,9 +751,17 @@ public class IntroActivity extends AppCompatActivity {
                     buttonCta.getChildAt(0).setOnClickListener(button.second);
                     buttonCta.getChildAt(1).setOnClickListener(button.second);
                     buttonCta.setAlpha(1 - positionOffset);
+                    buttonCta.setScaleX(1 - positionOffset);
+                    buttonCta.setScaleY(1 - positionOffset);
+                    ViewGroup.LayoutParams layoutParams = buttonCta.getLayoutParams();
+                    layoutParams.height = Math.round(getResources().getDimensionPixelSize(R.dimen.mi_button_cta_height) * ACCELERATE_DECELERATE_INTERPOLATOR.getInterpolation(1 - positionOffset));
+                    buttonCta.setLayoutParams(layoutParams);
                 }
                 else {
                     buttonCta.setVisibility(View.VISIBLE);
+                    ViewGroup.LayoutParams layoutParams = buttonCta.getLayoutParams();
+                    layoutParams.height = getResources().getDimensionPixelSize(R.dimen.mi_button_cta_height);
+                    buttonCta.setLayoutParams(layoutParams);
                     //Fade text
                     if (positionOffset >= 0.5f) {
                         if (!((Button) buttonCta.getCurrentView()).getText().equals(buttonNext.first))
