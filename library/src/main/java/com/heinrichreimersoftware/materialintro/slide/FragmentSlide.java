@@ -1,30 +1,36 @@
 package com.heinrichreimersoftware.materialintro.slide;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.view.ContextThemeWrapper;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.heinrichreimersoftware.materialintro.app.ButtonCtaFragment;
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
 import com.heinrichreimersoftware.materialintro.view.parallax.ParallaxFragment;
 
-public class FragmentSlide implements Slide, RestorableSlide {
+public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     private Fragment fragment;
     @ColorRes
     private final int background;
     @ColorRes
     private final int backgroundDark;
-
     private final boolean canGoForward;
-
     private final boolean canGoBackward;
+    private CharSequence buttonCtaLabel = null;
+    @StringRes
+    private int buttonCtaLabelRes = 0;
+    private View.OnClickListener buttonCtaClickListener = null;
 
     protected FragmentSlide(Builder builder) {
         fragment = builder.fragment;
@@ -32,6 +38,9 @@ public class FragmentSlide implements Slide, RestorableSlide {
         backgroundDark = builder.backgroundDark;
         canGoForward = builder.canGoForward;
         canGoBackward = builder.canGoBackward;
+        buttonCtaLabel = builder.buttonCtaLabel;
+        buttonCtaLabelRes = builder.buttonCtaLabelRes;
+        buttonCtaClickListener = builder.buttonCtaClickListener;
     }
 
     @Override
@@ -70,16 +79,42 @@ public class FragmentSlide implements Slide, RestorableSlide {
         return canGoBackward;
     }
 
+    @Override
+    public View.OnClickListener getButtonCtaClickListener() {
+        if (getFragment() instanceof ButtonCtaFragment) {
+            return ((ButtonCtaFragment) getFragment()).getButtonCtaClickListener();
+        }
+        return buttonCtaClickListener;
+    }
+
+    @Override
+    public CharSequence getButtonCtaLabel() {
+        if (getFragment() instanceof ButtonCtaFragment) {
+            return ((ButtonCtaFragment) getFragment()).getButtonCtaLabel();
+        }
+        return buttonCtaLabel;
+    }
+
+    @Override
+    public int getButtonCtaLabelRes() {
+        if (getFragment() instanceof ButtonCtaFragment) {
+            return ((ButtonCtaFragment) getFragment()).getButtonCtaLabelRes();
+        }
+        return buttonCtaLabelRes;
+    }
+
     public static class Builder{
         private Fragment fragment;
         @ColorRes
         private int background;
         @ColorRes
         private int backgroundDark = 0;
-
         private boolean canGoForward = true;
-
         private boolean canGoBackward = true;
+        private CharSequence buttonCtaLabel = null;
+        @StringRes
+        private int buttonCtaLabelRes = 0;
+        private View.OnClickListener buttonCtaClickListener = null;
 
         public Builder fragment(Fragment fragment) {
             this.fragment = fragment;
@@ -113,6 +148,35 @@ public class FragmentSlide implements Slide, RestorableSlide {
 
         public Builder canGoBackward(boolean canGoBackward) {
             this.canGoBackward = canGoBackward;
+            return this;
+        }
+
+        public Builder buttonCtaLabel(CharSequence buttonCtaLabel) {
+            this.buttonCtaLabel = buttonCtaLabel;
+            this.buttonCtaLabelRes = 0;
+            return this;
+        }
+
+        public Builder buttonCtaLabelHtml(String buttonCtaLabelHtml) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                this.buttonCtaLabel = Html.fromHtml(buttonCtaLabelHtml, Html.FROM_HTML_MODE_LEGACY);
+            }
+            else {
+                //noinspection deprecation
+                this.buttonCtaLabel = Html.fromHtml(buttonCtaLabelHtml);
+            }
+            this.buttonCtaLabelRes = 0;
+            return this;
+        }
+
+        public Builder buttonCtaLabel(@StringRes int buttonCtaLabelRes) {
+            this.buttonCtaLabelRes = buttonCtaLabelRes;
+            this.buttonCtaLabel = null;
+            return this;
+        }
+
+        public Builder buttonCtaClickListener(View.OnClickListener buttonCtaClickListener) {
+            this.buttonCtaClickListener = buttonCtaClickListener;
             return this;
         }
 
