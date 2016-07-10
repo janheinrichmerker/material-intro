@@ -7,6 +7,7 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -18,13 +19,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.annotation.InterpolatorRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import android.support.annotation.*;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -46,7 +41,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
-
 import com.heinrichreimersoftware.materialintro.R;
 import com.heinrichreimersoftware.materialintro.slide.ButtonCtaSlide;
 import com.heinrichreimersoftware.materialintro.slide.Slide;
@@ -447,7 +441,9 @@ public class IntroActivity extends AppCompatActivity {
 
     private boolean finishIfNeeded() {
         if (positionOffset == 0 && position == adapter.getCount()) {
-            setResult(RESULT_OK);
+            Intent returnIntent = makeReturnIntent();
+            if (returnIntent != null) setResult(RESULT_OK, returnIntent);
+            else setResult(RESULT_OK);
             finish();
             overridePendingTransition(0, 0);
             return true;
@@ -1201,6 +1197,10 @@ public class IntroActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public List<Slide> setSlides(List<? extends Slide> list) {
         return adapter.setSlides(list);
+    }
+
+    public Intent makeReturnIntent() {
+        return null;
     }
 
     private class IntroPageChangeListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener {
