@@ -28,7 +28,7 @@ Screenshots
 | Simple slide | Custom slide | Fade effect | Permission request |
 |:-:|:-:|:-:|:-:|
 | ![Simple slide][12] | ![Custom slide][13] | ![Fade effect][14] | ![Permission request][15] |
-| [_SimpleSlide.java_][1] | [_FragmentSlide.java_][2] | [_IntroActivity.java_][3] | [_SimpleSlide.java_][1] |
+| [_SimpleSlide.java_][2] | [_FragmentSlide.java_][1] | [_IntroActivity.java_][3] | [_SimpleSlide.java_][2] |
 
 Features
 --------
@@ -87,7 +87,7 @@ public class MainIntroActivity extends IntroActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        
+
         /**
          * Standard slide (like Google's intros)
          */
@@ -99,10 +99,10 @@ public class MainIntroActivity extends IntroActivity{
                 .backgroundDark(R.color.background_dark_1)
                 .permission(Manifest.permission.CAMERA)
                 .build());
-        
+
         /**
          * Custom fragment slide
-         */ 
+         */
         addSlide(new FragmentSlide.Builder()
                 .background(R.color.background_2)
                 .backgroundDark(R.color.background_dark_2)
@@ -123,15 +123,15 @@ Slide types:
 public class MainIntroActivity extends IntroActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState){
-    
+
         /* Enable/disable fullscreen */
         setFullscreen(true);
-        
+
         super.onCreate(savedInstanceState);
-    
+
         /* Enable/disable skip button */
         setSkipEnabled(true);
-    
+
         /* Enable/disable finish button */
         setFinishEnabled(true);
 
@@ -154,7 +154,7 @@ public class MainIntroActivity extends IntroActivity{
             public void onNavigationBlocked(int position, int direction) {
             }
         });
-        
+
         /* Add your own page change listeners */
         addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
             @Override
@@ -232,8 +232,8 @@ License
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-    
-    
+
+
 [1]: https://github.com/HeinrichReimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java
 [2]: https://github.com/HeinrichReimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/SimpleSlide.java
 [3]: https://github.com/HeinrichReimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/IntroActivity.java
