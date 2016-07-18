@@ -25,6 +25,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.InterpolatorRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -177,16 +178,14 @@ public class IntroActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         updateTaskDescription();
-        updateBackground();
-        updateTaskDescription();
         updateButtonNextDrawable();
         updateButtonBackDrawable();
-        updateViewPositions();
+        updateScrollPositions();
         frame.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                updateViewPositions();
+                updateScrollPositions();
                 v.removeOnLayoutChangeListener(this);
             }
         });
@@ -469,6 +468,7 @@ public class IntroActivity extends AppCompatActivity {
         return false;
     }
 
+    @Nullable
     private Pair<CharSequence, ? extends View.OnClickListener> getButtonCta(int position) {
         if (position < getCount() && getSlide(position) instanceof ButtonCtaSlide) {
             ButtonCtaSlide slide = (ButtonCtaSlide) getSlide(position);
@@ -497,17 +497,6 @@ public class IntroActivity extends AppCompatActivity {
             }
         }
         return null;
-    }
-
-    private void updateFullscreen() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if (adapter != null && position + positionOffset > adapter.getCount() - 1) {
-                setFullscreenFlags(false);
-            }
-            else {
-                setFullscreenFlags(fullscreen);
-            }
-        }
     }
 
     private void updateTaskDescription() {
@@ -650,88 +639,11 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
-    private void updateViewPositions() {
-
-        if (position + positionOffset < 1) {
-            //Between first and second item
-            if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
-                buttonBack.setTranslationY(0);
-            } else {
-                buttonBack.setTranslationY((1 - positionOffset) * 2 * buttonNext.getHeight());
-            }
-            buttonCta.setTranslationY(0);
-            pagerIndicator.setTranslationY(0);
-            updateButtonNextDrawable();
-        } else if (position + positionOffset >= 1 && position + positionOffset < adapter.getCount() - 2) {
-            //Between second and second last item
-            //Reset buttons
-            buttonBack.setTranslationY(0);
-            buttonBack.setTranslationX(0);
-            buttonNext.setTranslationY(0);
-            buttonCta.setTranslationY(0);
-            pagerIndicator.setTranslationY(0);
-            updateButtonNextDrawable();
-        } else if (position + positionOffset >= adapter.getCount() - 2 && position + positionOffset < adapter.getCount() - 1) {
-            //Between second last and last item
-            if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
-                boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
-                        View.LAYOUT_DIRECTION_RTL;
-                buttonBack.setTranslationX(positionOffset * (rtl ? 1 : -1) * pager.getWidth());
-            } else {
-                buttonBack.setTranslationX(0);
-            }
-
-            if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
-                buttonNext.setTranslationY(0);
-            } else {
-                buttonNext.setTranslationY(positionOffset * 2 * buttonNext.getHeight());
-            }
-            buttonCta.setTranslationY(0);
-            pagerIndicator.setTranslationY(0);
-            updateButtonNextDrawable();
-        } else if (position + positionOffset >= adapter.getCount() - 1) {
-            //Fade
-            float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
-
-            float alpha = 1 - (positionOffset * 0.5f);
-            frame.setAlpha(alpha);
-
-            if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
-                boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
-                        View.LAYOUT_DIRECTION_RTL;
-                buttonBack.setTranslationX((rtl ? 1 : -1) * pager.getWidth());
-            } else {
-                buttonBack.setTranslationY(positionOffset * yOffset);
-            }
-
-            if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
-                buttonNext.setTranslationY(positionOffset * yOffset);
-            } else {
-                buttonNext.setTranslationY(-yOffset);
-            }
-            buttonCta.setTranslationY(positionOffset * yOffset);
-            pagerIndicator.setTranslationY(positionOffset * yOffset);
-            updateButtonNextDrawable();
-        }
-
-        updateButtonCta();
-    }
-
-    private void updateParallax() {
-        Fragment fragment = getSlide(position).getFragment();
-        Fragment fragmentNext = position < getCount() - 1 ?
-                getSlide(position + 1).getFragment() : null;
-        if (fragment instanceof Parallaxable) {
-            ((Parallaxable) fragment).setOffset(positionOffset);
-        }
-        if (fragmentNext instanceof Parallaxable) {
-            ((Parallaxable) fragmentNext).setOffset(-1 + positionOffset);
-        }
-    }
-
     private void updateButtonCta() {
-        //Button CTA transition
-        if (position + positionOffset < adapter.getCount()) {
+        float realPosition = position + positionOffset;
+        float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
+
+        if (realPosition < adapter.getCount()) {
             //Before fade
             Pair<CharSequence, ? extends View.OnClickListener> button = getButtonCta(position);
             Pair<CharSequence, ? extends View.OnClickListener> buttonNext = positionOffset == 0 ? null : getButtonCta(position + 1);
@@ -792,17 +704,154 @@ public class IntroActivity extends AppCompatActivity {
                 }
             }
         }
+
+        if (realPosition < adapter.getCount() - 1) {
+            //Reset
+            buttonCta.setTranslationY(0);
+        }
+        else {
+            //Hide CTA button
+            buttonCta.setTranslationY(positionOffset * yOffset);
+        }
+    }
+
+    private void updateButtonBackPosition() {
+        float realPosition = position + positionOffset;
+        float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
+
+        if (realPosition < 1 && buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
+            //Hide back button
+            buttonBack.setTranslationY((1 - positionOffset) * yOffset);
+        }
+        else if (realPosition < adapter.getCount() - 2) {
+            //Reset
+            buttonBack.setTranslationY(0);
+            buttonBack.setTranslationX(0);
+        }
+        else if (realPosition < adapter.getCount() - 1) {
+            //Scroll away skip button
+            if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
+                boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
+                        View.LAYOUT_DIRECTION_RTL;
+                buttonBack.setTranslationX(positionOffset * (rtl ? 1 : -1) * pager.getWidth());
+            } else {
+                buttonBack.setTranslationX(0);
+            }
+        }
+        else {
+            //Keep skip button scrolled away, hide next button
+            if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
+                boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
+                        View.LAYOUT_DIRECTION_RTL;
+                buttonBack.setTranslationX((rtl ? 1 : -1) * pager.getWidth());
+            } else {
+                buttonBack.setTranslationY(positionOffset * yOffset);
+            }
+        }
+    }
+
+    private void updateButtonNextPosition() {
+        float realPosition = position + positionOffset;
+        float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
+
+        if (realPosition < adapter.getCount() - 2) {
+            //Reset
+            buttonNext.setTranslationY(0);
+        }
+        else if (realPosition < adapter.getCount() - 1) {
+            //Reset finish button, hide next icon
+            if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
+                buttonNext.setTranslationY(0);
+            }
+            else {
+                buttonNext.setTranslationY(positionOffset * yOffset);
+            }
+        }
+        else if (realPosition >= adapter.getCount() - 1) {
+            //Hide finish icon, keep next icon hidden
+            if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
+                buttonNext.setTranslationY(positionOffset * yOffset);
+            } else {
+                buttonNext.setTranslationY(-yOffset);
+            }
+        }
+    }
+
+    private void updatePagerIndicatorPosition() {
+        float realPosition = position + positionOffset;
+        float yOffset = getResources().getDimensionPixelSize(R.dimen.mi_y_offset);
+
+        if (realPosition < adapter.getCount() - 1) {
+            //Reset
+            pagerIndicator.setTranslationY(0);
+        }
+        else {
+            //Hide CTA button
+            pagerIndicator.setTranslationY(positionOffset * yOffset);
+        }
+    }
+
+    private void updateParallax() {
+        if (position == getCount())
+            return;
+
+        Fragment fragment = getSlide(position).getFragment();
+        Fragment fragmentNext = position < getCount() - 1 ?
+                getSlide(position + 1).getFragment() : null;
+        if (fragment instanceof Parallaxable) {
+            ((Parallaxable) fragment).setOffset(positionOffset);
+        }
+        if (fragmentNext instanceof Parallaxable) {
+            ((Parallaxable) fragmentNext).setOffset(-1 + positionOffset);
+        }
+    }
+
+    private void updateFullscreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (adapter != null && position + positionOffset > adapter.getCount() - 1) {
+                setFullscreenFlags(false);
+            }
+            else {
+                setFullscreenFlags(fullscreen);
+            }
+        }
+    }
+
+    private void updateBackgroundFade() {
+        float realPosition = position + positionOffset;
+
+        if (realPosition < adapter.getCount() - 1) {
+            //Reset
+            frame.setAlpha(1);
+        }
+        else {
+            //Fade background
+            frame.setAlpha(1 - (positionOffset * 0.5f));
+        }
+    }
+
+    private void updateScrollPositions() {
+        updateBackground();
+        updateButtonCta();
+        updateButtonBackPosition();
+        updateButtonNextPosition();
+        updatePagerIndicatorPosition();
+        updateParallax();
+        updateFullscreen();
+        updateBackgroundFade();
     }
 
     private void updateButtonNextDrawable() {
+        float realPosition = position + positionOffset;
         float offset = 0;
-        if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH &&
-                position + positionOffset >= adapter.getCount() - 1) {
-            offset = 1;
-        }
-        else if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH &&
-                position + positionOffset >= adapter.getCount() - 2) {
-            offset = positionOffset;
+
+        if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
+            if (realPosition >= adapter.getCount() - 1) {
+                offset = 1;
+            }
+            else if (realPosition >= adapter.getCount() - 2) {
+                offset = positionOffset;
+            }
         }
 
         if (offset <= 0) {
@@ -918,7 +967,7 @@ public class IntroActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public void setButtonCtaVisible(boolean buttonCtaVisible) {
         this.buttonCtaVisible = buttonCtaVisible;
-        updateViewPositions();
+        updateButtonCta();
     }
 
     @ButtonCtaTintMode
@@ -950,7 +999,7 @@ public class IntroActivity extends AppCompatActivity {
                 break;
         }
         updateButtonBackDrawable();
-        updateViewPositions();
+        updateButtonBackPosition();
     }
 
     @Deprecated
@@ -982,7 +1031,7 @@ public class IntroActivity extends AppCompatActivity {
                 break;
         }
         updateButtonNextDrawable();
-        updateViewPositions();
+        updateButtonNextPosition();
     }
 
     @Deprecated
@@ -1259,14 +1308,11 @@ public class IntroActivity extends AppCompatActivity {
 
         if (finishIfNeeded())
             return;
-        updateBackground();
+
+        updateTaskDescription();
         updateButtonBackDrawable();
         updateButtonNextDrawable();
-        updateViewPositions();
-        if (position != getCount())
-            updateParallax();
-        updateFullscreen();
-        updateTaskDescription();
+        updateScrollPositions();
         lockSwipeIfNeeded();
     }
 
@@ -1284,11 +1330,8 @@ public class IntroActivity extends AppCompatActivity {
                 lockSwipeIfNeeded();
             }
 
-            updateBackground();
-            updateViewPositions();
-            if (position != getCount())
-                updateParallax();
-            updateFullscreen();
+            updateButtonNextDrawable();
+            updateScrollPositions();
         }
 
         @Override
