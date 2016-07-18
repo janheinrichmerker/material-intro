@@ -1108,26 +1108,43 @@ public class IntroActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public void addSlide(int location, Slide object) {
         adapter.addSlide(location, object);
+        notifyDataSetChanged();
     }
 
     @SuppressWarnings("unused")
     public boolean addSlide(Slide object) {
-        return adapter.addSlide(object);
+        boolean modified = adapter.addSlide(object);
+        if (modified) {
+            notifyDataSetChanged();
+        }
+        return modified;
     }
 
     @SuppressWarnings("unused")
     public boolean addSlides(int location, @NonNull Collection<? extends Slide> collection) {
-        return adapter.addSlides(location, collection);
+        boolean modified = adapter.addSlides(location, collection);
+        if (modified) {
+            notifyDataSetChanged();
+        }
+        return modified;
     }
 
     @SuppressWarnings("unused")
     public boolean addSlides(@NonNull Collection<? extends Slide> collection) {
-        return adapter.addSlides(collection);
+        boolean modified = adapter.addSlides(collection);
+        if (modified) {
+            notifyDataSetChanged();
+        }
+        return modified;
     }
 
     @SuppressWarnings("unused")
-    public void clearSlides() {
-        adapter.clearSlides();
+    public boolean clearSlides() {
+        if (adapter.clearSlides()) {
+            notifyDataSetChanged();
+            return true;
+        }
+        return false;
     }
 
     @SuppressWarnings("unused")
@@ -1189,32 +1206,68 @@ public class IntroActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
     public Slide removeSlide(int location) {
-        return adapter.removeSlide(location);
+        Slide object = adapter.removeSlide(location);
+        notifyDataSetChanged();
+        return object;
     }
 
     @SuppressWarnings("unused")
     public boolean removeSlide(Object object) {
-        return adapter.removeSlide(object);
+        boolean modified = adapter.removeSlide(object);
+        if (modified) {
+            notifyDataSetChanged();
+        }
+        return modified;
     }
 
     @SuppressWarnings("unused")
     public boolean removeSlides(@NonNull Collection<?> collection) {
-        return adapter.removeSlides(collection);
+        boolean modified = adapter.removeSlides(collection);
+        if (modified) {
+            notifyDataSetChanged();
+        }
+        return modified;
     }
 
     @SuppressWarnings("unused")
     public boolean retainSlides(@NonNull Collection<?> collection) {
-        return adapter.retainSlides(collection);
+        boolean modified = adapter.retainSlides(collection);
+        if (modified) {
+            notifyDataSetChanged();
+        }
+        return modified;
     }
 
     @SuppressWarnings("unused")
     public Slide setSlide(int location, Slide object) {
-        return adapter.setSlide(location, object);
+        Slide oldObject = adapter.setSlide(location, object);
+        notifyDataSetChanged();
+        return oldObject;
     }
 
     @SuppressWarnings("unused")
     public List<Slide> setSlides(List<? extends Slide> list) {
-        return adapter.setSlides(list);
+        List<Slide> oldList = adapter.setSlides(list);
+        notifyDataSetChanged();
+        return oldList;
+    }
+
+    public void notifyDataSetChanged() {
+        int position = this.position;
+        pager.setAdapter(adapter);
+        pager.setCurrentItem(position);
+
+        if (finishIfNeeded())
+            return;
+        updateBackground();
+        updateButtonBackDrawable();
+        updateButtonNextDrawable();
+        updateViewPositions();
+        if (position != getCount())
+            updateParallax();
+        updateFullscreen();
+        updateTaskDescription();
+        lockSwipeIfNeeded();
     }
 
     private class IntroPageChangeListener extends FadeableViewPager.SimpleOnOverscrollPageChangeListener {
