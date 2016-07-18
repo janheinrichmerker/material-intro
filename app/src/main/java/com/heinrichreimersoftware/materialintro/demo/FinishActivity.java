@@ -32,9 +32,6 @@ public class FinishActivity extends AppCompatActivity {
 
         if (firstStart) {
             Intent intent = new Intent(this, SplashIntroActivity.class);
-            PreferenceManager.getDefaultSharedPreferences(this).edit()
-                    .putBoolean(PREF_KEY_FIRST_START, false)
-                    .apply();
             startActivityForResult(intent, REQUEST_CODE_INTRO);
         }
     }
@@ -43,7 +40,12 @@ public class FinishActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_INTRO) {
-            if (resultCode == RESULT_CANCELED) {
+            if (resultCode == RESULT_OK) {
+                PreferenceManager.getDefaultSharedPreferences(this).edit()
+                        .putBoolean(PREF_KEY_FIRST_START, false)
+                        .apply();
+            }
+            else {
                 PreferenceManager.getDefaultSharedPreferences(this).edit()
                         .putBoolean(PREF_KEY_FIRST_START, true)
                         .apply();
