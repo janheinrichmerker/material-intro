@@ -59,8 +59,13 @@ public class IntroActivity extends AppCompatActivity {
     private boolean fullscreen = false;
     private boolean skipEnabled = true;
     private boolean finishEnabled = true;
+    private boolean allowFinish = true;
     private int position = 0;
     private float positionOffset = 0;
+
+    private Runnable runWhenFinish;
+
+    private SlideListener slideListener;
 
     private NavigationPolicy navigationPolicy = null;
 
@@ -154,6 +159,21 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
+    public void setAllowFinish(boolean allowFinish) {
+        this.allowFinish = allowFinish;
+        return;
+    }
+
+    public void setRunWhenFinish(Runnable runWhenFinish) {
+        this.runWhenFinish = runWhenFinish;
+        return;
+    }
+
+    public void setSlideListener(SlideListener slideListener) {
+        this.slideListener = slideListener;
+        return;
+    }
+
     private void findViews(){
         frame = (FrameLayout) findViewById(R.id.mi_frame);
         pager = (FadeableViewPager) findViewById(R.id.mi_pager);
@@ -188,8 +208,14 @@ public class IntroActivity extends AppCompatActivity {
 
     public void nextSlide() {
         int currentItem = pager.getCurrentItem();
-
+        if (currentItem == pager.getAdapter().getCount() - 1) {
+            position += 1;
+            finishIfNeeded();
+            return;
+        }
         if (canGoForward(currentItem, true)) {
+            if (this.slideListener != null)
+                slideListener.willLeaveSlide(currentItem);
             pager.setCurrentItem(++currentItem, true);
         }
         else {
@@ -202,6 +228,8 @@ public class IntroActivity extends AppCompatActivity {
         int currentItem = pager.getCurrentItem();
 
         if (canGoBackward(currentItem, true)) {
+            if (this.slideListener != null)
+                slideListener.willLeaveSlide(currentItem);
             pager.setCurrentItem(--currentItem, true);
         }
         else {
@@ -247,9 +275,16 @@ public class IntroActivity extends AppCompatActivity {
 
     private void finishIfNeeded() {
         if (positionOffset == 0 && position == adapter.getCount()) {
-            setResult(RESULT_OK);
-            finish();
-            overridePendingTransition(0, 0);
+            if (allowFinish) {
+                setResult(RESULT_OK);
+                finish();
+                overridePendingTransition(0, 0);
+            } else {
+                if (runWhenFinish != null) {
+                    runWhenFinish.run();
+                }
+            }
+
         }
     }
 
@@ -523,7 +558,9 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     protected boolean addSlide(Slide object) {
-        return adapter.addSlide(object);
+        boolean ret = adapter.addSlide(object);
+        adapter.notifyDataSetChanged();
+        return ret;
     }
 
     protected boolean addSlides(int location, @NonNull Collection<? extends Slide> collection) {
@@ -589,7 +626,9 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     protected boolean removeSlide(Object object) {
-        return adapter.removeSlide(object);
+        boolean ret =  adapter.removeSlide(object);
+        adapter.notifyDataSetChanged();
+        return ret;
     }
 
     protected boolean removeSlides(@NonNull Collection<?> collection) {
