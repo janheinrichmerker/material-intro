@@ -360,7 +360,7 @@ public class IntroActivity extends AppCompatActivity {
 
     public void nextSlide() {
         int currentItem = pager.getCurrentItem();
-        if (currentItem > adapter.getCount() - 1) finishIfNeeded();
+        if (currentItem >= adapter.getCount() - 1) finishIfNeeded();
 
         if (canGoForward(currentItem, true)) {
             smoothScrollPagerTo(++currentItem);
