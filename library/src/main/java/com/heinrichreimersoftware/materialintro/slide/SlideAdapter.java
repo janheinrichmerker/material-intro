@@ -1,5 +1,6 @@
 package com.heinrichreimersoftware.materialintro.slide;
 
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -118,6 +119,16 @@ public class SlideAdapter extends FragmentStatePagerAdapter {
     @ColorRes
     public int getBackgroundDark(int position) {
         return data.get(position).getBackgroundDark();
+    }
+
+    @ColorInt
+    public int getBackgroundColor(int position) {
+        return data.get(position).getBackgroundColor();
+    }
+
+    @ColorInt
+    public int getBackgroundDarkColor(int position) {
+        return data.get(position).getBackgroundDarkColor();
     }
 
     public List<Slide> getSlides() {

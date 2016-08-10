@@ -34,8 +34,12 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     private SimpleSlideFragment fragment;
     @ColorRes
     private final int background;
+    @ColorInt
+    private final int backgroundColor;
     @ColorRes
     private final int backgroundDark;
+    @ColorInt
+    private final int backgroundDarkColor;
     private final boolean canGoForward;
     private final boolean canGoBackward;
     private String[] permissions;
@@ -48,8 +52,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     protected SimpleSlide(Builder builder) {
         fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
                 builder.description, builder.descriptionRes, builder.imageRes,
-                builder.background, builder.layoutRes, builder.permissionsRequestCode);
+                builder.background, builder.backgroundColor, builder.layoutRes, builder.permissionsRequestCode);
         background = builder.background;
+        backgroundColor = builder.backgroundColor;
+        backgroundDarkColor = builder.backgroundDarkColor;
         backgroundDark = builder.backgroundDarkRes;
         canGoForward = builder.canGoForward;
         canGoBackward = builder.canGoBackward;
@@ -78,8 +84,18 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     }
 
     @Override
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
     public int getBackgroundDark() {
         return backgroundDark;
+    }
+
+    @Override
+    public int getBackgroundDarkColor() {
+        return backgroundDarkColor;
     }
 
     @Override
@@ -157,8 +173,12 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     public static class Builder {
         @ColorRes
         private int background = 0;
+        @ColorInt
+        private int backgroundColor;
         @ColorRes
         private int backgroundDarkRes = 0;
+        @ColorInt
+        private int backgroundDarkColor;
         private CharSequence title = null;
         @StringRes
         private int titleRes = 0;
@@ -307,8 +327,16 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             return this;
         }
 
+        public void backgroundColor(@ColorInt int backgroundColor) {
+            this.backgroundColor = backgroundColor;
+        }
+
+        public void backgroundDarcColor(@ColorInt int backgroundDarcColor) {
+            this.backgroundDarkColor = backgroundDarcColor;
+        }
+
         public SimpleSlide build() {
-            if (background == 0)
+            if (background == 0 && backgroundColor == 0)
                 throw new IllegalArgumentException("You must set a background.");
             return new SimpleSlide(this);
         }
@@ -327,11 +355,19 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_IMAGE_RES";
         private static final String ARGUMENT_BACKGROUND_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_BACKGROUND_RES";
+        private static final String ARGUMENT_BACKGROUND_COLOR =
+                "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_BACKGROUND_COLOR";
         private static final String ARGUMENT_LAYOUT_RES =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_LAYOUT_RES";
 
         private static final String ARGUMENT_PERMISSIONS_REQUEST_CODE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_PERMISSIONS_REQUEST_CODE";
+        /**
+         * For access from child
+         */
+        private TextView titleView;
+        private TextView descriptionView;
+        private ImageView imageView;
 
         public SimpleSlideFragment() {
         }
@@ -339,6 +375,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public static SimpleSlideFragment newInstance(CharSequence title, @StringRes int titleRes,
                                                       CharSequence description, @StringRes int descriptionRes,
                                                       @DrawableRes int imageRes, @ColorRes int backgroundRes,
+                                                      @ColorInt int backgroundColor,
                                                       @LayoutRes int layout, int permissionsRequestCode) {
             SimpleSlideFragment fragment = new SimpleSlideFragment();
             Bundle arguments = new Bundle();
@@ -348,6 +385,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             arguments.putInt(ARGUMENT_DESCRIPTION_RES, descriptionRes);
             arguments.putInt(ARGUMENT_IMAGE_RES, imageRes);
             arguments.putInt(ARGUMENT_BACKGROUND_RES, backgroundRes);
+            arguments.putInt(ARGUMENT_BACKGROUND_COLOR, backgroundColor);
             arguments.putInt(ARGUMENT_LAYOUT_RES, layout);
             arguments.putInt(ARGUMENT_PERMISSIONS_REQUEST_CODE, permissionsRequestCode);
             fragment.setArguments(arguments);
@@ -377,9 +415,9 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             View fragment = inflater.inflate(arguments.getInt(ARGUMENT_LAYOUT_RES,
                     R.layout.fragment_simple_slide), container, false);
 
-            TextView titleView = (TextView) fragment.findViewById(R.id.mi_title);
-            TextView descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
-            ImageView imageView = (ImageView) fragment.findViewById(R.id.mi_image);
+            titleView = (TextView) fragment.findViewById(R.id.mi_title);
+            descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
+            imageView = (ImageView) fragment.findViewById(R.id.mi_image);
 
             CharSequence title = arguments.getCharSequence(ARGUMENT_TITLE);
             int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
@@ -387,6 +425,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             int descriptionRes = arguments.getInt(ARGUMENT_DESCRIPTION_RES);
             int imageRes = arguments.getInt(ARGUMENT_IMAGE_RES);
             int backgroundRes = arguments.getInt(ARGUMENT_BACKGROUND_RES);
+            int backgroundColor = arguments.getInt(ARGUMENT_BACKGROUND_COLOR);
 
             //Title
             if (titleView != null) {
@@ -429,8 +468,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             @ColorInt
             int textColorSecondary;
 
-            if (backgroundRes != 0 &&
-                    ColorUtils.calculateLuminance(ContextCompat.getColor(getContext(), backgroundRes)) < 0.6) {
+
+            @ColorInt int color = backgroundRes != 0 ? ContextCompat.getColor(getContext(), backgroundRes) : backgroundColor;
+
+            if (color != 0 && ColorUtils.calculateLuminance(color) < 0.6) {
                 //Use light text color
                 textColorPrimary = ContextCompat.getColor(getContext(), R.color.mi_text_color_primary_dark);
                 textColorSecondary = ContextCompat.getColor(getContext(), R.color.mi_text_color_secondary_dark);
@@ -448,6 +489,18 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             }
 
             return fragment;
+        }
+
+        public TextView getTitleView() {
+            return titleView;
+        }
+
+        public TextView getDescriptionView() {
+            return descriptionView;
+        }
+
+        public ImageView getImageView() {
+            return imageView;
         }
 
         @Override

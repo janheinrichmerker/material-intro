@@ -3,6 +3,7 @@ package com.heinrichreimersoftware.materialintro.slide;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
@@ -25,6 +26,11 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     private final int background;
     @ColorRes
     private final int backgroundDark;
+    @ColorInt
+    private int backgroundColor;
+    @ColorInt
+    private int backgroundDarkColor;
+
     private final boolean canGoForward;
     private final boolean canGoBackward;
     private CharSequence buttonCtaLabel = null;
@@ -35,7 +41,9 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     protected FragmentSlide(Builder builder) {
         fragment = builder.fragment;
         background = builder.background;
+        backgroundColor = builder.backgroundColor;
         backgroundDark = builder.backgroundDark;
+        backgroundDarkColor = builder.backgroundDarkColor;
         canGoForward = builder.canGoForward;
         canGoBackward = builder.canGoBackward;
         buttonCtaLabel = builder.buttonCtaLabel;
@@ -59,8 +67,18 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     }
 
     @Override
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    @Override
     public int getBackgroundDark() {
         return backgroundDark;
+    }
+
+    @Override
+    public int getBackgroundDarkColor() {
+        return backgroundDarkColor;
     }
 
     @Override
@@ -109,6 +127,11 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         private int background;
         @ColorRes
         private int backgroundDark = 0;
+        @ColorInt
+        private int backgroundColor;
+        @ColorInt
+        private int backgroundDarkColor;
+
         private boolean canGoForward = true;
         private boolean canGoBackward = true;
         private CharSequence buttonCtaLabel = null;
@@ -135,9 +158,18 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             this.background = background;
             return this;
         }
+        public Builder backgroundColor(@ColorInt int background) {
+            this.backgroundColor = background;
+            return this;
+        }
 
         public Builder backgroundDark(@ColorRes int backgroundDark) {
             this.backgroundDark = backgroundDark;
+            return this;
+        }
+
+        public Builder backgroundDarkColor(@ColorInt int backgroundDark) {
+            this.backgroundDarkColor = backgroundDark;
             return this;
         }
 
@@ -181,7 +213,7 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
 
         public FragmentSlide build(){
-            if(background == 0 || fragment == null)
+            if((background == 0 && backgroundColor == 0) || fragment == null)
                 throw new IllegalArgumentException("You must set at least a fragment and background.");
             return new FragmentSlide(this);
         }

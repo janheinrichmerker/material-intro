@@ -507,9 +507,9 @@ public class IntroActivity extends AppCompatActivity {
             int colorPrimary;
             if (position < getCount()) {
                 try {
-                    colorPrimary = ContextCompat.getColor(IntroActivity.this, getBackgroundDark(position));
+                    colorPrimary = getBackgroundDark(position);
                 } catch (Resources.NotFoundException e) {
-                    colorPrimary = ContextCompat.getColor(IntroActivity.this, getBackground(position));
+                    colorPrimary = getBackground(position);
                 }
             }
             else {
@@ -540,24 +540,20 @@ public class IntroActivity extends AppCompatActivity {
             backgroundDark = Color.TRANSPARENT;
             backgroundDarkNext = Color.TRANSPARENT;
         } else {
-            background = ContextCompat.getColor(IntroActivity.this,
-                    getBackground(position));
-            backgroundNext = ContextCompat.getColor(IntroActivity.this,
-                    getBackground(Math.min(position + 1, getCount() - 1)));
+            background = getBackground(position);
+            backgroundNext = getBackground(Math.min(position + 1, getCount() - 1));
 
             background = ColorUtils.setAlphaComponent(background, 0xFF);
             backgroundNext = ColorUtils.setAlphaComponent(backgroundNext, 0xFF);
 
             try {
-                backgroundDark = ContextCompat.getColor(IntroActivity.this,
-                        getBackgroundDark(position));
+                backgroundDark = getBackgroundDark(position);
             } catch (Resources.NotFoundException e) {
                 backgroundDark = ContextCompat.getColor(IntroActivity.this,
                         R.color.mi_status_bar_background);
             }
             try {
-                backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
-                        getBackgroundDark(Math.min(position + 1, getCount() - 1)));
+                backgroundDarkNext = getBackgroundDark(Math.min(position + 1, getCount() - 1));
             } catch (Resources.NotFoundException e) {
                 backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
                         R.color.mi_status_bar_background);
@@ -1216,16 +1212,26 @@ public class IntroActivity extends AppCompatActivity {
         return adapter.getItem(position);
     }
 
-    @ColorRes
+    @ColorInt
     @SuppressWarnings("unused")
     public int getBackground(int position) {
-        return adapter.getBackground(position);
+        int color = adapter.getBackground(position);
+        if(color != 0) {
+            return ContextCompat.getColor(IntroActivity.this, color);
+        } else {
+            return adapter.getBackgroundColor(position);
+        }
     }
 
-    @ColorRes
+    @ColorInt
     @SuppressWarnings("unused")
     public int getBackgroundDark(int position) {
-        return adapter.getBackgroundDark(position);
+        int color = adapter.getBackgroundDark(position);
+        if(color != 0) {
+            return ContextCompat.getColor(IntroActivity.this, color);
+        } else {
+            return adapter.getBackgroundDarkColor(position);
+        }
     }
 
     @SuppressWarnings("unused")
