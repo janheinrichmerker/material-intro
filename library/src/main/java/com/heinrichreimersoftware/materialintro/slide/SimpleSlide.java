@@ -327,12 +327,14 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             return this;
         }
 
-        public void backgroundColor(@ColorInt int backgroundColor) {
+        public Builder backgroundColor(@ColorInt int backgroundColor) {
             this.backgroundColor = backgroundColor;
+            return this;
         }
 
-        public void backgroundDarcColor(@ColorInt int backgroundDarcColor) {
+        public Builder backgroundDarcColor(@ColorInt int backgroundDarcColor) {
             this.backgroundDarkColor = backgroundDarcColor;
+            return this;
         }
 
         public SimpleSlide build() {

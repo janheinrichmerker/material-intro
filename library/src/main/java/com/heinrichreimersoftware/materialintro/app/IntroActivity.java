@@ -559,7 +559,7 @@ public class IntroActivity extends AppCompatActivity {
             try {
                 backgroundDarkNext = getBackgroundDark(Math.min(position + 1, getCount() - 1));
                 if(backgroundDarkNext == 0)
-                    backgroundDarkNext = background;
+                    backgroundDarkNext = backgroundNext;
             } catch (Resources.NotFoundException e) {
                 backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
                         R.color.mi_status_bar_background);

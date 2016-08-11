@@ -2,6 +2,7 @@ package com.heinrichreimersoftware.materialintro.demo;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.Gravity;
@@ -55,7 +56,7 @@ public class MainIntroActivity extends IntroActivity {
                 .title(R.string.title_material_metaphor)
                 .description(R.string.description_material_metaphor)
                 .image(R.drawable.art_material_metaphor)
-                .background(R.color.color_material_metaphor)
+                .backgroundColor(Color.parseColor("#039BE5"))
 //                .backgroundDark(R.color.color_dark_material_metaphor)
                 .scrollable(scrollable)
                 .build());
