@@ -56,7 +56,7 @@ public class MainIntroActivity extends IntroActivity {
                 .description(R.string.description_material_metaphor)
                 .image(R.drawable.art_material_metaphor)
                 .background(R.color.color_material_metaphor)
-                .backgroundDark(R.color.color_dark_material_metaphor)
+//                .backgroundDark(R.color.color_dark_material_metaphor)
                 .scrollable(scrollable)
                 .build());
 

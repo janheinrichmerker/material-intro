@@ -548,12 +548,18 @@ public class IntroActivity extends AppCompatActivity {
 
             try {
                 backgroundDark = getBackgroundDark(position);
+                // same effect, but no need set backgroundDark
+                if(backgroundDark == 0) {
+                    backgroundDark = background;
+                }
             } catch (Resources.NotFoundException e) {
                 backgroundDark = ContextCompat.getColor(IntroActivity.this,
                         R.color.mi_status_bar_background);
             }
             try {
                 backgroundDarkNext = getBackgroundDark(Math.min(position + 1, getCount() - 1));
+                if(backgroundDarkNext == 0)
+                    backgroundDarkNext = background;
             } catch (Resources.NotFoundException e) {
                 backgroundDarkNext = ContextCompat.getColor(IntroActivity.this,
                         R.color.mi_status_bar_background);
@@ -573,7 +579,7 @@ public class IntroActivity extends AppCompatActivity {
         float[] backgroundDarkHsv = new float[3];
         Color.colorToHSV(backgroundDark, backgroundDarkHsv);
         //Slightly darken the background color a bit for more contrast
-        backgroundDarkHsv[2] *= 0.95;
+        backgroundDarkHsv[2] *= 0.8f;
         int backgroundDarker = Color.HSVToColor(backgroundDarkHsv);
         pagerIndicator.setPageIndicatorColor(backgroundDarker);
         ViewCompat.setBackgroundTintList(buttonNext, ColorStateList.valueOf(backgroundDarker));
@@ -604,7 +610,7 @@ public class IntroActivity extends AppCompatActivity {
         ((Button) buttonCta.getChildAt(1)).setTextColor(textColorButtonCta);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(backgroundDark);
+            getWindow().setStatusBarColor(backgroundDarker);
 
             if (position == adapter.getCount()) {
                 getWindow().setNavigationBarColor(Color.TRANSPARENT);
