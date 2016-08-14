@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/mi_baseline"
             android:gravity="center"
+            android:adjustViewBounds="true"
             tools:ignore="ContentDescription"
             tools:src="@android:drawable/sym_action_call"/>
 

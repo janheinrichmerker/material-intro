@@ -15,6 +15,7 @@
         android:layout_weight="1"
         android:layout_gravity="center"
         android:gravity="center"
+        android:adjustViewBounds="true"
         tools:ignore="ContentDescription"
         tools:src="@android:drawable/sym_action_call"/>
 
