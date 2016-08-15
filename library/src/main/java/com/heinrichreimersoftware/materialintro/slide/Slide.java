@@ -1,5 +1,6 @@
 package com.heinrichreimersoftware.materialintro.slide;
 
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.v4.app.Fragment;
 
@@ -9,8 +10,14 @@ public interface Slide {
     @ColorRes
     int getBackground();
 
+    @ColorInt
+    int getBackgroundColor();
+
     @ColorRes
     int getBackgroundDark();
+
+    @ColorInt
+    int getBackgroundDarkColor();
 
     boolean canGoForward();
 
