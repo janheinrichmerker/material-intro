@@ -428,6 +428,9 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean canGoForward(int position, boolean notifyListeners) {
+        if (position >= getCount())
+            return false;
+
         if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT && position >= getCount() - 1)
             //Block finishing when button "next" function is not "finish".
             return false;
@@ -443,6 +446,9 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean canGoBackward(int position, boolean notifyListeners) {
+        if (position <= 0)
+            return false;
+
         boolean canGoBackward = (navigationPolicy == null || navigationPolicy.canGoBackward(position)) &&
                 getSlide(position).canGoBackward();
         if (!canGoBackward && notifyListeners) {
