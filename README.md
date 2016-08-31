@@ -148,7 +148,7 @@ public class MainIntroActivity extends IntroActivity{
             }
         });
 
-        /* Add a listener to detect ehen users try to go to a page they can't go to */
+        /* Add a listener to detect when users try to go to a page they can't go to */
         addOnNavigationBlockedListener(new OnNavigationBlockedListener() {
             @Override
             public void onNavigationBlocked(int position, int direction) {
