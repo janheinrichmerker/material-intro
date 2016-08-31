@@ -103,6 +103,39 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         return buttonCtaLabelRes;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FragmentSlide that = (FragmentSlide) o;
+
+        if (background != that.background) return false;
+        if (backgroundDark != that.backgroundDark) return false;
+        if (canGoForward != that.canGoForward) return false;
+        if (canGoBackward != that.canGoBackward) return false;
+        if (buttonCtaLabelRes != that.buttonCtaLabelRes) return false;
+        if (fragment != null ? !fragment.equals(that.fragment) : that.fragment != null)
+            return false;
+        if (buttonCtaLabel != null ? !buttonCtaLabel.equals(that.buttonCtaLabel) : that.buttonCtaLabel != null)
+            return false;
+        return buttonCtaClickListener != null ? buttonCtaClickListener.equals(that.buttonCtaClickListener) : that.buttonCtaClickListener == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = fragment != null ? fragment.hashCode() : 0;
+        result = 31 * result + background;
+        result = 31 * result + backgroundDark;
+        result = 31 * result + (canGoForward ? 1 : 0);
+        result = 31 * result + (canGoBackward ? 1 : 0);
+        result = 31 * result + (buttonCtaLabel != null ? buttonCtaLabel.hashCode() : 0);
+        result = 31 * result + buttonCtaLabelRes;
+        result = 31 * result + (buttonCtaClickListener != null ? buttonCtaClickListener.hashCode() : 0);
+        return result;
+    }
+
     public static class Builder{
         private Fragment fragment;
         @ColorRes
@@ -197,13 +230,12 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
 
         public static FragmentSlideFragment newInstance(@LayoutRes int layoutRes, @StyleRes int themeRes) {
-            FragmentSlideFragment fragment = new FragmentSlideFragment();
-
             Bundle arguments = new Bundle();
             arguments.putInt(ARGUMENT_LAYOUT_RES, layoutRes);
             arguments.putInt(ARGUMENT_THEME_RES, themeRes);
-            fragment.setArguments(arguments);
 
+            FragmentSlideFragment fragment = new FragmentSlideFragment();
+            fragment.setArguments(arguments);
             return fragment;
         }
 

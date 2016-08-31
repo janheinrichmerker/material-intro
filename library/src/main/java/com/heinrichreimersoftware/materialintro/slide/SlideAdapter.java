@@ -4,7 +4,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SlideAdapter extends FragmentStatePagerAdapter {
+public class SlideAdapter extends FragmentPagerAdapter {
     private List<Slide> data = new ArrayList<>();
     private FragmentManager fragmentManager;
 
@@ -30,24 +30,49 @@ public class SlideAdapter extends FragmentStatePagerAdapter {
     }
 
     public void addSlide(int location, Slide object) {
-        data.add(location, object);
+        if (!data.contains(object)) {
+            data.add(location, object);
+        }
     }
 
     public boolean addSlide(Slide object) {
+        if (data.contains(object)) {
+            return false;
+        }
         boolean modified = data.add(object);
-        if (modified) notifyDataSetChanged();
+        if (modified) {
+            notifyDataSetChanged();
+        }
         return modified;
     }
 
     public boolean addSlides(int location, @NonNull Collection<? extends Slide> collection) {
-        boolean modified = data.addAll(location, collection);
-        if (modified) notifyDataSetChanged();
+        boolean modified = false;
+        int i = 0;
+        for (Slide slide : collection) {
+            if (!data.contains(slide)) {
+                data.add(location + i, slide);
+                i++;
+                modified = true;
+            }
+        }
+        if (modified) {
+            notifyDataSetChanged();
+        }
         return modified;
     }
 
     public boolean addSlides(@NonNull Collection<? extends Slide> collection) {
-        boolean modified = data.addAll(collection);
-        if (modified) notifyDataSetChanged();
+        boolean modified = false;
+        for (Slide slide : collection) {
+            if (!data.contains(slide)) {
+                data.add(slide);
+                modified = true;
+            }
+        }
+        if (modified) {
+            notifyDataSetChanged();
+        }
         return modified;
     }
 
@@ -59,9 +84,8 @@ public class SlideAdapter extends FragmentStatePagerAdapter {
         return false;
     }
 
-    @SuppressWarnings("SuspiciousMethodCalls")
     public boolean containsSlide(Object object) {
-        return data.contains(object);
+        return object instanceof Slide && data.contains(object);
     }
 
     public boolean containsSlides(@NonNull Collection<?> collection) {
@@ -90,6 +114,11 @@ public class SlideAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = getItem(position);
+        if (fragment.isAdded()) {
+            return fragment;
+        }
+
         Fragment instantiatedFragment = (Fragment) super.instantiateItem(container, position);
         Slide slide = data.get(position);
         if (slide instanceof RestorableSlide) {
@@ -183,6 +212,9 @@ public class SlideAdapter extends FragmentStatePagerAdapter {
     }
 
     public Slide setSlide(int location, Slide object) {
+        if (!data.contains(object)) {
+            return data.set(location, object);
+        }
         return data.set(location, object);
     }
 

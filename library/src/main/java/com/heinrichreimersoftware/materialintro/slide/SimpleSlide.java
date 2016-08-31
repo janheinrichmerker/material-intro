@@ -26,16 +26,31 @@ import com.heinrichreimersoftware.materialintro.R;
 import com.heinrichreimersoftware.materialintro.view.parallax.ParallaxSlideFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     private static final int DEFAULT_PERMISSIONS_REQUEST_CODE = 34; //Random number
     private SimpleSlideFragment fragment;
+
+
+    private final CharSequence title;
+    @StringRes
+    private final int titleRes;
+    private final CharSequence description;
+    @StringRes
+    private final int descriptionRes;
+    @DrawableRes
+    private final int imageRes;
+    @LayoutRes
+    private final int layoutRes;
+
+
     @ColorRes
-    private final int background;
+    private final int backgroundRes;
     @ColorRes
-    private final int backgroundDark;
+    private final int backgroundDarkRes;
     private final boolean canGoForward;
     private final boolean canGoBackward;
     private String[] permissions;
@@ -48,9 +63,15 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     protected SimpleSlide(Builder builder) {
         fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
                 builder.description, builder.descriptionRes, builder.imageRes,
-                builder.background, builder.layoutRes, builder.permissionsRequestCode);
-        background = builder.background;
-        backgroundDark = builder.backgroundDarkRes;
+                builder.backgroundRes, builder.layoutRes, builder.permissionsRequestCode);
+        title = builder.title;
+        titleRes = builder.titleRes;
+        description = builder.description;
+        descriptionRes = builder.descriptionRes;
+        imageRes = builder.imageRes;
+        layoutRes = builder.layoutRes;
+        backgroundRes = builder.backgroundRes;
+        backgroundDarkRes = builder.backgroundDarkRes;
         canGoForward = builder.canGoForward;
         canGoBackward = builder.canGoBackward;
         permissions = builder.permissions;
@@ -74,12 +95,12 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
     @Override
     public int getBackground() {
-        return background;
+        return backgroundRes;
     }
 
     @Override
     public int getBackgroundDark() {
-        return backgroundDark;
+        return backgroundDarkRes;
     }
 
     @Override
@@ -154,9 +175,59 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SimpleSlide that = (SimpleSlide) o;
+
+        if (titleRes != that.titleRes) return false;
+        if (descriptionRes != that.descriptionRes) return false;
+        if (imageRes != that.imageRes) return false;
+        if (layoutRes != that.layoutRes) return false;
+        if (backgroundRes != that.backgroundRes) return false;
+        if (backgroundDarkRes != that.backgroundDarkRes) return false;
+        if (canGoForward != that.canGoForward) return false;
+        if (canGoBackward != that.canGoBackward) return false;
+        if (permissionsRequestCode != that.permissionsRequestCode) return false;
+        if (buttonCtaLabelRes != that.buttonCtaLabelRes) return false;
+        if (fragment != null ? !fragment.equals(that.fragment) : that.fragment != null)
+            return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null)
+            return false;
+        if (!Arrays.equals(permissions, that.permissions)) return false;
+        if (buttonCtaLabel != null ? !buttonCtaLabel.equals(that.buttonCtaLabel) : that.buttonCtaLabel != null)
+            return false;
+        return buttonCtaClickListener != null ? buttonCtaClickListener.equals(that.buttonCtaClickListener) : that.buttonCtaClickListener == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = fragment != null ? fragment.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + titleRes;
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + descriptionRes;
+        result = 31 * result + imageRes;
+        result = 31 * result + layoutRes;
+        result = 31 * result + backgroundRes;
+        result = 31 * result + backgroundDarkRes;
+        result = 31 * result + (canGoForward ? 1 : 0);
+        result = 31 * result + (canGoBackward ? 1 : 0);
+        result = 31 * result + Arrays.hashCode(permissions);
+        result = 31 * result + permissionsRequestCode;
+        result = 31 * result + (buttonCtaLabel != null ? buttonCtaLabel.hashCode() : 0);
+        result = 31 * result + buttonCtaLabelRes;
+        result = 31 * result + (buttonCtaClickListener != null ? buttonCtaClickListener.hashCode() : 0);
+        return result;
+    }
+
     public static class Builder {
         @ColorRes
-        private int background = 0;
+        private int backgroundRes = 0;
         @ColorRes
         private int backgroundDarkRes = 0;
         private CharSequence title = null;
@@ -180,7 +251,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         private int permissionsRequestCode = DEFAULT_PERMISSIONS_REQUEST_CODE;
 
         public Builder background(@ColorRes int backgroundRes) {
-            this.background = backgroundRes;
+            this.backgroundRes = backgroundRes;
             return this;
         }
 
@@ -308,7 +379,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
 
         public SimpleSlide build() {
-            if (background == 0)
+            if (backgroundRes == 0)
                 throw new IllegalArgumentException("You must set a background.");
             return new SimpleSlide(this);
         }
@@ -340,7 +411,6 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                                                       CharSequence description, @StringRes int descriptionRes,
                                                       @DrawableRes int imageRes, @ColorRes int backgroundRes,
                                                       @LayoutRes int layout, int permissionsRequestCode) {
-            SimpleSlideFragment fragment = new SimpleSlideFragment();
             Bundle arguments = new Bundle();
             arguments.putCharSequence(ARGUMENT_TITLE, title);
             arguments.putInt(ARGUMENT_TITLE_RES, titleRes);
@@ -350,6 +420,8 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             arguments.putInt(ARGUMENT_BACKGROUND_RES, backgroundRes);
             arguments.putInt(ARGUMENT_LAYOUT_RES, layout);
             arguments.putInt(ARGUMENT_PERMISSIONS_REQUEST_CODE, permissionsRequestCode);
+
+            SimpleSlideFragment fragment = new SimpleSlideFragment();
             fragment.setArguments(arguments);
 
             return fragment;
