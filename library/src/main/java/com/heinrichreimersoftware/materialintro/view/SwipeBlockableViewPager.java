@@ -2,6 +2,7 @@ package com.heinrichreimersoftware.materialintro.view;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -21,13 +22,15 @@ public class SwipeBlockableViewPager extends ViewPager {
 
     private static final int SWIPE_DIRECTION_RIGHT = -1;
 
-    private static final int SWIPE_THRESHOLD = 5;
+    private static final int SWIPE_THRESHOLD = 0;
 
     private float initialX;
 
     private boolean swipeRightEnabled = true;
 
     private boolean swipeLeftEnabled = true;
+
+    private boolean locked = false;
 
     public SwipeBlockableViewPager(Context context) {
         super(context);
@@ -37,16 +40,8 @@ public class SwipeBlockableViewPager extends ViewPager {
         super(context, attrs);
     }
 
-    public boolean isSwipeRightEnabled() {
-        return swipeRightEnabled;
-    }
-
     public void setSwipeRightEnabled(boolean swipeRightEnabled) {
         this.swipeRightEnabled = swipeRightEnabled;
-    }
-
-    public boolean isSwipeLeftEnabled() {
-        return swipeLeftEnabled;
     }
 
     public void setSwipeLeftEnabled(boolean swipeLeftEnabled) {
@@ -55,22 +50,41 @@ public class SwipeBlockableViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (getSwipeDirection(event) == SWIPE_DIRECTION_RIGHT && !swipeRightEnabled) {
-            return false;
-        } else if (getSwipeDirection(event) == SWIPE_DIRECTION_LEFT && !swipeLeftEnabled) {
-            return false;
-        }
-        return super.onTouchEvent(event);
+        return handleTouchEvent(event) && super.onTouchEvent(event);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
+        return handleTouchEvent(event) && super.onInterceptTouchEvent(event);
+    }
+
+    private boolean handleTouchEvent(MotionEvent event) {
         if (getSwipeDirection(event) == SWIPE_DIRECTION_RIGHT && !swipeRightEnabled) {
-            return false;
-        } else if (getSwipeDirection(event) == SWIPE_DIRECTION_LEFT && !swipeLeftEnabled) {
+            if (!locked) {
+                updatePosition();
+                locked = true;
+            }
             return false;
         }
-        return super.onInterceptTouchEvent(event);
+        else if (getSwipeDirection(event) == SWIPE_DIRECTION_LEFT && !swipeLeftEnabled) {
+            if (!locked) {
+                updatePosition();
+                locked = true;
+            }
+            return false;
+        }
+        locked = false;
+        return true;
+    }
+
+    private void updatePosition() {
+        int currentItem = getCurrentItem();
+        scrollTo(currentItem * getWidth(), getScrollY());
+        PagerAdapter adapter = getAdapter();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        setCurrentItem(currentItem);
     }
 
     @SwipeDirection
