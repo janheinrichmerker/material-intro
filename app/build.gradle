@@ -12,12 +12,12 @@ apply plugin: 'com.neenbedankt.android-apt'
 
 def versionMajor = 1
 def versionMinor = 5
-def versionPatch = 7
+def versionPatch = 8
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '24.0.0'
+    buildToolsVersion '24.0.1'
 
     defaultConfig {
         applicationId "com.heinrichreimersoftware.materialintro.demo"
@@ -40,9 +40,9 @@ android {
 dependencies {
     compile project(':library')
     //Support
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.android.support:design:24.0.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:design:24.2.0'
     //Firebase
     compile 'com.google.firebase:firebase-core:9.0.0'
     compile 'com.google.firebase:firebase-crash:9.0.0'

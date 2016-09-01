@@ -8,16 +8,22 @@
     android:fitsSystemWindows="false"
     android:padding="@dimen/mi_baseline">
 
-    <ImageView
-        android:id="@id/mi_image"
+    <FrameLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:adjustViewBounds="true"
-        tools:ignore="ContentDescription"
-        tools:src="@android:drawable/sym_action_call"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@id/mi_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:adjustViewBounds="true"
+            tools:ignore="ContentDescription"
+            tools:src="@android:drawable/sym_action_call"/>
+
+    </FrameLayout>
 
     <android.support.v4.widget.Space
         android:layout_width="@dimen/mi_baseline"
