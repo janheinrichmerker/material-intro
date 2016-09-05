@@ -72,16 +72,36 @@ public class ParallaxLinearLayout extends LinearLayout implements Parallaxable {
             super(width, height);
         }
 
+        public LayoutParams(int width, int height, float parallaxFactor) {
+            super(width, height);
+            this.parallaxFactor = parallaxFactor;
+        }
+
         public LayoutParams(int width, int height, int gravity) {
             super(width, height, gravity);
+        }
+
+        public LayoutParams(int width, int height, int gravity, float parallaxFactor) {
+            super(width, height, gravity);
+            this.parallaxFactor = parallaxFactor;
         }
 
         public LayoutParams(ViewGroup.LayoutParams source) {
             super(source);
         }
 
+        public LayoutParams(ViewGroup.LayoutParams source, float parallaxFactor) {
+            super(source);
+            this.parallaxFactor = parallaxFactor;
+        }
+
         public LayoutParams(MarginLayoutParams source) {
             super(source);
+        }
+
+        public LayoutParams(MarginLayoutParams source, float parallaxFactor) {
+            super(source);
+            this.parallaxFactor = parallaxFactor;
         }
     }
 

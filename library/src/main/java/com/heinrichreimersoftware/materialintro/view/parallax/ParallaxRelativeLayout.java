@@ -72,12 +72,27 @@ public class ParallaxRelativeLayout extends RelativeLayout implements Parallaxab
             super(width, height);
         }
 
+        public LayoutParams(int width, int height, float parallaxFactor) {
+            super(width, height);
+            this.parallaxFactor = parallaxFactor;
+        }
+
         public LayoutParams(ViewGroup.LayoutParams source) {
             super(source);
         }
 
+        public LayoutParams(ViewGroup.LayoutParams source, float parallaxFactor) {
+            super(source);
+            this.parallaxFactor = parallaxFactor;
+        }
+
         public LayoutParams(MarginLayoutParams source) {
             super(source);
+        }
+
+        public LayoutParams(MarginLayoutParams source, float parallaxFactor) {
+            super(source);
+            this.parallaxFactor = parallaxFactor;
         }
     }
 
