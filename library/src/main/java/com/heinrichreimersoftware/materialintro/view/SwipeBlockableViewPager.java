@@ -2,7 +2,6 @@ package com.heinrichreimersoftware.materialintro.view;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -61,15 +60,15 @@ public class SwipeBlockableViewPager extends ViewPager {
     private boolean handleTouchEvent(MotionEvent event) {
         if (getSwipeDirection(event) == SWIPE_DIRECTION_RIGHT && !swipeRightEnabled) {
             if (!locked) {
-                updatePosition();
                 locked = true;
+                updatePosition();
             }
             return false;
         }
         else if (getSwipeDirection(event) == SWIPE_DIRECTION_LEFT && !swipeLeftEnabled) {
             if (!locked) {
-                updatePosition();
                 locked = true;
+                updatePosition();
             }
             return false;
         }
@@ -80,10 +79,6 @@ public class SwipeBlockableViewPager extends ViewPager {
     private void updatePosition() {
         int currentItem = getCurrentItem();
         scrollTo(currentItem * getWidth(), getScrollY());
-        PagerAdapter adapter = getAdapter();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
         setCurrentItem(currentItem);
     }
 
@@ -103,7 +98,7 @@ public class SwipeBlockableViewPager extends ViewPager {
             }
             if (distanceX > 0) {
                 return SWIPE_DIRECTION_RIGHT;
-            } else {
+            } else if (distanceX < 0) {
                 return SWIPE_DIRECTION_LEFT;
             }
         }
