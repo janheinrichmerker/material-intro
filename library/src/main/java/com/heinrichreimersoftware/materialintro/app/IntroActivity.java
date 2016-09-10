@@ -309,13 +309,15 @@ public class IntroActivity extends AppCompatActivity {
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                pager.endFakeDrag();
+                if (pager.isFakeDragging())
+                    pager.endFakeDrag();
                 pager.setCurrentItem(position);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                pager.endFakeDrag();
+                if (pager.isFakeDragging())
+                    pager.endFakeDrag();
             }
         });
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
