@@ -1071,7 +1071,7 @@ public class IntroActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
     public void setButtonNextVisible(boolean visible) {
-        buttonNext.setVisibility(visible ? View.VISIBLE : View.GONE);
+        buttonNext.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     @SuppressWarnings("unused")
