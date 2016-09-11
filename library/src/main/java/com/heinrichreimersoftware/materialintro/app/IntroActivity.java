@@ -309,13 +309,15 @@ public class IntroActivity extends AppCompatActivity {
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                pager.endFakeDrag();
+                if (pager.isFakeDragging())
+                    pager.endFakeDrag();
                 pager.setCurrentItem(position);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                pager.endFakeDrag();
+                if (pager.isFakeDragging())
+                    pager.endFakeDrag();
             }
         });
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -1059,7 +1061,7 @@ public class IntroActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
     public void setButtonBackVisible(boolean visible) {
-        buttonBack.setVisibility(visible ? View.VISIBLE : View.GONE);
+        buttonBack.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     @SuppressWarnings("unused")
@@ -1069,7 +1071,7 @@ public class IntroActivity extends AppCompatActivity {
 
     @SuppressWarnings("unused")
     public void setButtonNextVisible(boolean visible) {
-        buttonNext.setVisibility(visible ? View.VISIBLE : View.GONE);
+        buttonNext.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 
     @SuppressWarnings("unused")
