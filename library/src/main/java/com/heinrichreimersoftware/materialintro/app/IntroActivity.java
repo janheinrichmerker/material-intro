@@ -1308,6 +1308,10 @@ public class IntroActivity extends AppCompatActivity {
         notifyDataSetChanged();
         return oldList;
     }
+    
+    public void setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer) {
+        pager.setPageTransformer(reverseDrawingOrder, transformer);
+    }
 
     public void notifyDataSetChanged() {
         int position = this.position;
