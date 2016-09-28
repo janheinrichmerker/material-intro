@@ -110,7 +110,7 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return adapter.isViewFromObject(view, object);
+            return object != null && adapter.isViewFromObject(view, object);
         }
 
         @Override
