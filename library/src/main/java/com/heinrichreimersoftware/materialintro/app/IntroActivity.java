@@ -359,6 +359,28 @@ public class IntroActivity extends AppCompatActivity {
     private long calculateScrollDuration(int distance) {
         return Math.round(pageScrollDuration * (distance + Math.sqrt(distance)) / 2);
     }
+    
+    public void goToFirstSlide() {
+        int currentItem = pager.getCurrentItem();
+        if (currentItem > adapter.getCount() - 1) finishIfNeeded();
+
+        if (canGoForward(currentItem, true)) {
+            smoothScrollPagerTo(0);
+        } else {
+            AnimUtils.applyShakeAnimation(this, buttonNext);
+        }
+    }
+
+    public void goToLastSlide() {
+        int currentItem = pager.getCurrentItem();
+        if (currentItem > adapter.getCount() - 1) finishIfNeeded();
+
+        if (canGoForward(currentItem, true)) {
+            smoothScrollPagerTo(adapter.getCount() - 1);
+        } else {
+            AnimUtils.applyShakeAnimation(this, buttonNext);
+        }
+    }
 
     public void nextSlide() {
         int currentItem = pager.getCurrentItem();
