@@ -17,6 +17,18 @@ public class SlideFragment extends Fragment {
             ((IntroActivity) getActivity()).lockSwipeIfNeeded();
         }
     }
+    
+    protected void goToFirstSlide() {
+        if (getActivity() instanceof IntroActivity) {
+            ((IntroActivity) getActivity()).goToFirstSlide();
+        }
+    }
+
+    protected void goToLastSlide() {
+        if (getActivity() instanceof IntroActivity) {
+            ((IntroActivity) getActivity()).goToLastSlide();
+        }
+    }
 
     protected void nextSlide() {
         if (getActivity() instanceof IntroActivity) {
