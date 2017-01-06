@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">material-intro</string>
+
+    <string name="title_menu_github">Se på GitHub</string>
+    <string name="title_menu_reset_first_start">Reset "Første start" flag</string>
+
+    <string name="label_options">Valgmuligheder:</string>
+    <string name="label_option_fullscreen">Aktiver fuldskærm</string>
+    <string name="label_option_scrollable">Scrollbar slides</string>
+    <string name="label_option_custom_fragments">Aktiver brugerdefinerede fragments</string>
+    <string name="label_option_permissions">Aktiver anmodning om tilladelser</string>
+    <string name="label_option_show_back">Vis tilbage knap</string>
+    <string name="label_option_show_next">Vis næste knap</string>
+    <string name="label_option_skip_enabled">Aktiver skip knap</string>
+    <string name="label_option_finish_enabled">Aktiver afslut knap</string>
+    <string name="label_option_get_started_enabled">Aktiver \"Kom igang\" knap</string>
+    <string name="label_start_intro">Start intro</string>
+    <string name="label_or">eller</string>
+    <string name="label_demos">Demoer: </string>
+    <string name="label_start_canteen">\"Kantine\" intro</string>
+    <string name="label_start_splash">Splash skærm</string>
+
+    <string name="title_material_metaphor">Material er metaforet</string>
+    <string name="title_material_bold">Kraftig, grafisk, bevidst</string>
+    <string name="title_material_motion">Bevægelse skaber mening</string>
+    <string name="title_material_shadow">Lys og skygge</string>
+
+    <string name="description_material_metaphor">En materiel metafor er den samlende teori om et rationaliseret plads og et system af bevægelse. Materialet er funderet i taktil virkelighed, inspireret af studiet af papir og blæk, men teknologisk avanceret og åben for fantasi og magi.</string>
+    <string name="description_material_bold">De fundamentale elementer i print-baseret design - typografi, gitre, rum, skala, farve, og brug af billedsprog - guide visuelle behandlinger.</string>
+    <string name="description_material_motion">Bevæelse respekterer og styrker brugeren som den primus motor. Primære brugerhandlinger er vendepunkter, der indleder bevægelse, omdanne hele design.</string>
+    <string name="description_material_shadow">Inden for den materielle miljø oplyser virtuelle lys scenen. Vigtige lys som skaber retningsbestemte skygger, mens omgivende lys skaber bløde skygger fra alle vinkler.</string>
+
+    <string name="title_permissions">Anmodning tilladelser har aldrig været nemmere.</string>
+    <string name="description_permissions">Denne app kræver adgang til kameraet og lagerplads.\nDet er blot for at kunne vise, hvordan anmodninger om tilladelse virker i dette bibliotek, og vi vil ikke anvende de tildelte tilladelser.</string>
+    <string name="label_grant_permissions">Venligst give de påkræede tilladelser, før du fortsætter.</string>
+
+    <string name="label_button_cta">Klik mig!</string>
+    <string name="toast_button_cta">Hey, det er sådan brugerdefinerede CTA knapper virker i material-intro!</string>
+
+    <string name="title_fragment_login">Dette et er brugerdefineret fragment.</string>
+    <string name="hint_fake_username">Falsk brugernavn</string>
+    <string name="hint_fake_password">Falsk password</string>
+    <string name="label_fake_login">Falsk login</string>
+    <string name="label_fake_login_loading">Indlæser…</string>
+    <string name="label_fake_login_success">logget ind ☺</string>
+    <string name="label_fake_login_success_message">Succesfuld forfalsket login.</string>
+    <string name="label_fill_out_form">Udfyld formularen, før du fortsætter.</string>
+
+    <string name="title_fragment_custom">Afgang!</string>
+    <string name="label_activity_finish">Intet at se her…\n…bare en demo, hvordan du opretter en splash screen intro.</string>
+
+    <string name="mi_content_description_skip">Skip</string>
+    <string name="mi_content_description_back">Tilbage</string>
+    <string name="mi_content_description_next">Næste</string>
+    <string name="mi_content_description_next_finish">Næste/Aflsut</string>
+    <plurals name="mi_label_grant_permission">
+        <item quantity="one">Giv tilladelse</item>
+        <item quantity="other">Giv tilladelser</item>
+    </plurals>
+    <string name="mi_label_button_cta">Kom igang</string>
+</resources>
