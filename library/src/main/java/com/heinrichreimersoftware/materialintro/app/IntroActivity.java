@@ -356,36 +356,36 @@ public class IntroActivity extends AppCompatActivity {
         animator.start();
     }
 
-    private long calculateScrollDuration(int distance) {
+   private long calculateScrollDuration(int distance) {
         return Math.round(pageScrollDuration * (distance + Math.sqrt(distance)) / 2);
     }
     
    public void goToFirstSlide() {
-        int currentItem = pager.getCurrentItem();
+        int nearestPositionToFirstSlide = pager.getCurrentItem();
         boolean canGo = false;
-        if (currentItem <= 0) return;
+        if (nearestPositionToFirstSlide <= 0) return;
 
-        while (currentItem > 0 && canGoBackward(currentItem, true)) {
-            currentItem--;
+        while (nearestPositionToFirstSlide > 0 && canGoBackward(nearestPositionToFirstSlide, true)) {
+            nearestPositionToFirstSlide--;
             canGo = true;
         }
         if (canGo) {
-            smoothScrollPagerTo(currentItem);
+            smoothScrollPagerTo(nearestPositionToFirstSlide);
         } else {
-            AnimUtils.applyShakeAnimation(this, buttonNext);
+            AnimUtils.applyShakeAnimation(this, buttonBack);
         }
     }
 
     public void goToLastSlide() {
-        int currentItem = pager.getCurrentItem();
+        int lastPosition = pager.getCurrentItem();
         int count = getCount() - 1;
         boolean canGo = false;
-        while (currentItem < count && canGoForward(currentItem, true)) {
-            currentItem++;
+        while (lastPosition < count && canGoForward(lastPosition, true)) {
+            lastPosition++;
             canGo = true;
         }
         if (canGo) {
-            smoothScrollPagerTo(currentItem);
+            smoothScrollPagerTo(lastPosition);
         } else {
             AnimUtils.applyShakeAnimation(this, buttonNext);
         }
