@@ -360,12 +360,17 @@ public class IntroActivity extends AppCompatActivity {
         return Math.round(pageScrollDuration * (distance + Math.sqrt(distance)) / 2);
     }
     
-    public void goToFirstSlide() {
+   public void goToFirstSlide() {
         int currentItem = pager.getCurrentItem();
-        if (currentItem > adapter.getCount() - 1) finishIfNeeded();
+        boolean canGo = false;
+        if (currentItem <= 0) return;
 
-        if (canGoForward(currentItem, true)) {
-            smoothScrollPagerTo(0);
+        while (currentItem > 0 && canGoBackward(currentItem, true)) {
+            currentItem--;
+            canGo = true;
+        }
+        if (canGo) {
+            smoothScrollPagerTo(currentItem);
         } else {
             AnimUtils.applyShakeAnimation(this, buttonNext);
         }
@@ -373,10 +378,14 @@ public class IntroActivity extends AppCompatActivity {
 
     public void goToLastSlide() {
         int currentItem = pager.getCurrentItem();
-        if (currentItem > adapter.getCount() - 1) finishIfNeeded();
-
-        if (canGoForward(currentItem, true)) {
-            smoothScrollPagerTo(adapter.getCount() - 1);
+        int count = getCount() - 1;
+        boolean canGo = false;
+        while (currentItem < count && canGoForward(currentItem, true)) {
+            currentItem++;
+            canGo = true;
+        }
+        if (canGo) {
+            smoothScrollPagerTo(currentItem);
         } else {
             AnimUtils.applyShakeAnimation(this, buttonNext);
         }
