@@ -1,0 +1,11 @@
+<resources>
+    <string name="mi_content_description_skip">Salta</string>
+    <string name="mi_content_description_back">Indietro</string>
+    <string name="mi_content_description_next">Successivo</string>
+    <string name="mi_content_description_next_finish">Successivo/Termina</string>
+    <plurals name="mi_label_grant_permission">
+        <item quantity="one">Concedi permesso</item>
+        <item quantity="other">Concedi permessi</item>
+    </plurals>
+    <string name="mi_label_button_cta">Inizia</string>
+</resources>
