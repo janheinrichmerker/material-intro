@@ -18,6 +18,18 @@ public class SlideFragment extends Fragment {
         }
     }
 
+    public void addOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
+        if (getActivity() instanceof IntroActivity) {
+            ((IntroActivity) getActivity()).addOnNavigationBlockedListener(listener);
+        }
+    }
+
+    public void removeOnNavigationBlockedListener(OnNavigationBlockedListener listener) {
+        if (getActivity() instanceof IntroActivity) {
+            ((IntroActivity) getActivity()).removeOnNavigationBlockedListener(listener);
+        }
+    }
+
     protected void nextSlide() {
         if (getActivity() instanceof IntroActivity) {
             ((IntroActivity) getActivity()).nextSlide();
@@ -29,5 +41,4 @@ public class SlideFragment extends Fragment {
             ((IntroActivity) getActivity()).previousSlide();
         }
     }
-
 }
