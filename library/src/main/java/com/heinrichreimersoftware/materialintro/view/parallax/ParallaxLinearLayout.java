@@ -63,8 +63,8 @@ public class ParallaxLinearLayout extends LinearLayout implements Parallaxable {
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
-            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.ParallaxLayout_Layout);
-            parallaxFactor = a.getFloat(R.styleable.ParallaxLayout_Layout_layout_parallaxFactor, parallaxFactor);
+            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.mi_ParallaxLayout_Layout);
+            parallaxFactor = a.getFloat(R.styleable.mi_ParallaxLayout_Layout_layout_parallaxFactor, parallaxFactor);
             a.recycle();
         }
 

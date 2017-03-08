@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="InkPageIndicator">
+    <declare-styleable name="mi_InkPageIndicator">
         <attr name="dotDiameter" format="dimension"/>
         <attr name="dotGap" format="dimension"/>
         <attr name="animationDuration" format="integer"/>
@@ -8,7 +8,7 @@
         <attr name="currentPageIndicatorColor" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="ParallaxLayout_Layout">
+    <declare-styleable name="mi_ParallaxLayout_Layout">
         <attr name="layout_parallaxFactor" format="float"/>
     </declare-styleable>
 </resources>

@@ -50,7 +50,7 @@ public class AnimUtils {
 
     public static void applyShakeAnimation(Context context, View view) {
         Animation shake;
-        shake = AnimationUtils.loadAnimation(context, R.anim.shake);
+        shake = AnimationUtils.loadAnimation(context, R.anim.mi_shake);
         view.startAnimation(shake);
     }
 }
