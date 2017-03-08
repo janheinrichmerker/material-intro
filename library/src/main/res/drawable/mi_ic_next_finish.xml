@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_next"/>
-    <item android:drawable="@drawable/ic_finish"/>
+    <item android:drawable="@drawable/mi_ic_next"/>
+    <item android:drawable="@drawable/mi_ic_finish"/>
 </layer-list>

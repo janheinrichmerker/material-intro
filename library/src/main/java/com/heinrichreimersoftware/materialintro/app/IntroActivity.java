@@ -170,7 +170,7 @@ public class IntroActivity extends AppCompatActivity {
         }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        setContentView(R.layout.activity_intro);
+        setContentView(R.layout.mi_activity_intro);
         findViews();
     }
 
@@ -272,8 +272,8 @@ public class IntroActivity extends AppCompatActivity {
 
         buttonCta = (TextSwitcher) findViewById(R.id.mi_button_cta);
         if (buttonCta != null) {
-            buttonCta.setInAnimation(this, R.anim.fade_in);
-            buttonCta.setOutAnimation(this, R.anim.fade_out);
+            buttonCta.setInAnimation(this, R.anim.mi_fade_in);
+            buttonCta.setOutAnimation(this, R.anim.mi_fade_out);
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -863,25 +863,25 @@ public class IntroActivity extends AppCompatActivity {
         }
 
         if (offset <= 0) {
-            buttonNext.setImageResource(R.drawable.ic_next);
+            buttonNext.setImageResource(R.drawable.mi_ic_next);
             buttonNext.getDrawable().setAlpha(0xFF);
         } else {
-            buttonNext.setImageResource(R.drawable.ic_next_finish);
+            buttonNext.setImageResource(R.drawable.mi_ic_next_finish);
             if (buttonNext.getDrawable() != null && buttonNext.getDrawable() instanceof LayerDrawable) {
                 LayerDrawable drawable = (LayerDrawable) buttonNext.getDrawable();
                 drawable.getDrawable(0).setAlpha((int) (0xFF * (1 - offset)));
                 drawable.getDrawable(1).setAlpha((int) (0xFF * offset));
             } else {
-                buttonNext.setImageResource(offset > 0 ? R.drawable.ic_finish : R.drawable.ic_next);
+                buttonNext.setImageResource(offset > 0 ? R.drawable.mi_ic_finish : R.drawable.mi_ic_next);
             }
         }
     }
 
     private void updateButtonBackDrawable() {
         if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
-            buttonBack.setImageResource(R.drawable.ic_skip);
+            buttonBack.setImageResource(R.drawable.mi_ic_skip);
         } else {
-            buttonBack.setImageResource(R.drawable.ic_previous);
+            buttonBack.setImageResource(R.drawable.mi_ic_previous);
         }
     }
 
