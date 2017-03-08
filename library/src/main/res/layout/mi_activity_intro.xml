@@ -24,8 +24,8 @@
             android:layout_margin="@dimen/mi_baseline"
             android:padding="@dimen/mi_baseline"
             android:contentDescription="@string/mi_content_description_back"
-            android:src="@drawable/ic_skip"
-            android:background="@drawable/button_background"/>
+            android:src="@drawable/mi_ic_skip"
+            android:background="@drawable/mi_button_background"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -90,8 +90,8 @@
             android:layout_margin="@dimen/mi_baseline"
             android:padding="@dimen/mi_baseline"
             android:contentDescription="@string/mi_content_description_next"
-            android:src="@drawable/ic_next_finish"
-            android:background="@drawable/button_background"/>
+            android:src="@drawable/mi_ic_next_finish"
+            android:background="@drawable/mi_button_background"/>
 
     </LinearLayout>
 

@@ -239,7 +239,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         @DrawableRes
         private int imageRes = 0;
         @LayoutRes
-        private int layoutRes = R.layout.fragment_simple_slide;
+        private int layoutRes = R.layout.mi_fragment_simple_slide;
         private boolean canGoForward = true;
         private boolean canGoBackward = true;
         private String[] permissions = null;
@@ -319,8 +319,8 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         }
 
         public Builder scrollable(boolean scrollable) {
-            this.layoutRes = scrollable ? R.layout.fragment_simple_slide_scrollable :
-                    R.layout.fragment_simple_slide;
+            this.layoutRes = scrollable ? R.layout.mi_fragment_simple_slide_scrollable :
+                    R.layout.mi_fragment_simple_slide;
             return this;
         }
 
@@ -447,7 +447,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             Bundle arguments = getArguments();
 
             View fragment = inflater.inflate(arguments.getInt(ARGUMENT_LAYOUT_RES,
-                    R.layout.fragment_simple_slide), container, false);
+                    R.layout.mi_fragment_simple_slide), container, false);
 
             TextView titleView = (TextView) fragment.findViewById(R.id.mi_title);
             TextView descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
