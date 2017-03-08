@@ -49,6 +49,8 @@
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:fontFamily="sans-serif-medium"
+                android:linksClickable="true"
+                android:autoLink="web"
                 tools:ignore="UnusedAttribute"
                 tools:text="Lorem ipsum"/>
 
@@ -59,6 +61,8 @@
                 android:layout_marginTop="@dimen/mi_baseline"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:linksClickable="true"
+                android:autoLink="web"
                 tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …"/>
 
         </LinearLayout>

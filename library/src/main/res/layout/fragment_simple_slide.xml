@@ -27,6 +27,8 @@
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:fontFamily="sans-serif-medium"
+        android:linksClickable="true"
+        android:autoLink="web"
         tools:ignore="UnusedAttribute"
         tools:text="Lorem ipsum" />
 
