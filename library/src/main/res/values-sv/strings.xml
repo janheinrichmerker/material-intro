@@ -1,0 +1,11 @@
+<resources>
+    <string name="mi_content_description_skip">Hoppa över</string>
+    <string name="mi_content_description_back">Tillbaka</string>
+    <string name="mi_content_description_next">Nästa</string>
+    <string name="mi_content_description_next_finish">Nästa/Avsluta</string>
+    <plurals name="mi_label_grant_permission">
+        <item quantity="one">Bevilja behörighet</item>
+        <item quantity="other">Bevilja behörigheter</item>
+    </plurals>
+    <string name="mi_label_button_cta">Kom igång</string>
+</resources>
