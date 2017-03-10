@@ -1,0 +1,11 @@
+<resources>
+    <string name="mi_content_description_skip">Hopp over</string>
+    <string name="mi_content_description_back">Tilbake</string>
+    <string name="mi_content_description_next">Neste</string>
+    <string name="mi_content_description_next_finish">Neste/Avslutt</string>
+    <plurals name="mi_label_grant_permission">
+        <item quantity="one">Gi tillatelse</item>
+        <item quantity="other">Gi tillatelser</item>
+    </plurals>
+    <string name="mi_label_button_cta">Kom i gang</string>
+</resources>
