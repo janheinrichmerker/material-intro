@@ -1042,6 +1042,10 @@ public class IntroActivity extends AppCompatActivity {
         updateButtonNextPosition();
     }
 
+    public View getContentView() {
+        return findViewById(android.R.id.content);
+    }
+
     @Deprecated
     @SuppressWarnings("unused")
     public boolean isFinishEnabled() {
