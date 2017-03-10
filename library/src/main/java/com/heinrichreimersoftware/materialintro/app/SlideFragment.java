@@ -1,6 +1,7 @@
 package com.heinrichreimersoftware.materialintro.app;
 
 import android.support.v4.app.Fragment;
+import android.view.View;
 
 public class SlideFragment extends Fragment {
 
@@ -42,4 +43,7 @@ public class SlideFragment extends Fragment {
         }
     }
 
+    public View getContentView() {
+        return getActivity().findViewById(android.R.id.content);
+    }
 }
