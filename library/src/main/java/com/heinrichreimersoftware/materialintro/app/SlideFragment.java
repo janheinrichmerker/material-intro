@@ -41,5 +41,4 @@ public class SlideFragment extends Fragment {
             ((IntroActivity) getActivity()).previousSlide();
         }
     }
-
 }

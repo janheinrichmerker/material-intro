@@ -127,20 +127,20 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.InkPageIndicator, defStyle, 0);
+                attrs, R.styleable.mi_InkPageIndicator, defStyle, 0);
 
-        dotDiameter = a.getDimensionPixelSize(R.styleable.InkPageIndicator_dotDiameter,
+        dotDiameter = a.getDimensionPixelSize(R.styleable.mi_InkPageIndicator_dotDiameter,
                 DEFAULT_DOT_SIZE * density);
         dotRadius = dotDiameter / 2;
         halfDotRadius = dotRadius / 2;
-        gap = a.getDimensionPixelSize(R.styleable.InkPageIndicator_dotGap,
+        gap = a.getDimensionPixelSize(R.styleable.mi_InkPageIndicator_dotGap,
                 DEFAULT_GAP * density);
-        animDuration = (long) a.getInteger(R.styleable.InkPageIndicator_animationDuration,
+        animDuration = (long) a.getInteger(R.styleable.mi_InkPageIndicator_animationDuration,
                 DEFAULT_ANIM_DURATION);
         animHalfDuration = animDuration / 2;
-        unselectedColour = a.getColor(R.styleable.InkPageIndicator_pageIndicatorColor,
+        unselectedColour = a.getColor(R.styleable.mi_InkPageIndicator_pageIndicatorColor,
                 DEFAULT_UNSELECTED_COLOUR);
-        selectedColour = a.getColor(R.styleable.InkPageIndicator_currentPageIndicatorColor,
+        selectedColour = a.getColor(R.styleable.mi_InkPageIndicator_currentPageIndicatorColor,
                 DEFAULT_SELECTED_COLOUR);
 
         a.recycle();
