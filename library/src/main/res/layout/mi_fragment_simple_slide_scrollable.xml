@@ -19,19 +19,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/mi_baseline"
-            android:gravity="center"
             android:adjustViewBounds="true"
+            android:gravity="center"
             tools:ignore="ContentDescription"
-            tools:src="@android:drawable/sym_action_call"/>
+            tools:src="@android:drawable/sym_action_call" />
 
         <TextView
             android:id="@id/mi_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/mi_baseline"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:fontFamily="sans-serif-medium"
             tools:ignore="UnusedAttribute"
             tools:text="Lorem ipsum" />
 
@@ -40,7 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/mi_baseline"
+            android:autoLink="web"
             android:gravity="center"
+            android:linksClickable="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …" />
 
