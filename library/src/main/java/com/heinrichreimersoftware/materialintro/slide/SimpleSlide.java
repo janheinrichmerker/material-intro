@@ -415,6 +415,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         private static final String ARGUMENT_PERMISSIONS_REQUEST_CODE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_PERMISSIONS_REQUEST_CODE";
 
+        private TextView titleView = null;
+        private TextView descriptionView = null;
+        private ImageView imageView = null;
+
         public SimpleSlideFragment() {
         }
 
@@ -461,9 +465,9 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             View fragment = inflater.inflate(arguments.getInt(ARGUMENT_LAYOUT_RES,
                     R.layout.mi_fragment_simple_slide), container, false);
 
-            TextView titleView = (TextView) fragment.findViewById(R.id.mi_title);
-            TextView descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
-            ImageView imageView = (ImageView) fragment.findViewById(R.id.mi_image);
+            titleView = (TextView) fragment.findViewById(R.id.mi_title);
+            descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
+            imageView = (ImageView) fragment.findViewById(R.id.mi_image);
 
             int id = arguments.getInt(ARGUMENT_ID);
             CharSequence title = arguments.getCharSequence(ARGUMENT_TITLE);
@@ -532,11 +536,31 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                 descriptionView.setTextColor(textColorSecondary);
             }
 
-            if (getActivity() instanceof ISlideActivity) {
-                ((ISlideActivity)getActivity()).onViewCreated(fragment, id);
+            if (getActivity() instanceof SimpleSlideActivity) {
+                ((SimpleSlideActivity)getActivity()).onViewCreated(this, fragment, id);
             }
 
             return fragment;
+        }
+
+        @Override
+        public void onDestroyView() {
+            titleView = null;
+            descriptionView = null;
+            imageView = null;
+            super.onDestroyView();
+        }
+
+        public TextView getTitleView() {
+            return titleView;
+        }
+
+        public TextView getDescriptionView() {
+            return descriptionView;
+        }
+
+        public ImageView getImageView(){
+            return imageView;
         }
 
         @Override

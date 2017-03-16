@@ -6,7 +6,7 @@ import android.view.View;
  * Created by flisar on 16.03.2017.
  */
 
-public interface ISlideActivity
+public interface SimpleSlideActivity
 {
-    void onViewCreated(View fragment, int id);
+    void onViewCreated(SimpleSlide.SimpleSlideFragment fragment, View view, int id);
 }
