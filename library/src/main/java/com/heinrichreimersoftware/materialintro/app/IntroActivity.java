@@ -1224,6 +1224,11 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("unused")
+    public int getCurrentSlidePosition() {
+        return pager.getCurrentItem();
+    }
+
+    @SuppressWarnings("unused")
     public Fragment getItem(int position) {
         return adapter.getItem(position);
     }
