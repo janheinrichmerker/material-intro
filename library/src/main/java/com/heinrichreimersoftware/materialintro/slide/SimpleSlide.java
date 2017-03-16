@@ -34,7 +34,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     private static final int DEFAULT_PERMISSIONS_REQUEST_CODE = 34; //Random number
     private SimpleSlideFragment fragment;
 
-
+    private final int id;
     private final CharSequence title;
     @StringRes
     private final int titleRes;
@@ -61,9 +61,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     private View.OnClickListener buttonCtaClickListener = null;
 
     protected SimpleSlide(Builder builder) {
-        fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
+        fragment = SimpleSlideFragment.newInstance(builder.id, builder.title, builder.titleRes,
                 builder.description, builder.descriptionRes, builder.imageRes,
                 builder.backgroundRes, builder.layoutRes, builder.permissionsRequestCode);
+        id = builder.id;
         title = builder.title;
         titleRes = builder.titleRes;
         description = builder.description;
@@ -182,6 +183,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
         SimpleSlide that = (SimpleSlide) o;
 
+        if (id != that.id) return false;
         if (titleRes != that.titleRes) return false;
         if (descriptionRes != that.descriptionRes) return false;
         if (imageRes != that.imageRes) return false;
@@ -207,6 +209,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     @Override
     public int hashCode() {
         int result = fragment != null ? fragment.hashCode() : 0;
+        result = 31 * result + id;
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + titleRes;
         result = 31 * result + (description != null ? description.hashCode() : 0);
@@ -228,6 +231,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     public static class Builder {
         @ColorRes
         private int backgroundRes = 0;
+        private int id = 0;
         @ColorRes
         private int backgroundDarkRes = 0;
         private CharSequence title = null;
@@ -275,6 +279,11 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                 this.title = Html.fromHtml(titleHtml);
             }
             this.titleRes = 0;
+            return this;
+        }
+
+        public Builder id(int id) {
+            this.id = id;
             return this;
         }
 
@@ -386,6 +395,8 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     }
 
     public static class SimpleSlideFragment extends ParallaxSlideFragment {
+        private static final String ARGUMENT_ID =
+                "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_ID";
         private static final String ARGUMENT_TITLE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_TITLE";
         private static final String ARGUMENT_TITLE_RES =
@@ -407,11 +418,12 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public SimpleSlideFragment() {
         }
 
-        public static SimpleSlideFragment newInstance(CharSequence title, @StringRes int titleRes,
+        public static SimpleSlideFragment newInstance(int id, CharSequence title, @StringRes int titleRes,
                                                       CharSequence description, @StringRes int descriptionRes,
                                                       @DrawableRes int imageRes, @ColorRes int backgroundRes,
                                                       @LayoutRes int layout, int permissionsRequestCode) {
             Bundle arguments = new Bundle();
+            arguments.putInt(ARGUMENT_ID, id);
             arguments.putCharSequence(ARGUMENT_TITLE, title);
             arguments.putInt(ARGUMENT_TITLE_RES, titleRes);
             arguments.putCharSequence(ARGUMENT_DESCRIPTION, description);
@@ -453,6 +465,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             TextView descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
             ImageView imageView = (ImageView) fragment.findViewById(R.id.mi_image);
 
+            int id = arguments.getInt(ARGUMENT_ID);
             CharSequence title = arguments.getCharSequence(ARGUMENT_TITLE);
             int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
             CharSequence description = arguments.getCharSequence(ARGUMENT_DESCRIPTION);
@@ -517,6 +530,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             }
             if (descriptionView != null) {
                 descriptionView.setTextColor(textColorSecondary);
+            }
+
+            if (getActivity() instanceof ISlideActivity) {
+                ((ISlideActivity)getActivity()).onViewCreated(fragment, id);
             }
 
             return fragment;
