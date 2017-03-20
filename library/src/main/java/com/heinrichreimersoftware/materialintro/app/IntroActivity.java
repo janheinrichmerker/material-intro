@@ -113,6 +113,7 @@ public class IntroActivity extends AppCompatActivity {
     private IntroPageChangeListener listener = new IntroPageChangeListener();
     private int position = 0;
     private float positionOffset = 0;
+    private boolean enableFinishCheck = true;
 
     //Settings
     private boolean fullscreen = false;
@@ -463,7 +464,7 @@ public class IntroActivity extends AppCompatActivity {
 
 
     private boolean finishIfNeeded() {
-        if (positionOffset == 0 && position == adapter.getCount()) {
+        if (enableFinishCheck && positionOffset == 0 && position == adapter.getCount()) {
             Intent returnIntent = onSendActivityResult(RESULT_OK);
             if (returnIntent != null)
                 setResult(RESULT_OK, returnIntent);
@@ -474,6 +475,12 @@ public class IntroActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    protected void setFinishCheckEnabled(boolean enabled, boolean check) {
+        enableFinishCheck = enabled;
+        if (enabled && check)
+            finishIfNeeded();
     }
 
     @Nullable
@@ -1231,6 +1238,11 @@ public class IntroActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public Fragment getItem(int position) {
         return adapter.getItem(position);
+    }
+
+    @SuppressWarnings("unused")
+    public void gotToItem(int position) {
+        smoothScrollPagerTo(position);
     }
 
     @ColorRes

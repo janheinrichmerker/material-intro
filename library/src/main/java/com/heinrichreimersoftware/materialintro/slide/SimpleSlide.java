@@ -563,6 +563,11 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             return imageView;
         }
 
+        public int getSlideId()
+        {
+            return getArguments().getInt(ARGUMENT_ID);
+        }
+
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                                @NonNull int[] grantResults) {
