@@ -9,4 +9,5 @@ import android.view.View;
 public interface SimpleSlideActivity
 {
     void onViewCreated(SimpleSlide.SimpleSlideFragment fragment, View view, int id);
+    void onDestroyView(SimpleSlide.SimpleSlideFragment fragment, View view, int id);
 }
