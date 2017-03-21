@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:fitsSystemWindows="false"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="@dimen/mi_baseline">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_parallaxFactor="0"
-        android:gravity="center_horizontal"
-        android:text="@string/title_fragment_custom"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
-
-    <ImageView
+    <com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/mi_baseline"
-        app:layout_parallaxFactor="1.25"
-        android:src="@drawable/art_plane"
-        tools:ignore="ContentDescription"/>
+        android:fitsSystemWindows="false"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/mi_baseline">
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/mi_baseline"
-        app:layout_parallaxFactor="0.75"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_parallaxFactor="0"
+            android:gravity="center_horizontal"
+            android:text="@string/title_fragment_custom"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
-</com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/mi_baseline"
+            app:layout_parallaxFactor="1.25"
+            android:src="@drawable/art_plane"
+            tools:ignore="ContentDescription" />
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/mi_baseline"
+            app:layout_parallaxFactor="0.75" />
+
+    </com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout>
+
+</layout>

@@ -1,192 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.heinrichreimersoftware.materialintro.demo.MainActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorPrimary"
-        android:elevation="4dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:ignore="UnusedAttribute">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"/>
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    </LinearLayout>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        tools:context="com.heinrichreimersoftware.materialintro.demo.MainActivity">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/mi_baseline"
-            android:orientation="vertical">
+            android:background="?colorPrimary"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            tools:ignore="UnusedAttribute">
 
-            <TextView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/label_options"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:fontFamily="sans-serif-medium"
-                tools:ignore="UnusedAttribute"/>
+                android:layout_height="?actionBarSize" />
 
-            <CheckBox
-                android:id="@+id/option_fullscreen"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="false"
-                android:text="@string/label_option_fullscreen"/>
-
-            <CheckBox
-                android:id="@+id/option_scrollable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="false"
-                android:text="@string/label_option_scrollable"/>
-
-            <CheckBox
-                android:id="@+id/option_custom_fragments"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="true"
-                android:text="@string/label_option_custom_fragments"/>
-
-            <CheckBox
-                android:id="@+id/option_permissions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="true"
-                android:text="@string/label_option_permissions"/>
-
-            <CheckBox
-                android:id="@+id/option_show_back"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="true"
-                android:text="@string/label_option_show_back"/>
-
-            <CheckBox
-                android:id="@+id/option_show_next"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="true"
-                android:text="@string/label_option_show_next"/>
-
-            <CheckBox
-                android:id="@+id/option_skip_enabled"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="true"
-                android:text="@string/label_option_skip_enabled"/>
-
-            <CheckBox
-                android:id="@+id/option_finish_enabled"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="true"
-                android:text="@string/label_option_finish_enabled"/>
-
-            <CheckBox
-                android:id="@+id/option_get_started_enabled"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline_half"
-                android:checked="true"
-                android:text="@string/label_option_get_started_enabled"/>
+                android:layout_height="?actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/mi_baseline_half"
-        android:background="?colorAccent"
-        android:elevation="2dp"
-        tools:ignore="UnusedAttribute"
-        style="?buttonBarStyle">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/mi_baseline"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_options"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:fontFamily="sans-serif-medium"
+                    tools:ignore="UnusedAttribute" />
+
+                <CheckBox
+                    android:id="@+id/option_fullscreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="false"
+                    android:text="@string/label_option_fullscreen" />
+
+                <CheckBox
+                    android:id="@+id/option_scrollable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="false"
+                    android:text="@string/label_option_scrollable" />
+
+                <CheckBox
+                    android:id="@+id/option_custom_fragments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="true"
+                    android:text="@string/label_option_custom_fragments" />
+
+                <CheckBox
+                    android:id="@+id/option_permissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="true"
+                    android:text="@string/label_option_permissions" />
+
+                <CheckBox
+                    android:id="@+id/option_show_back"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="true"
+                    android:text="@string/label_option_show_back" />
+
+                <CheckBox
+                    android:id="@+id/option_show_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="true"
+                    android:text="@string/label_option_show_next" />
+
+                <CheckBox
+                    android:id="@+id/option_skip_enabled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="true"
+                    android:text="@string/label_option_skip_enabled" />
+
+                <CheckBox
+                    android:id="@+id/option_finish_enabled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="true"
+                    android:text="@string/label_option_finish_enabled" />
+
+                <CheckBox
+                    android:id="@+id/option_get_started_enabled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline_half"
+                    android:checked="true"
+                    android:text="@string/label_option_get_started_enabled" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/mi_baseline_half"
+            android:background="?colorAccent"
+            android:elevation="2dp"
+            tools:ignore="UnusedAttribute"
+            style="?buttonBarStyle">
 
-            <Button
-                android:id="@+id/start_intro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/label_start_intro"
-                android:theme="@style/AppThemeDark"
-                style="?borderlessButtonStyle"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/mi_baseline_half"
-                android:layout_marginRight="@dimen/mi_baseline_half"
-                android:text="@string/label_or"
-                android:theme="@style/AppThemeDark"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+                <Button
+                    android:id="@+id/start_intro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/label_start_intro"
+                    android:theme="@style/AppThemeDark"
+                    style="?borderlessButtonStyle" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/mi_baseline_half"
+                    android:layout_marginRight="@dimen/mi_baseline_half"
+                    android:text="@string/label_or"
+                    android:theme="@style/AppThemeDark"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/mi_baseline_half"
-                android:layout_marginRight="@dimen/mi_baseline_half"
-                android:text="@string/label_demos"
-                android:theme="@style/AppThemeDark"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/start_canteen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_start_canteen"
-                android:theme="@style/AppThemeDark"
-                style="?borderlessButtonStyle"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/mi_baseline_half"
+                    android:layout_marginRight="@dimen/mi_baseline_half"
+                    android:text="@string/label_demos"
+                    android:theme="@style/AppThemeDark"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
-            <Button
-                android:id="@+id/start_splash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_start_splash"
-                android:theme="@style/AppThemeDark"
-                style="?borderlessButtonStyle"/>
+                <Button
+                    android:id="@+id/start_canteen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_start_canteen"
+                    android:theme="@style/AppThemeDark"
+                    style="?borderlessButtonStyle" />
+
+                <Button
+                    android:id="@+id/start_splash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_start_splash"
+                    android:theme="@style/AppThemeDark"
+                    style="?borderlessButtonStyle" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</layout>

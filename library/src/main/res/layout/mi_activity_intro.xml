@@ -1,98 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@id/mi_frame"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.heinrichreimersoftware.materialintro.view.FadeableViewPager
-        android:id="@id/mi_pager"
+    <android.support.constraint.ConstraintLayout
+        android:id="@id/mi_frame"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom">
+        <com.heinrichreimersoftware.materialintro.view.FadeableViewPager
+            android:id="@id/mi_pager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/mi_baseline_half"
+            app:layout_constraintBottom_toTopOf="@+id/mi_button_cta"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
 
         <ImageButton
-            android:id="@id/mi_button_skip"
+            android:id="@id/mi_button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/mi_baseline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:padding="@dimen/mi_baseline"
             android:contentDescription="@string/mi_content_description_back"
             android:src="@drawable/mi_ic_skip"
-            android:background="@drawable/mi_button_background"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/mi_baseline_half"
-            android:orientation="vertical">
-
-            <TextSwitcher
-                android:id="@id/mi_button_cta"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/mi_button_cta_height"
-                android:layout_marginBottom="@dimen/mi_baseline"
-                android:layout_gravity="center_horizontal"
-                android:clipChildren="false">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:paddingTop="@dimen/mi_baseline_half"
-                    android:paddingBottom="@dimen/mi_baseline_half"
-                    android:paddingLeft="@dimen/mi_baseline"
-                    android:paddingRight="@dimen/mi_baseline"
-                    android:gravity="center"
-                    android:text="@string/mi_label_button_cta"
-                    android:textColor="?android:textColorPrimaryInverse"
-                    android:maxLines="1"
-                    android:minLines="1"/>
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:paddingTop="@dimen/mi_baseline_half"
-                    android:paddingBottom="@dimen/mi_baseline_half"
-                    android:paddingLeft="@dimen/mi_baseline"
-                    android:paddingRight="@dimen/mi_baseline"
-                    android:gravity="center"
-                    android:text="@string/mi_label_button_cta"
-                    android:textColor="?android:textColorPrimaryInverse"
-                    android:visibility="gone"
-                    android:maxLines="1"
-                    android:minLines="1"/>
-
-            </TextSwitcher>
-
-            <com.heinrichreimersoftware.materialintro.view.InkPageIndicator
-                android:id="@id/mi_pager_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/mi_margin_bottom_pager_indicator"
-                app:dotDiameter="10dp"
-                app:dotGap="@dimen/mi_baseline_half"/>
-
-        </LinearLayout>
+            android:background="@drawable/mi_button_background"
+            tools:layout_editor_absoluteX="16dp" />
 
         <ImageButton
             android:id="@id/mi_button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/mi_baseline"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:padding="@dimen/mi_baseline"
             android:contentDescription="@string/mi_content_description_next"
             android:src="@drawable/mi_ic_next_finish"
-            android:background="@drawable/mi_button_background"/>
+            android:background="@drawable/mi_button_background"
+            tools:layout_editor_absoluteX="312dp" />
 
-    </LinearLayout>
+        <com.heinrichreimersoftware.materialintro.view.InkPageIndicator
+            android:id="@id/mi_pager_indicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/mi_margin_bottom_pager_indicator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/mi_button_back"
+            app:layout_constraintEnd_toStartOf="@id/mi_button_next"
+            app:dotDiameter="10dp"
+            app:dotGap="@dimen/mi_baseline_half"
+            tools:layout_editor_absoluteX="8dp" />
 
-</LinearLayout>
+        <TextSwitcher
+            android:id="@id/mi_button_cta"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginBottom="@dimen/mi_baseline"
+            app:layout_constraintBottom_toTopOf="@+id/mi_pager_indicator"
+            app:layout_constraintStart_toEndOf="@id/mi_button_back"
+            app:layout_constraintEnd_toStartOf="@id/mi_button_next"
+            android:layout_gravity="center_horizontal"
+            android:clipChildren="false"
+            tools:layout_editor_absoluteX="131dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/mi_baseline_half"
+                android:paddingBottom="@dimen/mi_baseline_half"
+                android:paddingLeft="@dimen/mi_baseline"
+                android:paddingRight="@dimen/mi_baseline"
+                android:gravity="center"
+                android:text="@string/mi_label_button_cta"
+                android:textColor="?android:textColorPrimaryInverse"
+                android:maxLines="1"
+                android:minLines="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:paddingTop="@dimen/mi_baseline_half"
+                android:paddingBottom="@dimen/mi_baseline_half"
+                android:paddingLeft="@dimen/mi_baseline"
+                android:paddingRight="@dimen/mi_baseline"
+                android:gravity="center"
+                android:text="@string/mi_label_button_cta"
+                android:textColor="?android:textColorPrimaryInverse"
+                android:visibility="gone"
+                android:maxLines="1"
+                android:minLines="1" />
+
+        </TextSwitcher>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
