@@ -1,7 +1,6 @@
 ![Icon](http://i.imgur.com/biiZxND.png)
 
-material-intro
-=======================
+# material-intro
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-material--intro-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3206)
 [![jitpack.io][18]][4]
@@ -12,26 +11,22 @@ A simple material design app intro with cool animations and a simple API.
 
 _Very inspired by Google's app intros._
 
-Demo video on YouTube: https://youtu.be/eKnCHw0UTrk
+### Demo
 
-Demo
-----
 A demo app is available on Google Play:
 
 <a href="https://play.google.com/store/apps/details?id=com.heinrichreimersoftware.materialintro.demo">
 	<img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="60" />
 </a>
 
-Screenshots
------------
+### Screenshots
 
 | Simple slide | Custom slide | Fade effect | Permission request |
 |:-:|:-:|:-:|:-:|
 | ![Simple slide][12] | ![Custom slide][13] | ![Fade effect][14] | ![Permission request][15] |
 | [_SimpleSlide.java_][2] | [_FragmentSlide.java_][1] | [_IntroActivity.java_][3] | [_SimpleSlide.java_][2] |
 
-Features
---------
+### Features
 
 * Material design ([check the docs][30])
 * Easy customization
@@ -40,12 +35,11 @@ Features
 * Parallax slides
 * Fluent API
 
-Dependency
-----------
+## Dependency
 
 *material-intro* is available on [**jitpack.io**][4]
 
-**Gradle dependency:**
+### Gradle
 ```gradle
 allprojects {
     repositories {
@@ -59,15 +53,15 @@ dependencies {
 }
 ```
 
-How-To-Use
------
+## Guide
 
-**Step 1:** Your `Activity` must extend [`IntroActivity`][3] and be in your *AndroidManifest.java*:
+### Setup 
+The activity must extend [`IntroActivity`][3] and have a theme extending `@style/Theme.Intro`:
 ```java
 public class MainIntroActivity extends IntroActivity{
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
+    @Override protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+	// Add slides, edit configuration...
     }
 }
 ```
@@ -81,11 +75,10 @@ public class MainIntroActivity extends IntroActivity{
 </manifest>
 ```
 
-**Step 2:** Add Slides:
+### Adding slides
 ```java
 public class MainIntroActivity extends IntroActivity{
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
+    @Override protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         /**
@@ -111,19 +104,17 @@ public class MainIntroActivity extends IntroActivity{
     }
 }
 ```
-Slide types:
+#### Slide types
 
 - [`SimpleSlide`][2]: Standard slide featuring a title, short description and image like Google's intros.
 - [`FragmentSlide`][1]: Custom slide containing a `Fragment` or a layout resource.
 - [`Slide`][1]: Base slide. If you want to modify what's shown in your slide this is the way to go.
 - Feel free to submit an [issue][10] or [pull request][11] if you think any slide types are missing
 
-**Step 3:** Enable features:
+### Enable additional features
 ```java
 public class MainIntroActivity extends IntroActivity{
-    @Override
-    protected void onCreate(Bundle savedInstanceState){
-
+    @Override protected void onCreate(Bundle savedInstanceState){
         /* Enable/disable fullscreen */
         setFullscreen(true);
 
@@ -137,43 +128,54 @@ public class MainIntroActivity extends IntroActivity{
 
         /* Add a navigation policy to define when users can go forward/backward */
         setNavigationPolicy(new NavigationPolicy() {
-            @Override
-            public boolean canGoForward(int position) {
+            @Override public boolean canGoForward(int position) {
                 return true;
             }
 
-            @Override
-            public boolean canGoBackward(int position) {
+            @Override public boolean canGoBackward(int position) {
                 return false;
             }
         });
 
         /* Add a listener to detect when users try to go to a page they can't go to */
         addOnNavigationBlockedListener(new OnNavigationBlockedListener() {
-            @Override
-            public void onNavigationBlocked(int position, int direction) {
-            }
+            @Override public void onNavigationBlocked(int position, int direction) { ... }
         });
 
         /* Add your own page change listeners */
         addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-            @Override
-            public void onPageSelected(int position) {
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
+            @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { ... }
+            @Override public void onPageSelected(int position) { ... }
+            @Override public void onPageScrollStateChanged(int state) { ... }
         });
     }
 }
 ```
 
-### Pro Tip: Parallax slides
+## Features
 
-You can easily acheive a nice looking parallax effect for any slide by using either [_ParallaxFrameLayout.java_][31], [_ParallaxLinearLayout.java_][32] or [_ParallaxRelativeLayout.java_][33] and defining `layout_parallaxFactor` for its childrens.  
+### Activity result
+
+You can check if the user canceled the intro (by pressing back) or finished it including all slides.
+Just call up the activity using `startActivityForResult(intent, REQUEST_CODE_INTRO);` and then listen for the result:
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == REQUEST_CODE_INTRO) {
+        if (resultCode == RESULT_OK) {
+            // Finished the intro
+        } else {
+            // Cancelled the intro. You can then e.g. finish this activity too.
+            finish();
+	}
+    }
+}
+```
+
+### Parallax slides
+
+You can easily acheive a nice looking parallax effect for any slide by using either [_ParallaxFrameLayout.java_][31], [_ParallaxLinearLayout.java_][32] or [_ParallaxRelativeLayout.java_][33] and defining `layout_parallaxFactor` for its direct childrens.  
 A higher factor means a stronger parallax effect, `0` means no parallax effect at all.
 
 ```xml
@@ -197,18 +199,18 @@ A higher factor means a stronger parallax effect, `0` means no parallax effect a
 </com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout>
 ```
 
-### Pro Tip: Splash screens
+### Splash screens
 
-Check out the [*sample*][26] if you want to show the intro on first start.  
-([_SplashActivity.java_][27], [_SplashIntroActivity.java_][28], [_FinishActivity.java_][29])
+Check out the [*sample*][26] on how to show the intro on first start:
+- **[SplashActivity.java][27]**: A fake splash screen
+- **[SplashIntroActivity.java][28]**: The intro started from FinishActivity
+- **[FinishActivity.java][29]**: The activity started after the splash screen
 
-Changes
--------
+## Changes
 
-See the [releases section][25] for detailed changelogs.
+See the [releases section][25] for changelogs.
 
-Open source libraries
--------
+## Open-source libraries
 
 *material-intro* uses the following open source files:
 
@@ -216,22 +218,31 @@ Open source libraries
 * [AnimUtils.java][7] by [@Nick Butcher][8] (Apache License 2.0)
 * [InkPageIndicator.java][9] by [@Nick Butcher][8] (Apache License 2.0)
 
-License
--------
+## License
 
-    Copyright 2016 Heinrich Reimer
+```
+MIT License
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Copyright (c) 2017 Jan Heinrich Reimer
 
-       http://www.apache.org/licenses/LICENSE-2.0
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 
 [1]: https://github.com/HeinrichReimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java
