@@ -162,21 +162,21 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     @ColorInt
-    public int getPageIndicatorColor(){
+    public int getPageIndicatorColor() {
         return unselectedPaint.getColor();
     }
 
-    public void setPageIndicatorColor(@ColorInt int pageIndicatorColor){
+    public void setPageIndicatorColor(@ColorInt int pageIndicatorColor) {
         unselectedPaint.setColor(pageIndicatorColor);
         invalidate();
     }
 
     @ColorInt
-    public int getCurrentPageIndicatorColor(){
+    public int getCurrentPageIndicatorColor() {
         return selectedPaint.getColor();
     }
 
-    public void setCurrentPageIndicatorColor(@ColorInt int currentPageIndicatorColor){
+    public void setCurrentPageIndicatorColor(@ColorInt int currentPageIndicatorColor) {
         selectedPaint.setColor(currentPageIndicatorColor);
         invalidate();
     }
@@ -386,20 +386,19 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
     }
 
     /**
-     *
      * Unselected dots can be in 6 states:
-     *
+     * <p>
      * #1 At rest
      * #2 Joining neighbour, still separate
      * #3 Joining neighbour, combined curved
      * #4 Joining neighbour, combined straight
      * #5 Join retreating
      * #6 Dot re-showing / revealing
-     *
+     * <p>
      * It can also be in a combination of these states e.g. joining one neighbour while
      * retreating from another.  We therefore create a Path so that we can examine each
      * dot pair separately and later take the union for these cases.
-     *
+     * <p>
      * This function returns a path for the given dot **and any action to it's right** e.g. joining
      * or retreating from it's neighbour
      */
@@ -623,7 +622,8 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         // retreat animations when it has moved 75% of the way.
         // The retreat animation in turn will kick of reveal anims when the
         // retreat has passed any dots to be revealed
-        if (getVisibility() == VISIBLE) createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps).start(); // dotCenterX is null when getVisibility() != VISIBLE
+        if (getVisibility() == VISIBLE)
+            createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps).start(); // dotCenterX is null when getVisibility() != VISIBLE
     }
 
     private ValueAnimator createMoveSelectedAnimator(
@@ -650,10 +650,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 selectedDotX = (Float) valueAnimator.getAnimatedValue();
                 retreatAnimation.startIfNecessary(selectedDotX);
 
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     postInvalidateOnAnimation();
-                }
-                else{
+                } else {
                     postInvalidate();
                 }
             }
@@ -694,17 +693,16 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
 
     private void clearJoiningFractions() {
         Arrays.fill(joiningFractions, 0f);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             postInvalidateOnAnimation();
-        }
-        else{
+        } else {
             postInvalidate();
         }
     }
 
     private void setDotRevealFraction(int dot, float fraction) {
         dotRevealFractions[dot] = fraction;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             postInvalidateOnAnimation();
         } else {
             postInvalidate();
@@ -774,10 +772,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         retreatingJoinX1 = (Float) valueAnimator.getAnimatedValue();
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             postInvalidateOnAnimation();
-                        }
-                        else{
+                        } else {
                             postInvalidate();
                         }
                         // start any reveal animations if we've passed them
@@ -798,10 +795,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         retreatingJoinX2 = (Float) valueAnimator.getAnimatedValue();
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                             postInvalidateOnAnimation();
-                        }
-                        else{
+                        } else {
                             postInvalidate();
                         }
                         // start any reveal animations if we've passed them
@@ -822,21 +818,20 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                     }
                     retreatingJoinX1 = initialX1;
                     retreatingJoinX2 = initialX2;
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         postInvalidateOnAnimation();
-                    }
-                    else{
+                    } else {
                         postInvalidate();
                     }
                 }
+
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     retreatingJoinX1 = INVALID_FRACTION;
                     retreatingJoinX2 = INVALID_FRACTION;
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         postInvalidateOnAnimation();
-                    }
-                    else{
+                    } else {
                         postInvalidate();
                     }
                 }
@@ -868,10 +863,9 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     setDotRevealFraction(PendingRevealAnimator.this.dot, 0f);
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         postInvalidateOnAnimation();
-                    }
-                    else{
+                    } else {
                         postInvalidate();
                     }
                 }

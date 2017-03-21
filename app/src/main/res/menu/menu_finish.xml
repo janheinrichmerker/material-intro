@@ -4,6 +4,5 @@
     <item
         android:id="@+id/menu_item_reset_first_start"
         android:title="@string/title_menu_reset_first_start"
-        app:showAsAction="never">
-    </item>
+        app:showAsAction="never"></item>
 </menu>

@@ -45,7 +45,8 @@ public class MainIntroActivity extends IntroActivity {
         super.onCreate(savedInstanceState);
 
         setButtonBackFunction(skipEnabled ? BUTTON_BACK_FUNCTION_SKIP : BUTTON_BACK_FUNCTION_BACK);
-        setButtonNextFunction(finishEnabled ? BUTTON_NEXT_FUNCTION_NEXT_FINISH : BUTTON_NEXT_FUNCTION_NEXT);
+        setButtonNextFunction(
+                finishEnabled ? BUTTON_NEXT_FUNCTION_NEXT_FINISH : BUTTON_NEXT_FUNCTION_NEXT);
         setButtonBackVisible(showBack);
         setButtonNextVisible(showNext);
         setButtonCtaVisible(getStartedEnabled);
@@ -71,7 +72,8 @@ public class MainIntroActivity extends IntroActivity {
                 .buttonCtaClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast toast = Toast.makeText(MainIntroActivity.this, R.string.toast_button_cta, Toast.LENGTH_SHORT);
+                        Toast toast = Toast
+                                .makeText(MainIntroActivity.this, R.string.toast_button_cta, Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER, 0, 0);
                         toast.show();
 
@@ -155,7 +157,8 @@ public class MainIntroActivity extends IntroActivity {
                     Slide slide = getSlide(position);
 
                     if (slide == permissionsSlide) {
-                        Snackbar.make(contentView, R.string.label_grant_permissions, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(contentView, R.string.label_grant_permissions, Snackbar.LENGTH_LONG)
+                                .show();
                     } else if (slide == loginSlide) {
                         Snackbar.make(contentView, R.string.label_fill_out_form, Snackbar.LENGTH_LONG).show();
                     }

@@ -203,7 +203,7 @@ public class SlideAdapter extends FragmentPagerAdapter {
     public boolean retainSlides(@NonNull Collection<?> collection) {
         boolean modified = false;
         for (int i = data.size() - 1; i >= 0; i--) {
-            if(!collection.contains(data.get(i))){
+            if (!collection.contains(data.get(i))) {
                 data.remove(i);
                 modified = true;
                 i--;

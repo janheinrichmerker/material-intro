@@ -136,7 +136,7 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         return result;
     }
 
-    public static class Builder{
+    public static class Builder {
         private Fragment fragment;
         @ColorRes
         private int background;
@@ -193,8 +193,7 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public Builder buttonCtaLabelHtml(String buttonCtaLabelHtml) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 this.buttonCtaLabel = Html.fromHtml(buttonCtaLabelHtml, Html.FROM_HTML_MODE_LEGACY);
-            }
-            else {
+            } else {
                 //noinspection deprecation
                 this.buttonCtaLabel = Html.fromHtml(buttonCtaLabelHtml);
             }
@@ -213,8 +212,8 @@ public class FragmentSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             return this;
         }
 
-        public FragmentSlide build(){
-            if(background == 0 || fragment == null)
+        public FragmentSlide build() {
+            if (background == 0 || fragment == null)
                 throw new IllegalArgumentException("You must set at least a fragment and background.");
             return new FragmentSlide(this);
         }

@@ -27,8 +27,7 @@ public class ParallaxSlideFragment extends SlideFragment implements Parallaxable
             View child = queue.remove();
             if (child instanceof Parallaxable) {
                 return (Parallaxable) child;
-            }
-            else if (child instanceof ViewGroup) {
+            } else if (child instanceof ViewGroup) {
                 ViewGroup viewGroup = (ViewGroup) child;
                 for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
                     queue.add(viewGroup.getChildAt(i));

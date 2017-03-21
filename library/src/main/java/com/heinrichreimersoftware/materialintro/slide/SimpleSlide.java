@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.heinrichreimersoftware.materialintro.R;
@@ -210,7 +209,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     @Override
     public int hashCode() {
         int result = fragment != null ? fragment.hashCode() : 0;
-        result = 31 * result + ((Long)id).hashCode();
+        result = 31 * result + ((Long) id).hashCode();
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + titleRes;
         result = 31 * result + (description != null ? description.hashCode() : 0);
@@ -274,8 +273,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public Builder titleHtml(String titleHtml) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 this.title = Html.fromHtml(titleHtml, Html.FROM_HTML_MODE_LEGACY);
-            }
-            else {
+            } else {
                 //noinspection deprecation
                 this.title = Html.fromHtml(titleHtml);
             }
@@ -303,8 +301,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public Builder descriptionHtml(String descriptionHtml) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 this.description = Html.fromHtml(descriptionHtml, Html.FROM_HTML_MODE_LEGACY);
-            }
-            else {
+            } else {
                 //noinspection deprecation
                 this.description = Html.fromHtml(descriptionHtml);
             }
@@ -368,8 +365,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public Builder buttonCtaLabelHtml(String buttonCtaLabelHtml) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 this.buttonCtaLabel = Html.fromHtml(buttonCtaLabelHtml, Html.FROM_HTML_MODE_LEGACY);
-            }
-            else {
+            } else {
                 //noinspection deprecation
                 this.buttonCtaLabel = Html.fromHtml(buttonCtaLabelHtml);
             }
@@ -513,7 +509,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                     imageView.setVisibility(View.GONE);
                 }
             }
-            
+
             @ColorInt
             int textColorPrimary;
             @ColorInt
@@ -529,7 +525,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                 textColorPrimary = ContextCompat.getColor(getContext(), R.color.mi_text_color_primary_light);
                 textColorSecondary = ContextCompat.getColor(getContext(), R.color.mi_text_color_secondary_light);
             }
-            
+
             if (titleView != null) {
                 titleView.setTextColor(textColorPrimary);
             }
@@ -538,7 +534,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             }
 
             if (getActivity() instanceof SimpleSlideActivity) {
-                ((SimpleSlideActivity)getActivity()).onSlideViewCreated(this, fragment, id);
+                ((SimpleSlideActivity) getActivity()).onSlideViewCreated(this, fragment, id);
             }
 
             return fragment;
@@ -548,7 +544,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public void onDestroyView() {
             if (getActivity() instanceof SimpleSlideActivity) {
                 long id = getArguments().getLong(ARGUMENT_ID);
-                ((SimpleSlideActivity)getActivity()).onSlideDestroyView(this, getView(), id);
+                ((SimpleSlideActivity) getActivity()).onSlideDestroyView(this, getView(), id);
             }
             titleView = null;
             descriptionView = null;
@@ -564,12 +560,11 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             return descriptionView;
         }
 
-        public ImageView getImageView(){
+        public ImageView getImageView() {
             return imageView;
         }
 
-        public int getSlideId()
-        {
+        public int getSlideId() {
             return getArguments().getInt(ARGUMENT_ID);
         }
 

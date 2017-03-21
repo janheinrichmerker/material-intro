@@ -42,8 +42,7 @@ public class FinishActivity extends AppCompatActivity {
                 PreferenceManager.getDefaultSharedPreferences(this).edit()
                         .putBoolean(PREF_KEY_FIRST_START, false)
                         .apply();
-            }
-            else {
+            } else {
                 PreferenceManager.getDefaultSharedPreferences(this).edit()
                         .putBoolean(PREF_KEY_FIRST_START, true)
                         .apply();

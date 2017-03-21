@@ -31,17 +31,17 @@ import com.heinrichreimersoftware.materialintro.R;
  */
 public class AnimUtils {
 
-    private AnimUtils() { }
+    private AnimUtils() {
+    }
 
     private static Interpolator fastOutSlowIn;
 
     public static Interpolator getFastOutSlowInInterpolator(Context context) {
         if (fastOutSlowIn == null) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 fastOutSlowIn = AnimationUtils.loadInterpolator(context,
                         android.R.interpolator.fast_out_slow_in);
-            }
-            else {
+            } else {
                 fastOutSlowIn = new FastOutSlowInInterpolator();
             }
         }

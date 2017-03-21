@@ -5,5 +5,5 @@
         android:id="@+id/menu_item_github"
         android:icon="@drawable/ic_github"
         android:title="@string/title_menu_github"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 </menu>

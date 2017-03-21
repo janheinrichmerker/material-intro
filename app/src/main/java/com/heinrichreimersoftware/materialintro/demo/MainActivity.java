@@ -29,13 +29,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, MainIntroActivity.class);
                 intent.putExtra(MainIntroActivity.EXTRA_FULLSCREEN, binding.optionFullscreen.isChecked());
                 intent.putExtra(MainIntroActivity.EXTRA_SCROLLABLE, binding.optionScrollable.isChecked());
-                intent.putExtra(MainIntroActivity.EXTRA_CUSTOM_FRAGMENTS, binding.optionCustomFragments.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_CUSTOM_FRAGMENTS,
+                        binding.optionCustomFragments.isChecked());
                 intent.putExtra(MainIntroActivity.EXTRA_PERMISSIONS, binding.optionPermissions.isChecked());
-                intent.putExtra(MainIntroActivity.EXTRA_SKIP_ENABLED, binding.optionSkipEnabled.isChecked());
+                intent
+                        .putExtra(MainIntroActivity.EXTRA_SKIP_ENABLED, binding.optionSkipEnabled.isChecked());
                 intent.putExtra(MainIntroActivity.EXTRA_SHOW_BACK, binding.optionShowBack.isChecked());
                 intent.putExtra(MainIntroActivity.EXTRA_SHOW_NEXT, binding.optionShowNext.isChecked());
-                intent.putExtra(MainIntroActivity.EXTRA_FINISH_ENABLED, binding.optionFinishEnabled.isChecked());
-                intent.putExtra(MainIntroActivity.EXTRA_GET_STARTED_ENABLED, binding.optionGetStartedEnabled.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_FINISH_ENABLED,
+                        binding.optionFinishEnabled.isChecked());
+                intent.putExtra(MainIntroActivity.EXTRA_GET_STARTED_ENABLED,
+                        binding.optionGetStartedEnabled.isChecked());
                 startActivity(intent);
             }
         });
@@ -67,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_github) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/HeinrichReimer/material-intro"));
+            Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://github.com/HeinrichReimer/material-intro"));
             startActivity(intent);
             return true;
         }

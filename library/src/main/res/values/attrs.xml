@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="InkPageIndicator">
-        <attr name="dotDiameter" format="dimension"/>
-        <attr name="dotGap" format="dimension"/>
-        <attr name="animationDuration" format="integer"/>
-        <attr name="pageIndicatorColor" format="color"/>
-        <attr name="currentPageIndicatorColor" format="color"/>
+        <attr name="dotDiameter" format="dimension" />
+        <attr name="dotGap" format="dimension" />
+        <attr name="animationDuration" format="integer" />
+        <attr name="pageIndicatorColor" format="color" />
+        <attr name="currentPageIndicatorColor" format="color" />
     </declare-styleable>
 
     <declare-styleable name="ParallaxLayout_Layout">
-        <attr name="layout_parallaxFactor" format="float"/>
+        <attr name="layout_parallaxFactor" format="float" />
     </declare-styleable>
 </resources>

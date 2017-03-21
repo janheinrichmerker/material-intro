@@ -52,7 +52,7 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
         super.setPageTransformer(reverseDrawingOrder, new PageTransformerWrapper(transformer, getAdapter()));
     }
 
-    private class OnPageChangeListenerWrapper implements OnPageChangeListener{
+    private class OnPageChangeListenerWrapper implements OnPageChangeListener {
         private final OnPageChangeListener listener;
 
         private OnPageChangeListenerWrapper(OnPageChangeListener listener) {
@@ -81,7 +81,7 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
         }
     }
 
-    private class PagerAdapterWrapper extends PagerAdapter{
+    private class PagerAdapterWrapper extends PagerAdapter {
         private final PagerAdapter adapter;
 
         private PagerAdapterWrapper(PagerAdapter adapter) {
@@ -120,20 +120,20 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            if(position < adapter.getCount())
+            if (position < adapter.getCount())
                 return adapter.instantiateItem(container, position);
             return null;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            if(position < adapter.getCount())
+            if (position < adapter.getCount())
                 adapter.destroyItem(container, position, object);
         }
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            if(position < adapter.getCount())
+            if (position < adapter.getCount())
                 adapter.setPrimaryItem(container, position, object);
         }
 
@@ -153,7 +153,7 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
         @Deprecated
         @Override
         public Object instantiateItem(View container, int position) {
-            if(position < adapter.getCount())
+            if (position < adapter.getCount())
                 return adapter.instantiateItem(container, position);
             return null;
         }
@@ -162,7 +162,7 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
         @Deprecated
         @Override
         public void destroyItem(View container, int position, Object object) {
-            if(position < adapter.getCount())
+            if (position < adapter.getCount())
                 adapter.destroyItem(container, position, object);
         }
 
@@ -170,7 +170,7 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
         @Deprecated
         @Override
         public void setPrimaryItem(View container, int position, Object object) {
-            if(position < adapter.getCount())
+            if (position < adapter.getCount())
                 adapter.setPrimaryItem(container, position, object);
         }
 
@@ -210,20 +210,20 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position < adapter.getCount())
+            if (position < adapter.getCount())
                 return adapter.getPageTitle(position);
             return null;
         }
 
         @Override
         public float getPageWidth(int position) {
-            if(position < adapter.getCount())
+            if (position < adapter.getCount())
                 return adapter.getPageWidth(position);
             return 1f;
         }
     }
 
-    private class PageTransformerWrapper implements PageTransformer{
+    private class PageTransformerWrapper implements PageTransformer {
         private final PageTransformer pageTransformer;
         private final PagerAdapter adapter;
 
@@ -239,7 +239,8 @@ public class FadeableViewPager extends SwipeBlockableViewPager {
     }
 
 
-    public interface OnOverscrollPageChangeListener extends OnPageChangeListener {}
+    public interface OnOverscrollPageChangeListener extends OnPageChangeListener {
+    }
 
     public static class SimpleOnOverscrollPageChangeListener implements OnOverscrollPageChangeListener {
         @Override

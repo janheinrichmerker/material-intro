@@ -22,7 +22,8 @@ public class LoginFragment extends SlideFragment {
         @Override
         public void run() {
             binding.fakeLogin.setText(R.string.label_fake_login_success);
-            Toast.makeText(getContext(), R.string.label_fake_login_success_message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.label_fake_login_success_message, Toast.LENGTH_SHORT)
+                    .show();
 
             loggedIn = true;
             updateNavigation();

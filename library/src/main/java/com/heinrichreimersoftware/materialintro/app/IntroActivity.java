@@ -79,6 +79,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     @Retention(RetentionPolicy.SOURCE)
     @interface ButtonNextFunction {
     }
+
     public static final int BUTTON_NEXT_FUNCTION_NEXT = 1;
     public static final int BUTTON_NEXT_FUNCTION_NEXT_FINISH = 2;
 
@@ -86,6 +87,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     @Retention(RetentionPolicy.SOURCE)
     @interface ButtonBackFunction {
     }
+
     public static final int BUTTON_BACK_FUNCTION_BACK = 1;
     public static final int BUTTON_BACK_FUNCTION_SKIP = 2;
 
@@ -93,6 +95,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     @Retention(RetentionPolicy.SOURCE)
     @interface ButtonCtaTintMode {
     }
+
     public static final int BUTTON_CTA_TINT_MODE_BACKGROUND = 1;
     public static final int BUTTON_CTA_TINT_MODE_TEXT = 2;
 
@@ -161,8 +164,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                 setSystemUiFlags(View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN, true);
                 updateFullscreen();
-            }
-            else {
+            } else {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                         WindowManager.LayoutParams.FLAG_FULLSCREEN);
             }
@@ -206,7 +208,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         updateButtonCta();
     }
@@ -247,7 +249,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         super.onDestroy();
     }
 
-    private void setSystemUiFlags(int flags, boolean value){
+    private void setSystemUiFlags(int flags, boolean value) {
         int systemUiVisibility = getWindow().getDecorView().getSystemUiVisibility();
         if (value) {
             systemUiVisibility |= flags;
@@ -258,7 +260,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void setFullscreenFlags(boolean fullscreen){
+    private void setFullscreenFlags(boolean fullscreen) {
         int fullscreenFlags = View.SYSTEM_UI_FLAG_FULLSCREEN;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             fullscreenFlags |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
@@ -333,8 +335,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
                 if (position > currentPosition && Math.floor(position) != currentPosition && position % 1 != 0) {
                     binding.miPager.setCurrentItem((int) Math.floor(position), false);
-                }
-                else if (position < currentPosition && Math.ceil(position) != currentPosition && position % 1 != 0) {
+                } else if (position < currentPosition && Math.ceil(position) != currentPosition && position % 1 != 0) {
                     binding.miPager.setCurrentItem((int) Math.ceil(position), false);
                 }
 
@@ -379,8 +380,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             while (newPosition > position && canGoBackward(newPosition, true)) {
                 newPosition--;
             }
-        }
-        else {
+        } else {
             // Noting to do here
             return true;
         }
@@ -539,8 +539,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             }
             if (!TextUtils.isEmpty(buttonCtaLabel)) {
                 return Pair.create(buttonCtaLabel, new ButtonCtaClickListener());
-            }
-            else {
+            } else {
                 return Pair.create((CharSequence) getString(R.string.mi_label_button_cta),
                         new ButtonCtaClickListener());
             }
@@ -549,7 +548,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     private void updateTaskDescription() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             String title = getTitle().toString();
             Drawable iconDrawable = getApplicationInfo().loadIcon(getPackageManager());
             Bitmap icon = iconDrawable instanceof BitmapDrawable ? ((BitmapDrawable) iconDrawable).getBitmap() : null;
@@ -560,8 +559,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                 } catch (Resources.NotFoundException e) {
                     colorPrimary = ContextCompat.getColor(IntroActivity.this, getBackground(position));
                 }
-            }
-            else {
+            } else {
                 TypedValue typedValue = new TypedValue();
                 TypedArray a = obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorPrimary});
                 colorPrimary = a.getColor(0, 0);
@@ -701,8 +699,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                 if (buttonNext == null) {
                     //Hide button
                     binding.miButtonCta.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     binding.miButtonCta.setVisibility(View.VISIBLE);
                     //Fade in
                     if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(buttonNext.first))
@@ -716,8 +713,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                     layoutParams.height = Math.round(getResources().getDimensionPixelSize(R.dimen.mi_button_cta_height) * ACCELERATE_DECELERATE_INTERPOLATOR.getInterpolation(positionOffset));
                     binding.miButtonCta.setLayoutParams(layoutParams);
                 }
-            }
-            else {
+            } else {
                 if (buttonNext == null) {
                     binding.miButtonCta.setVisibility(View.VISIBLE);
                     //Fade out
@@ -731,8 +727,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                     ViewGroup.LayoutParams layoutParams = binding.miButtonCta.getLayoutParams();
                     layoutParams.height = Math.round(getResources().getDimensionPixelSize(R.dimen.mi_button_cta_height) * ACCELERATE_DECELERATE_INTERPOLATOR.getInterpolation(1 - positionOffset));
                     binding.miButtonCta.setLayoutParams(layoutParams);
-                }
-                else {
+                } else {
                     binding.miButtonCta.setVisibility(View.VISIBLE);
                     ViewGroup.LayoutParams layoutParams = binding.miButtonCta.getLayoutParams();
                     layoutParams.height = getResources().getDimensionPixelSize(R.dimen.mi_button_cta_height);
@@ -743,8 +738,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                             binding.miButtonCta.setText(buttonNext.first);
                         binding.miButtonCta.getChildAt(0).setOnClickListener(buttonNext.second);
                         binding.miButtonCta.getChildAt(1).setOnClickListener(buttonNext.second);
-                    }
-                    else {
+                    } else {
                         if (!((Button) binding.miButtonCta.getCurrentView()).getText().equals(button.first))
                             binding.miButtonCta.setText(button.first);
                         binding.miButtonCta.getChildAt(0).setOnClickListener(button.second);
@@ -757,8 +751,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (realPosition < adapter.getCount() - 1) {
             //Reset
             binding.miButtonCta.setTranslationY(0);
-        }
-        else {
+        } else {
             //Hide CTA button
             binding.miButtonCta.setTranslationY(positionOffset * yOffset);
         }
@@ -771,13 +764,11 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (realPosition < 1 && buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
             //Hide back button
             binding.miButtonBack.setTranslationY((1 - positionOffset) * yOffset);
-        }
-        else if (realPosition < adapter.getCount() - 2) {
+        } else if (realPosition < adapter.getCount() - 2) {
             //Reset
             binding.miButtonBack.setTranslationY(0);
             binding.miButtonBack.setTranslationX(0);
-        }
-        else if (realPosition < adapter.getCount() - 1) {
+        } else if (realPosition < adapter.getCount() - 1) {
             //Scroll away skip button
             if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
                 boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
@@ -786,8 +777,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             } else {
                 binding.miButtonBack.setTranslationX(0);
             }
-        }
-        else {
+        } else {
             //Keep skip button scrolled away, hide next button
             if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
                 boolean rtl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && getResources().getConfiguration().getLayoutDirection() ==
@@ -806,17 +796,14 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (realPosition < adapter.getCount() - 2) {
             //Reset
             binding.miButtonNext.setTranslationY(0);
-        }
-        else if (realPosition < adapter.getCount() - 1) {
+        } else if (realPosition < adapter.getCount() - 1) {
             //Reset finish button, hide next icon
             if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
                 binding.miButtonNext.setTranslationY(0);
-            }
-            else {
+            } else {
                 binding.miButtonNext.setTranslationY(positionOffset * yOffset);
             }
-        }
-        else if (realPosition >= adapter.getCount() - 1) {
+        } else if (realPosition >= adapter.getCount() - 1) {
             //Hide finish icon, keep next icon hidden
             if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
                 binding.miButtonNext.setTranslationY(positionOffset * yOffset);
@@ -833,8 +820,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (realPosition < adapter.getCount() - 1) {
             //Reset
             binding.miPagerIndicator.setTranslationY(0);
-        }
-        else {
+        } else {
             //Hide CTA button
             binding.miPagerIndicator.setTranslationY(positionOffset * yOffset);
         }
@@ -859,8 +845,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             if (adapter != null && position + positionOffset > adapter.getCount() - 1) {
                 setFullscreenFlags(false);
-            }
-            else {
+            } else {
                 setFullscreenFlags(fullscreen);
             }
         }
@@ -872,8 +857,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (realPosition < adapter.getCount() - 1) {
             //Reset
             binding.miFrame.setAlpha(1);
-        }
-        else {
+        } else {
             //Fade background
             binding.miFrame.setAlpha(1 - (positionOffset * 0.5f));
         }
@@ -897,8 +881,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT_FINISH) {
             if (realPosition >= adapter.getCount() - 1) {
                 offset = 1;
-            }
-            else if (realPosition >= adapter.getCount() - 2) {
+            } else if (realPosition >= adapter.getCount() - 2) {
                 offset = positionOffset;
             }
         }
@@ -1363,7 +1346,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         notifyDataSetChanged();
         return oldList;
     }
-    
+
     public void setPageTransformer(boolean reverseDrawingOrder, ViewPager.PageTransformer transformer) {
         binding.miPager.setPageTransformer(reverseDrawingOrder, transformer);
     }

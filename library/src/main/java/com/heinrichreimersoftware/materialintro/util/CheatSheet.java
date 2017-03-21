@@ -27,7 +27,7 @@ import android.widget.Toast;
  * Helper class for showing cheat sheets (tooltips) for icon-only UI elements on long-press. This is
  * already default platform behavior for icon-only {@link android.app.ActionBar} items and tabs.
  * This class provides this behavior for any other such UI element.
- *
+ * <p>
  * <p>Based on the original action bar implementation in <a href="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/com/android/internal/view/menu/ActionMenuItemView.java">
  * ActionMenuItemView.java</a>.
  */
