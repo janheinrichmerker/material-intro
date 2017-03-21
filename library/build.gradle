@@ -15,17 +15,24 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}" + (versionPatch == 0 ? "" : ".${versionPatch}")
     }
+
     lintOptions {
         abortOnError false
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
     compile 'com.android.support:appcompat-v7:25.3.0'
+    compile "com.android.support.constraint:constraint-layout:1.0.2"
 }

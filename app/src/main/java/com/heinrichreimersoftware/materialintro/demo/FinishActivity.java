@@ -1,31 +1,29 @@
 package com.heinrichreimersoftware.materialintro.demo;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.heinrichreimersoftware.materialintro.demo.databinding.ActivityFinishBinding;
 
 public class FinishActivity extends AppCompatActivity {
 
     public static final String PREF_KEY_FIRST_START = "com.heinrichreimersoftware.materialintro.demo.PREF_KEY_FIRST_START";
     public static final int REQUEST_CODE_INTRO = 1;
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    private ActivityFinishBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_finish);
-        ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_finish);
 
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
 
         boolean firstStart = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(PREF_KEY_FIRST_START, true);

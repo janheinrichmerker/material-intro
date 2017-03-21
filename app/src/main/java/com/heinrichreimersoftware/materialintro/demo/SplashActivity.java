@@ -1,11 +1,12 @@
 package com.heinrichreimersoftware.materialintro.demo;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import butterknife.ButterKnife;
+import com.heinrichreimersoftware.materialintro.demo.databinding.ActivitySplashBinding;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -19,11 +20,12 @@ public class SplashActivity extends AppCompatActivity {
         }
     };
 
+    private ActivitySplashBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
         //Fake wait 2s to simulate some initialization on cold start (never do this in production!)
         waitHandler.postDelayed(waitCallback, 2000);
