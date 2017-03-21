@@ -8,9 +8,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -75,6 +73,8 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_FULLSCREEN";
     private static final String KEY_BUTTON_CTA_VISIBLE =
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_BUTTON_CTA_VISIBLE";
+
+    private boolean activityCreated = false;
 
     //Settings constants
     @IntDef({BUTTON_NEXT_FUNCTION_NEXT, BUTTON_NEXT_FUNCTION_NEXT_FINISH})
@@ -144,8 +144,6 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        lockOrientation();
-
         pageScrollInterpolator = AnimationUtils.loadInterpolator(this, android.R.interpolator.accelerate_decelerate);
         pageScrollDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -181,6 +179,8 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        activityCreated = true;
+
         updateTaskDescription();
         updateButtonNextDrawable();
         updateButtonBackDrawable();
@@ -242,10 +242,11 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     @Override
     protected void onDestroy() {
-        if (isAutoplaying())
+        if (isAutoplaying()) {
             cancelAutoplay();
+        }
 
-        unlockOrientation();
+        activityCreated = false;
         super.onDestroy();
     }
 
@@ -466,12 +467,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     private void performButtonBackPress() {
         if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
-            int count = getCount();
-            int endPosition = pager.getCurrentItem();
-            while (endPosition < count && canGoForward(endPosition, true)) {
-                endPosition++;
-            }
-            smoothScrollPagerTo(endPosition);
+            goToSlide(getCount());
         } else if (buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
             previousSlide();
         }
@@ -941,26 +937,6 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         }
     }
 
-    private void lockOrientation() {
-        int orientation;
-        int rotation = getResources().getConfiguration().orientation;
-        switch (rotation) {
-            case Configuration.ORIENTATION_LANDSCAPE:
-                orientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
-                break;
-            case Configuration.ORIENTATION_PORTRAIT:
-            default:
-                orientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;
-                break;
-        }
-
-        setRequestedOrientation(orientation);
-    }
-
-    private void unlockOrientation() {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-    }
-
     @SuppressWarnings("unused")
     public void autoplay(@IntRange(from = 1) long delay, @IntRange(from = -1) int repeatCount) {
         autoplayCounter = repeatCount;
@@ -1399,12 +1375,18 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     public void notifyDataSetChanged() {
+        if (!activityCreated) {
+            // Don't notify any listener until the activity is created
+            return;
+        }
+
         int position = this.position;
         pager.setAdapter(adapter);
         pager.setCurrentItem(position);
 
-        if (finishIfNeeded())
+        if (finishIfNeeded()) {
             return;
+        }
 
         updateTaskDescription();
         updateButtonBackDrawable();
@@ -1419,8 +1401,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             IntroActivity.this.position = (int) Math.floor(position + positionOffset);
             IntroActivity.this.positionOffset = (((position + positionOffset) % 1) + 1) % 1;
 
-            if (finishIfNeeded())
+            if (finishIfNeeded()) {
                 return;
+            }
 
             //Lock while scrolling a slide near its edges to lock (uncommon) multiple page swipes
             if (Math.abs(positionOffset) < 0.1f) {
@@ -1442,12 +1425,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     private class ButtonCtaClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            int count = getCount();
-            int endPosition = pager.getCurrentItem();
-            while (endPosition < count && canGoForward(endPosition, true)) {
-                endPosition++;
-            }
-            smoothScrollPagerTo(endPosition);
+            goToSlide(getCount());
         }
     }
 }
