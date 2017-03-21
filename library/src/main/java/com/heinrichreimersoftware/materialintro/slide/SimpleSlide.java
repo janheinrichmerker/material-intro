@@ -540,7 +540,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             }
 
             if (getActivity() instanceof SimpleSlideActivity) {
-                ((SimpleSlideActivity)getActivity()).onViewCreated(this, fragment, id);
+                ((SimpleSlideActivity)getActivity()).onSlideViewCreated(this, fragment, id);
             }
 
             return fragment;
@@ -550,7 +550,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         public void onDestroyView() {
             if (getActivity() instanceof SimpleSlideActivity) {
                 int id = getArguments().getInt(ARGUMENT_ID);
-                ((SimpleSlideActivity)getActivity()).onDestroyView(this, getView(), id);
+                ((SimpleSlideActivity)getActivity()).onSlideDestroyView(this, getView(), id);
             }
             innerLinearLayout = null;
             titleView = null;
