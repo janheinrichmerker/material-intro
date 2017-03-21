@@ -8,7 +8,9 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -142,6 +144,8 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        lockOrientation();
+
         pageScrollInterpolator = AnimationUtils.loadInterpolator(this, android.R.interpolator.accelerate_decelerate);
         pageScrollDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -240,6 +244,8 @@ public class IntroActivity extends AppCompatActivity {
     protected void onDestroy() {
         if (isAutoplaying())
             cancelAutoplay();
+
+        unlockOrientation();
         super.onDestroy();
     }
 
@@ -885,6 +891,26 @@ public class IntroActivity extends AppCompatActivity {
         }
     }
 
+    private void lockOrientation() {
+        int orientation;
+        int rotation = getResources().getConfiguration().orientation;
+        switch (rotation) {
+            case Configuration.ORIENTATION_LANDSCAPE:
+                orientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
+                break;
+            case Configuration.ORIENTATION_PORTRAIT:
+            default:
+                orientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT;
+                break;
+        }
+
+        setRequestedOrientation(orientation);
+    }
+
+    private void unlockOrientation() {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    }
+
     @SuppressWarnings("unused")
     public void autoplay(@IntRange(from = 1) long delay, @IntRange(from = -1) int repeatCount) {
         autoplayCounter = repeatCount;
@@ -1221,6 +1247,11 @@ public class IntroActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public Slide getSlide(int location) {
         return adapter.getSlide(location);
+    }
+
+    @SuppressWarnings("unused")
+    public int getSlidePosition(Slide slide) {
+        return adapter.getItemPosition(slide);
     }
 
     @SuppressWarnings("unused")
