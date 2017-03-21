@@ -568,9 +568,9 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             return imageView;
         }
 
-        public int getSlideId()
+        public long getSlideId()
         {
-            return getArguments().getInt(ARGUMENT_ID);
+            return getArguments().getLong(ARGUMENT_ID);
         }
 
         @Override
