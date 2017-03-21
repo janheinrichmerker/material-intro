@@ -125,8 +125,9 @@ public class SlideAdapter extends FragmentPagerAdapter {
             //Load old fragment from fragment manager
             ((RestorableSlide) slide).setFragment(instantiatedFragment);
             data.set(position, slide);
-            if (instantiatedFragment instanceof SlideFragment)
+            if (instantiatedFragment instanceof SlideFragment && instantiatedFragment.isAdded()) {
                 ((SlideFragment) instantiatedFragment).updateNavigation();
+            }
         }
         return instantiatedFragment;
     }

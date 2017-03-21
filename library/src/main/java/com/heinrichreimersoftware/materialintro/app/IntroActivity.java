@@ -66,13 +66,15 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressLint("Registered")
-public class IntroActivity extends AppCompatActivity {
+public class IntroActivity extends AppCompatActivity implements IntroNavigation {
     private static final String KEY_CURRENT_ITEM =
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_CURRENT_ITEM";
     private static final String KEY_FULLSCREEN =
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_FULLSCREEN";
     private static final String KEY_BUTTON_CTA_VISIBLE =
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_BUTTON_CTA_VISIBLE";
+
+    private boolean activityCreated = false;
 
     //Settings constants
     @IntDef({BUTTON_NEXT_FUNCTION_NEXT, BUTTON_NEXT_FUNCTION_NEXT_FINISH})
@@ -113,7 +115,6 @@ public class IntroActivity extends AppCompatActivity {
     private IntroPageChangeListener listener = new IntroPageChangeListener();
     private int position = 0;
     private float positionOffset = 0;
-    private boolean enableFinishCheck = true;
 
     //Settings
     private boolean fullscreen = false;
@@ -178,6 +179,8 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        activityCreated = true;
+
         updateTaskDescription();
         updateButtonNextDrawable();
         updateButtonBackDrawable();
@@ -239,8 +242,11 @@ public class IntroActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (isAutoplaying())
+        if (isAutoplaying()) {
             cancelAutoplay();
+        }
+
+        activityCreated = false;
         super.onDestroy();
     }
 
@@ -361,42 +367,81 @@ public class IntroActivity extends AppCompatActivity {
         return Math.round(pageScrollDuration * (distance + Math.sqrt(distance)) / 2);
     }
 
-    public void nextSlide() {
-        int currentItem = pager.getCurrentItem();
-        if (currentItem > adapter.getCount() - 1) finishIfNeeded();
+    @Override
+    public boolean goToSlide(int position) {
+        int lastPosition = pager.getCurrentItem();
 
-        if (canGoForward(currentItem, true)) {
-            smoothScrollPagerTo(++currentItem);
+        if (lastPosition >= adapter.getCount()) {
+            finishIfNeeded();
+        }
+
+        int newPosition = lastPosition;
+
+        position = Math.max(0, Math.min(position, getCount()));
+
+        if (position > lastPosition) {
+            // Go forward
+            while (newPosition < position && canGoForward(newPosition, true)) {
+                newPosition++;
+            }
+        } else if (position < lastPosition) {
+            // Go backward
+            while (newPosition > position && canGoBackward(newPosition, true)) {
+                newPosition--;
+            }
         }
         else {
-            AnimUtils.applyShakeAnimation(this, buttonNext);
+            // Noting to do here
+            return true;
         }
+
+        boolean blocked = false;
+        if (newPosition != position) {
+            // Could not go the complete way to the given position.
+            blocked = true;
+
+            if (position > lastPosition) {
+                AnimUtils.applyShakeAnimation(this, buttonNext);
+            } else if (position < lastPosition) {
+                AnimUtils.applyShakeAnimation(this, buttonBack);
+            }
+        }
+
+        // Scroll to new position
+        smoothScrollPagerTo(newPosition);
+
+        return !blocked;
+    }
+
+    @Override
+    public boolean nextSlide() {
+        int currentItem = pager.getCurrentItem();
+        return goToSlide(currentItem + 1);
     }
 
     private int nextSlideAuto() {
-        int endPosition = pager.getCurrentItem();
+        int lastPosition = pager.getCurrentItem();
         int count = getCount();
 
         if (count == 1) {
             return 0;
         }
         else if (pager.getCurrentItem() >= count - 1) {
-            while (endPosition >= 0 && canGoBackward(endPosition, true)) {
-                endPosition--;
+            while (lastPosition >= 0 && canGoBackward(lastPosition, true)) {
+                lastPosition--;
             }
             if (autoplayCounter > 0)
                 autoplayCounter--;
-        }
-        else if (canGoForward(endPosition, true)) {
-            endPosition++;
+        } else if (canGoForward(lastPosition, true)) {
+            lastPosition++;
         }
 
-        int distance = Math.abs(endPosition - pager.getCurrentItem());
+        int distance = Math.abs(lastPosition - pager.getCurrentItem());
 
-        if (endPosition == pager.getCurrentItem())
+        if (lastPosition == pager.getCurrentItem())
             return 0;
 
-        smoothScrollPagerTo(endPosition);
+        smoothScrollPagerTo(lastPosition);
 
         if (autoplayCounter == 0)
             return 0;
@@ -404,35 +449,37 @@ public class IntroActivity extends AppCompatActivity {
 
     }
 
-    public void previousSlide() {
+    @Override
+    public boolean previousSlide() {
         int currentItem = pager.getCurrentItem();
-        if (currentItem <= 0) return;
+        return goToSlide(currentItem - 1);
+    }
 
-        if (canGoBackward(currentItem, true)) {
-            smoothScrollPagerTo(--currentItem);
-        }
-        else {
-            AnimUtils.applyShakeAnimation(this, buttonBack);
+    @Override
+    public boolean goToLastSlide() {
+        return goToSlide(getCount() - 1);
+    }
 
-        }
+    @Override
+    public boolean goToFirstSlide() {
+        return goToSlide(0);
     }
 
     private void performButtonBackPress() {
         if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
-            int count = getCount();
-            int endPosition = pager.getCurrentItem();
-            while (endPosition < count && canGoForward(endPosition, true)) {
-                endPosition++;
-            }
-            smoothScrollPagerTo(endPosition);
+            goToSlide(getCount());
         } else if (buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
             previousSlide();
         }
     }
 
     private boolean canGoForward(int position, boolean notifyListeners) {
-        if (position >= getCount())
+        if (position >= getCount()) {
             return false;
+        }
+        if (position <= 0) {
+            return true;
+        }
 
         if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT && position >= getCount() - 1)
             //Block finishing when button "next" function is not "finish".
@@ -449,8 +496,12 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean canGoBackward(int position, boolean notifyListeners) {
-        if (position <= 0)
+        if (position <= 0) {
             return false;
+        }
+        if (position >= getCount()) {
+            return true;
+        }
 
         boolean canGoBackward = (navigationPolicy == null || navigationPolicy.canGoBackward(position)) &&
                 getSlide(position).canGoBackward();
@@ -464,7 +515,7 @@ public class IntroActivity extends AppCompatActivity {
 
 
     private boolean finishIfNeeded() {
-        if (enableFinishCheck && positionOffset == 0 && position == adapter.getCount()) {
+        if (positionOffset == 0 && position == adapter.getCount()) {
             Intent returnIntent = onSendActivityResult(RESULT_OK);
             if (returnIntent != null)
                 setResult(RESULT_OK, returnIntent);
@@ -475,12 +526,6 @@ public class IntroActivity extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-    protected void setFinishCheckEnabled(boolean enabled, boolean check) {
-        enableFinishCheck = enabled;
-        if (enabled && check)
-            finishIfNeeded();
     }
 
     @Nullable
@@ -1231,18 +1276,13 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("unused")
-    public int getCurrentSlidePosition() {
-        return pager.getCurrentItem();
+    public int getSlidePosition(Slide slide) {
+        return adapter.getItemPosition(slide);
     }
 
     @SuppressWarnings("unused")
     public Fragment getItem(int position) {
         return adapter.getItem(position);
-    }
-
-    @SuppressWarnings("unused")
-    public void gotToItem(int position) {
-        smoothScrollPagerTo(position);
     }
 
     @ColorRes
@@ -1335,12 +1375,18 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     public void notifyDataSetChanged() {
+        if (!activityCreated) {
+            // Don't notify any listener until the activity is created
+            return;
+        }
+
         int position = this.position;
         pager.setAdapter(adapter);
         pager.setCurrentItem(position);
 
-        if (finishIfNeeded())
+        if (finishIfNeeded()) {
             return;
+        }
 
         updateTaskDescription();
         updateButtonBackDrawable();
@@ -1355,8 +1401,9 @@ public class IntroActivity extends AppCompatActivity {
             IntroActivity.this.position = (int) Math.floor(position + positionOffset);
             IntroActivity.this.positionOffset = (((position + positionOffset) % 1) + 1) % 1;
 
-            if (finishIfNeeded())
+            if (finishIfNeeded()) {
                 return;
+            }
 
             //Lock while scrolling a slide near its edges to lock (uncommon) multiple page swipes
             if (Math.abs(positionOffset) < 0.1f) {
@@ -1378,12 +1425,7 @@ public class IntroActivity extends AppCompatActivity {
     private class ButtonCtaClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            int count = getCount();
-            int endPosition = pager.getCurrentItem();
-            while (endPosition < count && canGoForward(endPosition, true)) {
-                endPosition++;
-            }
-            smoothScrollPagerTo(endPosition);
+            goToSlide(getCount());
         }
     }
 }
