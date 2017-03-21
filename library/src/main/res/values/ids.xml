@@ -8,7 +8,6 @@
     <item name="mi_button_next" type="id"/>
     <item name="mi_button_back" type="id" />
 
-    <item name="mi_inner_linear_layout" type="id"/>
     <item name="mi_title" type="id"/>
     <item name="mi_description" type="id"/>
     <item name="mi_image" type="id"/>

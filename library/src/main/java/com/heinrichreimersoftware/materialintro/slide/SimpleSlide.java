@@ -416,7 +416,6 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         private static final String ARGUMENT_PERMISSIONS_REQUEST_CODE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_PERMISSIONS_REQUEST_CODE";
 
-        private LinearLayout innerLinearLayout = null;
         private TextView titleView = null;
         private TextView descriptionView = null;
         private ImageView imageView = null;
@@ -467,7 +466,6 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             View fragment = inflater.inflate(arguments.getInt(ARGUMENT_LAYOUT_RES,
                     R.layout.mi_fragment_simple_slide), container, false);
 
-            innerLinearLayout = (LinearLayout) fragment.findViewById(R.id.mi_inner_linear_layout);
             titleView = (TextView) fragment.findViewById(R.id.mi_title);
             descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
             imageView = (ImageView) fragment.findViewById(R.id.mi_image);
@@ -552,15 +550,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                 long id = getArguments().getLong(ARGUMENT_ID);
                 ((SimpleSlideActivity)getActivity()).onSlideDestroyView(this, getView(), id);
             }
-            innerLinearLayout = null;
             titleView = null;
             descriptionView = null;
             imageView = null;
             super.onDestroyView();
-        }
-
-        public LinearLayout getInnerLinearLayout() {
-            return innerLinearLayout;
         }
 
         public TextView getTitleView() {
