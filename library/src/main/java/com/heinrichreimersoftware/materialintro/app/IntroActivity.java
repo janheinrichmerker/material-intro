@@ -1270,6 +1270,11 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     @SuppressWarnings("unused")
+    public int getCurrentSlidePosition() {
+        return binding.miPager.getCurrentItem();
+    }
+
+    @SuppressWarnings("unused")
     public Fragment getItem(int position) {
         return adapter.getItem(position);
     }

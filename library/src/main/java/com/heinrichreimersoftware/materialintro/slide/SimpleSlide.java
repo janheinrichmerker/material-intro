@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.heinrichreimersoftware.materialintro.R;
@@ -34,7 +35,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     private static final int DEFAULT_PERMISSIONS_REQUEST_CODE = 34; //Random number
     private SimpleSlideFragment fragment;
 
-
+    private final long id;
     private final CharSequence title;
     @StringRes
     private final int titleRes;
@@ -61,9 +62,10 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     private View.OnClickListener buttonCtaClickListener = null;
 
     protected SimpleSlide(Builder builder) {
-        fragment = SimpleSlideFragment.newInstance(builder.title, builder.titleRes,
+        fragment = SimpleSlideFragment.newInstance(builder.id, builder.title, builder.titleRes,
                 builder.description, builder.descriptionRes, builder.imageRes,
                 builder.backgroundRes, builder.layoutRes, builder.permissionsRequestCode);
+        id = builder.id;
         title = builder.title;
         titleRes = builder.titleRes;
         description = builder.description;
@@ -182,6 +184,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
 
         SimpleSlide that = (SimpleSlide) o;
 
+        if (id != that.id) return false;
         if (titleRes != that.titleRes) return false;
         if (descriptionRes != that.descriptionRes) return false;
         if (imageRes != that.imageRes) return false;
@@ -207,6 +210,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     @Override
     public int hashCode() {
         int result = fragment != null ? fragment.hashCode() : 0;
+        result = 31 * result + ((Long)id).hashCode();
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + titleRes;
         result = 31 * result + (description != null ? description.hashCode() : 0);
@@ -228,6 +232,7 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     public static class Builder {
         @ColorRes
         private int backgroundRes = 0;
+        private long id = 0;
         @ColorRes
         private int backgroundDarkRes = 0;
         private CharSequence title = null;
@@ -275,6 +280,11 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                 this.title = Html.fromHtml(titleHtml);
             }
             this.titleRes = 0;
+            return this;
+        }
+
+        public Builder id(long id) {
+            this.id = id;
             return this;
         }
 
@@ -386,6 +396,8 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
     }
 
     public static class SimpleSlideFragment extends ParallaxSlideFragment {
+        private static final String ARGUMENT_ID =
+                "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_ID";
         private static final String ARGUMENT_TITLE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_TITLE";
         private static final String ARGUMENT_TITLE_RES =
@@ -404,14 +416,19 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
         private static final String ARGUMENT_PERMISSIONS_REQUEST_CODE =
                 "com.heinrichreimersoftware.materialintro.SimpleFragment.ARGUMENT_PERMISSIONS_REQUEST_CODE";
 
+        private TextView titleView = null;
+        private TextView descriptionView = null;
+        private ImageView imageView = null;
+
         public SimpleSlideFragment() {
         }
 
-        public static SimpleSlideFragment newInstance(CharSequence title, @StringRes int titleRes,
+        public static SimpleSlideFragment newInstance(long id, CharSequence title, @StringRes int titleRes,
                                                       CharSequence description, @StringRes int descriptionRes,
                                                       @DrawableRes int imageRes, @ColorRes int backgroundRes,
                                                       @LayoutRes int layout, int permissionsRequestCode) {
             Bundle arguments = new Bundle();
+            arguments.putLong(ARGUMENT_ID, id);
             arguments.putCharSequence(ARGUMENT_TITLE, title);
             arguments.putInt(ARGUMENT_TITLE_RES, titleRes);
             arguments.putCharSequence(ARGUMENT_DESCRIPTION, description);
@@ -449,10 +466,11 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             View fragment = inflater.inflate(arguments.getInt(ARGUMENT_LAYOUT_RES,
                     R.layout.mi_fragment_simple_slide), container, false);
 
-            TextView titleView = (TextView) fragment.findViewById(R.id.mi_title);
-            TextView descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
-            ImageView imageView = (ImageView) fragment.findViewById(R.id.mi_image);
+            titleView = (TextView) fragment.findViewById(R.id.mi_title);
+            descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
+            imageView = (ImageView) fragment.findViewById(R.id.mi_image);
 
+            long id = arguments.getLong(ARGUMENT_ID);
             CharSequence title = arguments.getCharSequence(ARGUMENT_TITLE);
             int titleRes = arguments.getInt(ARGUMENT_TITLE_RES);
             CharSequence description = arguments.getCharSequence(ARGUMENT_DESCRIPTION);
@@ -519,7 +537,40 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
                 descriptionView.setTextColor(textColorSecondary);
             }
 
+            if (getActivity() instanceof SimpleSlideActivity) {
+                ((SimpleSlideActivity)getActivity()).onSlideViewCreated(this, fragment, id);
+            }
+
             return fragment;
+        }
+
+        @Override
+        public void onDestroyView() {
+            if (getActivity() instanceof SimpleSlideActivity) {
+                long id = getArguments().getLong(ARGUMENT_ID);
+                ((SimpleSlideActivity)getActivity()).onSlideDestroyView(this, getView(), id);
+            }
+            titleView = null;
+            descriptionView = null;
+            imageView = null;
+            super.onDestroyView();
+        }
+
+        public TextView getTitleView() {
+            return titleView;
+        }
+
+        public TextView getDescriptionView() {
+            return descriptionView;
+        }
+
+        public ImageView getImageView(){
+            return imageView;
+        }
+
+        public int getSlideId()
+        {
+            return getArguments().getInt(ARGUMENT_ID);
         }
 
         @Override
