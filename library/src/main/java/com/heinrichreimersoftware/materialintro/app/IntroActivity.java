@@ -68,7 +68,7 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressLint("Registered")
-public class IntroActivity extends AppCompatActivity {
+public class IntroActivity extends AppCompatActivity implements IntroNavigation {
     private static final String KEY_CURRENT_ITEM =
             "com.heinrichreimersoftware.materialintro.app.IntroActivity.KEY_CURRENT_ITEM";
     private static final String KEY_FULLSCREEN =
@@ -366,42 +366,81 @@ public class IntroActivity extends AppCompatActivity {
         return Math.round(pageScrollDuration * (distance + Math.sqrt(distance)) / 2);
     }
 
-    public void nextSlide() {
-        int currentItem = pager.getCurrentItem();
-        if (currentItem > adapter.getCount() - 1) finishIfNeeded();
+    @Override
+    public boolean goToSlide(int position) {
+        int lastPosition = pager.getCurrentItem();
 
-        if (canGoForward(currentItem, true)) {
-            smoothScrollPagerTo(++currentItem);
+        if (lastPosition >= adapter.getCount()) {
+            finishIfNeeded();
+        }
+
+        int newPosition = lastPosition;
+
+        position = Math.max(0, Math.min(position, getCount()));
+
+        if (position > lastPosition) {
+            // Go forward
+            while (newPosition < position && canGoForward(newPosition, true)) {
+                newPosition++;
+            }
+        } else if (position < lastPosition) {
+            // Go backward
+            while (newPosition > position && canGoBackward(newPosition, true)) {
+                newPosition--;
+            }
         }
         else {
-            AnimUtils.applyShakeAnimation(this, buttonNext);
+            // Noting to do here
+            return true;
         }
+
+        boolean blocked = false;
+        if (newPosition != position) {
+            // Could not go the complete way to the given position.
+            blocked = true;
+
+            if (position > lastPosition) {
+                AnimUtils.applyShakeAnimation(this, buttonNext);
+            } else if (position < lastPosition) {
+                AnimUtils.applyShakeAnimation(this, buttonBack);
+            }
+        }
+
+        // Scroll to new position
+        smoothScrollPagerTo(newPosition);
+
+        return !blocked;
+    }
+
+    @Override
+    public boolean nextSlide() {
+        int currentItem = pager.getCurrentItem();
+        return goToSlide(currentItem + 1);
     }
 
     private int nextSlideAuto() {
-        int endPosition = pager.getCurrentItem();
+        int lastPosition = pager.getCurrentItem();
         int count = getCount();
 
         if (count == 1) {
             return 0;
         }
         else if (pager.getCurrentItem() >= count - 1) {
-            while (endPosition >= 0 && canGoBackward(endPosition, true)) {
-                endPosition--;
+            while (lastPosition >= 0 && canGoBackward(lastPosition, true)) {
+                lastPosition--;
             }
             if (autoplayCounter > 0)
                 autoplayCounter--;
-        }
-        else if (canGoForward(endPosition, true)) {
-            endPosition++;
+        } else if (canGoForward(lastPosition, true)) {
+            lastPosition++;
         }
 
-        int distance = Math.abs(endPosition - pager.getCurrentItem());
+        int distance = Math.abs(lastPosition - pager.getCurrentItem());
 
-        if (endPosition == pager.getCurrentItem())
+        if (lastPosition == pager.getCurrentItem())
             return 0;
 
-        smoothScrollPagerTo(endPosition);
+        smoothScrollPagerTo(lastPosition);
 
         if (autoplayCounter == 0)
             return 0;
@@ -409,17 +448,20 @@ public class IntroActivity extends AppCompatActivity {
 
     }
 
-    public void previousSlide() {
+    @Override
+    public boolean previousSlide() {
         int currentItem = pager.getCurrentItem();
-        if (currentItem <= 0) return;
+        return goToSlide(currentItem - 1);
+    }
 
-        if (canGoBackward(currentItem, true)) {
-            smoothScrollPagerTo(--currentItem);
-        }
-        else {
-            AnimUtils.applyShakeAnimation(this, buttonBack);
+    @Override
+    public boolean goToLastSlide() {
+        return goToSlide(getCount() - 1);
+    }
 
-        }
+    @Override
+    public boolean goToFirstSlide() {
+        return goToSlide(0);
     }
 
     private void performButtonBackPress() {
@@ -436,8 +478,12 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean canGoForward(int position, boolean notifyListeners) {
-        if (position >= getCount())
+        if (position >= getCount()) {
             return false;
+        }
+        if (position <= 0) {
+            return true;
+        }
 
         if (buttonNextFunction == BUTTON_NEXT_FUNCTION_NEXT && position >= getCount() - 1)
             //Block finishing when button "next" function is not "finish".
@@ -454,8 +500,12 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private boolean canGoBackward(int position, boolean notifyListeners) {
-        if (position <= 0)
+        if (position <= 0) {
             return false;
+        }
+        if (position >= getCount()) {
+            return true;
+        }
 
         boolean canGoBackward = (navigationPolicy == null || navigationPolicy.canGoBackward(position)) &&
                 getSlide(position).canGoBackward();

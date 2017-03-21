@@ -3,7 +3,7 @@ package com.heinrichreimersoftware.materialintro.app;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-public class SlideFragment extends Fragment {
+public class SlideFragment extends Fragment implements IntroNavigation {
 
     public boolean canGoForward() {
         return true;
@@ -33,12 +33,29 @@ public class SlideFragment extends Fragment {
         getIntroActivity().removeOnNavigationBlockedListener(listener);
     }
 
-    protected void nextSlide() {
-        getIntroActivity().nextSlide();
+    @Override
+    public boolean goToSlide(int position) {
+        return getIntroActivity().goToSlide(position);
     }
 
-    protected void previousSlide() {
-        getIntroActivity().previousSlide();
+    @Override
+    public boolean nextSlide() {
+        return getIntroActivity().nextSlide();
+    }
+
+    @Override
+    public boolean previousSlide() {
+        return getIntroActivity().previousSlide();
+    }
+
+    @Override
+    public boolean goToLastSlide() {
+        return getIntroActivity().goToLastSlide();
+    }
+
+    @Override
+    public boolean goToFirstSlide() {
+        return getIntroActivity().goToFirstSlide();
     }
 
     /**
