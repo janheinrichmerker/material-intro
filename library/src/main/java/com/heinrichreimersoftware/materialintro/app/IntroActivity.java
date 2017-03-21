@@ -1275,11 +1275,6 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     @SuppressWarnings("unused")
-    public Fragment getItem(int position) {
-        return adapter.getItem(position);
-    }
-
-    @SuppressWarnings("unused")
     public void goToItem(int position) {
         if (position >= 0 && position < adapter.getCount()) {
             smoothScrollPagerTo(position);
