@@ -35,11 +35,11 @@ A demo app is available on Google Play:
 * Parallax slides
 * Fluent API
 
-## Dependency:
+## Gradle Dependency:
 
-*material-intro* is available on [**jitpack.io**][4]
+*material-intro* is available on [**jitpack.io**][4].
 
-### Gradle:
+Add this in your root `build.gradle` file (**not** your module `build.gradle` file):
 ```gradle
 allprojects {
     repositories {
@@ -47,7 +47,15 @@ allprojects {
     }
 }
 ```
+
+Add this in your module `build.gradle` file:
 ```gradle
+android {
+    ...
+    dataBinding {
+        enabled = true
+    }
+}
 dependencies {
     compile 'com.heinrichreimersoftware:material-intro:1.6.2'
 }
