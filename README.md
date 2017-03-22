@@ -35,6 +35,22 @@ A demo app is available on Google Play:
 * Parallax slides
 * Fluent API
 
+## Table of Contents
+
+1. [Gradle Dependency](#gradle-dependency)
+3. [Quick Setup](#quick-setup)
+    1. [Requirements](#requirements)
+    2. [Slides](#slides)
+    3. [Customization](#customization)
+    4. [Navigation](#navigation)
+4. [Tips & Tricks](#tips--tricks)
+    1. [Activity result](#activity-result)
+    2. [Parallax slides](#parallax-slides)
+    3. [Splash screens](#splash-screens)
+5. [Changes](#changes)
+6. [Open-source libraries](#open-source-libraries)
+7. [License](#license)
+
 ## Gradle Dependency:
 
 *material-intro* is available on [**jitpack.io**][4].
@@ -123,7 +139,7 @@ public class MainIntroActivity extends IntroActivity{
 - [`Slide`][1]: Base slide. If you want to modify what's shown in your slide this is the way to go.
 - Feel free to submit an [issue][10] or [pull request][11] if you think any slide types are missing
 
-### Additional features:
+### Customization:
 
 Enable addional features like fullscreen, control the button behaviors or provide a policy to control, which slides users are allowed to pass.
 
@@ -281,7 +297,7 @@ See the [releases section][25] for changelogs.
 *material-intro* uses the following open source files:
 
 * [CheatSheet.java][5] by [@Roman Nurik][6] (Apache License 2.0)
-* [AnimUtils.java][7] by [@Nick Butcher][8] (Apache License 2.0)
+* [AnimUtils.java][7] by [@Nick Butcher][8] (Apache License 2.0), _modified version_
 * [InkPageIndicator.java][9] by [@Nick Butcher][8] (Apache License 2.0)
 
 ## License:
