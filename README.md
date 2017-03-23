@@ -43,12 +43,12 @@ A demo app is available on Google Play:
     1. [Gradle Dependency](#gradle-dependency)
     1. [Requirements](#requirements)
 1. [Slides](#slides)
-    1. [Standard slide](#standard-slide)
-    1. [Fragment slide](#fragment-slide)
-    1. [Custom slide](#custom-slide)
+    1. [Standard slide](#standard-slide-simpleslide)
+    1. [Fragment slide](#fragment-slide-fragmentslide)
+    1. [Custom slide](#custom-slide-slide)
 1. [Customization](#customization)
     1. [Back button](#left-back-button)
-    1. [Next button](#right-back-button)
+    1. [Next button](#right-next-button)
     1. [CTA button](#cta-button)
     1. [Fullscreen](#fullscreen)
     1. [Scroll duration](#scroll-duration)
@@ -226,7 +226,8 @@ Adjust how long a single slide scroll takes.
 setPageScrollDuration(500);
 ```
 
-(The page scroll duration is dynamically adapted when scrolling more than one position to reflect [**dynamic durations**](https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations) from the [Material design docs](https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations). The exact formula for calculating the scroll duration is `duration * (distance + sqrt(distance)) / 2`.)
+(The page scroll duration is dynamically adapted when scrolling more than one position to reflect [**dynamic durations**](https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations) from the [Material design docs](https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations).  
+The exact formula for calculating the scroll duration is `duration * (distance + sqrt(distance)) / 2`.)
 
 ## Navigation:
 
