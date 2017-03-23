@@ -3,9 +3,9 @@
 # material-intro
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-material--intro-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3206)
-[![jitpack.io](https://jitpack.io/v/com.heinrichreimersoftware/material-intro.svg)](https://jitpack.io/#com.heinrichreimersoftware/material-intro)
+[![JitPack](https://jitpack.io/v/com.heinrichreimersoftware/material-intro.svg)](https://jitpack.io/#com.heinrichreimersoftware/material-intro)
+[![Downloads](https://jitpack.io/v/com.heinrichreimersoftware/material-intro/month.svg)](https://jitpack.io/#com.heinrichreimersoftware/material-intro)
 [![Build Status](https://travis-ci.org/HeinrichReimer/material-intro.svg?branch=master)](https://travis-ci.org/HeinrichReimer/material-intro)
-[![Dependencies](https://img.shields.io/librariesio/github/HeinrichReimer/material-intro.svg?maxAge=2592000)](https://libraries.io/github/HeinrichReimer/material-intro)
 [![License](https://img.shields.io/github/license/HeinrichReimer/material-intro.svg)](https://github.com/HeinrichReimer/material-intro/blob/master/LICENSE.txt)
 
 A simple material design app intro with cool animations and a fluent API.
