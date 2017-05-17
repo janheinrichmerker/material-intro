@@ -61,6 +61,7 @@ A demo app is available on Google Play:
     1. [Activity result](#activity-result)
     1. [Parallax slides](#parallax-slides)
     1. [Splash screens](#splash-screens)
+1. [Apps using this library](#apps-using-this-library)
 1. [Changes](#changes)
 1. [Open-source libraries](#open-source-libraries)
 1. [License](#license)
@@ -358,6 +359,17 @@ See the demo app for a sample splash screen implementation:
 - **[SplashActivity.java](https://github.com/heinrichreimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/SplashActivity.java)**: A fake splash screen
 - **[SplashIntroActivity.java](https://github.com/heinrichreimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/SplashIntroActivity.java)**: The intro started from FinishActivity
 - **[FinishActivity.java](https://github.com/heinrichreimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/FinishActivity.java)**: The activity started after the splash screen
+
+## Apps using this library:
+
+- [**Simply Unroot**](https://play.google.com/store/apps/details?id=de.pinpong.simplyunroot) by @pinpong
+- [**Prodigal Music Player**](https://play.google.com/store/apps/details?id=bob.sun.prodigal) by @SpongeBobSun 
+- [**Puff Password Utility**](https://play.google.com/store/apps/details?id=sun.bob.leela) by @SpongeBobSun  
+- [**QualityGate**](https://play.google.com/store/apps/details?id=com.frontendart.qualitygate.android) by @FrontEndART 
+- [**Monitor**](https://play.google.com/store/apps/details?id=com.danielstone.energyhive) by @daniel-stoneuk 
+- [**Contact Lenses Time**](https://play.google.com/store/apps/details?id=com.brando.lenti) by @ste23droid 
+- [**Antidote Danmark**](https://play.google.com/store/apps/details?id=dk.antidotedanmark) by @AntidoteDanmark
+- [**Speed Boost Lite**](https://play.google.com/store/apps/details?id=com.TMillerApps.SpeedBoostLite) by @tjmille2
 
 ## Changes:
 
