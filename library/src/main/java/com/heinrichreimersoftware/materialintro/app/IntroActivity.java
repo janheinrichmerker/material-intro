@@ -378,8 +378,39 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         animator.start();
     }
 
-    private long calculateScrollDuration(int distance) {
+   private long calculateScrollDuration(int distance) {
         return Math.round(pageScrollDuration * (distance + Math.sqrt(distance)) / 2);
+    }
+    
+   public void goToFirstSlide() {
+        int nearestPositionToFirstSlide = pager.getCurrentItem();
+        boolean canGo = false;
+        if (nearestPositionToFirstSlide <= 0) return;
+
+        while (nearestPositionToFirstSlide > 0 && canGoBackward(nearestPositionToFirstSlide, true)) {
+            nearestPositionToFirstSlide--;
+            canGo = true;
+        }
+        if (canGo) {
+            smoothScrollPagerTo(nearestPositionToFirstSlide);
+        } else {
+            AnimUtils.applyShakeAnimation(this, buttonBack);
+        }
+    }
+
+    public void goToLastSlide() {
+        int lastPosition = pager.getCurrentItem();
+        int count = getCount() - 1;
+        boolean canGo = false;
+        while (lastPosition < count && canGoForward(lastPosition, true)) {
+            lastPosition++;
+            canGo = true;
+        }
+        if (canGo) {
+            smoothScrollPagerTo(lastPosition);
+        } else {
+            AnimUtils.applyShakeAnimation(this, buttonNext);
+        }
     }
 
     @Override
