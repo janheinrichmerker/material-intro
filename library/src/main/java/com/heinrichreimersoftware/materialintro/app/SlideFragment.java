@@ -44,6 +44,18 @@ public class SlideFragment extends Fragment implements IntroNavigation {
             throw new IllegalStateException("SlideFragment's must be attached to an IntroActivity.");
         }
     }
+    
+    protected void goToFirstSlide() {
+        if (getActivity() instanceof IntroActivity) {
+            ((IntroActivity) getActivity()).goToFirstSlide();
+        }
+    }
+
+    protected void goToLastSlide() {
+        if (getActivity() instanceof IntroActivity) {
+            ((IntroActivity) getActivity()).goToLastSlide();
+        }
+    }
 
     public void updateNavigation() {
         getIntroActivity().lockSwipeIfNeeded();
