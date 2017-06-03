@@ -19,7 +19,7 @@ public class ParallaxFragment extends Fragment implements Parallaxable {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        parallaxableChildren = findParallaxLayouts(view);
+        findParallaxLayouts(view);
     }
 
     public void findParallaxLayouts(View root) {
@@ -37,7 +37,6 @@ public class ParallaxFragment extends Fragment implements Parallaxable {
                 }
             }
         }
-        return parallaxableChildren;
     }
 
     @Override
