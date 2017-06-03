@@ -15,22 +15,22 @@ import java.util.Queue;
 
 public class ParallaxFragment extends Fragment implements Parallaxable {
 
-    private final List<Parallaxable> parallaxableChildren = Collections.emptyList();
+    private final List<Parallaxable> parallaxableChildren = new ArrayList<>();
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         parallaxableChildren = findParallaxLayouts(view);
     }
 
-    public List<Parallaxable> findParallaxLayouts(View root) {
-        List<Parallaxable> parallaxableChildren = new ArrayList<>();
+    public void findParallaxLayouts(View root) {
         Queue<View> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
             View child = queue.remove();
             if (child instanceof Parallaxable) {
                 parallaxableChildren.add((Parallaxable) child);
-            } else if (child instanceof ViewGroup) {
+            }
+            else if (child instanceof ViewGroup) {
                 ViewGroup viewGroup = (ViewGroup) child;
                 for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
                     queue.add(viewGroup.getChildAt(i));
