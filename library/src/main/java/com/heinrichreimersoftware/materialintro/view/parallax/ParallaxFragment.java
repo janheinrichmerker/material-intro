@@ -15,7 +15,7 @@ import java.util.Queue;
 
 public class ParallaxFragment extends Fragment implements Parallaxable {
 
-    private List<Parallaxable> parallaxableChildren = Collections.emptyList();
+    private final List<Parallaxable> parallaxableChildren = Collections.emptyList();
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
