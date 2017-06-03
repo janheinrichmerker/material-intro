@@ -17,7 +17,7 @@ import java.util.Queue;
 
 public class ParallaxSlideFragment extends SlideFragment implements Parallaxable {
 
-    private List<Parallaxable> parallaxableChildren = Collections.emptyList();
+    private final List<Parallaxable> parallaxableChildren = Collections.emptyList();
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
