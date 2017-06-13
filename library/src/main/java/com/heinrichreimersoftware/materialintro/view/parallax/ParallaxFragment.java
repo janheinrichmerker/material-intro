@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.heinrichreimersoftware.materialintro.view.parallax.util.ParallaxUtil;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -19,24 +21,7 @@ public class ParallaxFragment extends Fragment implements Parallaxable {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        findParallaxLayouts(view);
-    }
-
-    public void findParallaxLayouts(View root) {
-        Queue<View> queue = new LinkedList<>();
-        queue.add(root);
-        while (!queue.isEmpty()) {
-            View child = queue.remove();
-            if (child instanceof Parallaxable) {
-                parallaxableChildren.add((Parallaxable) child);
-            }
-            else if (child instanceof ViewGroup) {
-                ViewGroup viewGroup = (ViewGroup) child;
-                for (int i = viewGroup.getChildCount() - 1; i >= 0; i--) {
-                    queue.add(viewGroup.getChildAt(i));
-                }
-            }
-        }
+        parallaxableChildren.addAll(ParallaxUtil.findParallaxableChildren(view));
     }
 
     @Override
