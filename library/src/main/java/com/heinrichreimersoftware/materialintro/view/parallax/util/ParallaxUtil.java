@@ -1,5 +1,6 @@
 package com.heinrichreimersoftware.materialintro.view.parallax.util;
 
+import android.support.annotation.FloatRange;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,6 +35,23 @@ public class ParallaxUtil {
             }
         }
         return parallaxableChildrenFound;
+    }
+
+    /**
+     * sets the provided offset to all items in the parallaxableChildren list
+     *
+     * @param parallaxableChildren list of items to set offset to
+     * @param offset               the offset to assign
+     */
+    public static void setOffsetToParallaxableList(
+            final List<Parallaxable> parallaxableChildren,
+            @FloatRange(from = -1.0, to = 1.0) float offset
+    ) {
+        if (!parallaxableChildren.isEmpty()) {
+            for (Parallaxable parallaxable : parallaxableChildren) {
+                parallaxable.setOffset(offset);
+            }
+        }
     }
 
 }

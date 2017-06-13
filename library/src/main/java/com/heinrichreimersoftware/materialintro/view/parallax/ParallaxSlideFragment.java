@@ -24,10 +24,6 @@ public class ParallaxSlideFragment extends SlideFragment implements Parallaxable
 
     @Override
     public void setOffset(@FloatRange(from = -1.0, to = 1.0) float offset) {
-        if (!parallaxableChildren.isEmpty()) {
-            for (Parallaxable parallaxable : parallaxableChildren) {
-                parallaxable.setOffset(offset);
-            }
-        }
+        ParallaxUtil.setOffsetToParallaxableList(parallaxableChildren, offset);
     }
 }
