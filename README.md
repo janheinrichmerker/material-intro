@@ -279,7 +279,7 @@ goToFirstSlide();
 Automatically scroll through the intro until user interacts with the intro.
 
 ```java
-/* Start an auto slideshow with 2500ms delay between schrolls and infinite repeats */
+/* Start an auto slideshow with 2500ms delay between scrolls and infinite repeats */
 autoplay(2500, INFINITE);
 /* Start an auto slideshow with default configuration  */
 autoplay();
