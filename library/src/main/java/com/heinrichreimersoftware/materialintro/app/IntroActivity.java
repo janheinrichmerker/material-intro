@@ -308,13 +308,13 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
         binding.miPagerIndicator.setViewPager(binding.miPager);
 
-        binding.miButtonNext.setOnClickListener(new View.OnClickListener() {
+        setButtonNextOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextSlide();
             }
         });
-        binding.miButtonBack.setOnClickListener(new View.OnClickListener() {
+        setButtonBackOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performButtonBackPress();
@@ -322,6 +322,14 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         });
         CheatSheet.setup(binding.miButtonNext);
         CheatSheet.setup(binding.miButtonBack);
+    }
+    
+    public void setButtonNextOnClickListener(View.OnClickListener onClickListener) {
+        binding.miButtonNext.setOnClickListener(onClickListener);
+    }
+    
+    public void setButtonBackOnClickListener(View.OnClickListener onClickListener) {
+        binding.miButtonBack.setOnClickListener(onClickListener);
     }
 
     private void smoothScrollPagerTo(final int position) {
