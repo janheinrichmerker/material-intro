@@ -10,14 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-/**
- * Created by meier on 13.06.17.
- */
-
 public class ParallaxUtil {
-    private ParallaxUtil() {
-        //no instance
-    }
+    private ParallaxUtil() {}
 
     public static List<Parallaxable> findParallaxableChildren(View root) {
         List<Parallaxable> parallaxableChildrenFound = new LinkedList<>();
@@ -38,10 +32,10 @@ public class ParallaxUtil {
     }
 
     /**
-     * sets the provided offset to all items in the parallaxableChildren list
+     * Set the provided offset to a list of parallaxable items.
      *
-     * @param parallaxableChildren list of items to set offset to
-     * @param offset               the offset to assign
+     * @param parallaxableChildren The list of parallaxable items to set the offset to.
+     * @param offset The offset to assign.
      */
     public static void setOffsetToParallaxableList(
             final List<Parallaxable> parallaxableChildren,
