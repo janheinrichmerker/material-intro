@@ -307,6 +307,8 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         binding.miPager.setCurrentItem(position, false);
 
         binding.miPagerIndicator.setViewPager(binding.miPager);
+        
+        originalButtonNextOnClickListener = 
 
         setButtonNextOnClickListener(new View.OnClickListener() {
             @Override
@@ -486,7 +488,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         return goToSlide(0);
     }
 
-    private void performButtonBackPress() {
+    public void performButtonBackPress() {
         if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
             goToSlide(getCount());
         } else if (buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
