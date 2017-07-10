@@ -163,6 +163,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     private Interpolator pageScrollInterpolator;
     private long pageScrollDuration;
+    
+    private View.OnClickListener originalButtonNextOnClickListener;
+    private View.OnClickListener originalButtonBackOnClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,21 +311,23 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
         binding.miPagerIndicator.setViewPager(binding.miPager);
         
-        originalButtonNextOnClickListener = 
-
-        setButtonNextOnClickListener(new View.OnClickListener() {
+        originalButtonNextOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 nextSlide();
             }
         });
-        setButtonBackOnClickListener(new View.OnClickListener() {
+        originalButtonBackOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 performButtonBackPress();
             }
         });
-        CheatSheet.setup(binding.miButtonNext);
+
+        setButtonNextOnClickListener(originalButtonNextOnClickListener);
+        setButtonBackOnClickListener(originalButtonBackOnClickListener);
+        
+        CheatSheet.sbindingetup(binding.miButtonNext);
         CheatSheet.setup(binding.miButtonBack);
     }
     
@@ -332,6 +337,14 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     
     public void setButtonBackOnClickListener(View.OnClickListener onClickListener) {
         binding.miButtonBack.setOnClickListener(onClickListener);
+    }
+    
+    public View.OnClickListener getOriginalButtonNextOnClickListener() {
+        return this.originalButtonNextOnClickListener;
+    }
+    
+    public View.OnClickListener getOriginalButtonBackOnClickListener() {
+        return this.originalButtonBackOnClickListener;
     }
 
     private void smoothScrollPagerTo(final int position) {
