@@ -501,7 +501,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         return goToSlide(0);
     }
 
-    public void performButtonBackPress() {
+    private void performButtonBackPress() {
         if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
             goToSlide(getCount());
         } else if (buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
