@@ -327,7 +327,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         setButtonNextOnClickListener(originalButtonNextOnClickListener);
         setButtonBackOnClickListener(originalButtonBackOnClickListener);
         
-        CheatSheet.sbindingetup(binding.miButtonNext);
+        CheatSheet.setup(binding.miButtonNext);
         CheatSheet.setup(binding.miButtonBack);
     }
     
