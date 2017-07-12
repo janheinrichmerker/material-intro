@@ -163,9 +163,6 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
     private Interpolator pageScrollInterpolator;
     private long pageScrollDuration;
-    
-    private View.OnClickListener originalButtonNextOnClickListener;
-    private View.OnClickListener originalButtonBackOnClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -310,22 +307,9 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         binding.miPager.setCurrentItem(position, false);
 
         binding.miPagerIndicator.setViewPager(binding.miPager);
-        
-        originalButtonNextOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nextSlide();
-            }
-        });
-        originalButtonBackOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                performButtonBackPress();
-            }
-        });
 
-        setButtonNextOnClickListener(originalButtonNextOnClickListener);
-        setButtonBackOnClickListener(originalButtonBackOnClickListener);
+        resetButtonNextOnClickListener();
+        resetButtonBackOnClickListener();
         
         CheatSheet.setup(binding.miButtonNext);
         CheatSheet.setup(binding.miButtonBack);
@@ -337,6 +321,24 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     
     public void setButtonBackOnClickListener(View.OnClickListener onClickListener) {
         binding.miButtonBack.setOnClickListener(onClickListener);
+    }
+    
+    public void resetButtonNextOnClickListener() {
+        binding.miButtonNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextSlide();
+            }
+        });
+    }
+    
+    public void resetButtonBackOnClickListener() {
+        binding.miButtonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performButtonBackPress();
+            }
+        });
     }
     
     public View.OnClickListener getOriginalButtonNextOnClickListener() {
