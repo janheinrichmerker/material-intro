@@ -340,14 +340,6 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
             }
         });
     }
-    
-    public View.OnClickListener getOriginalButtonNextOnClickListener() {
-        return this.originalButtonNextOnClickListener;
-    }
-    
-    public View.OnClickListener getOriginalButtonBackOnClickListener() {
-        return this.originalButtonBackOnClickListener;
-    }
 
     private void smoothScrollPagerTo(final int position) {
         if (binding.miPager.isFakeDragging())
