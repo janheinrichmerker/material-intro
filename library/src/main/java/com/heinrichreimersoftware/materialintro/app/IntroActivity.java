@@ -916,6 +916,8 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     private void updateButtonNextDrawable() {
+        if (adapter == null) return;
+
         float realPosition = position + positionOffset;
         float offset = 0;
 
