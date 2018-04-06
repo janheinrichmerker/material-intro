@@ -416,7 +416,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     }
 
     @Override
-    public boolean goToSlide(int position) {
+    public boolean goToSlide(int position, boolean forceScroll) {
         int lastPosition = miPager.getCurrentItem();
 
         if (lastPosition >= adapter.getCount()) {
@@ -429,12 +429,12 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
 
         if (position > lastPosition) {
             // Go forward
-            while (newPosition < position && canGoForward(newPosition, true)) {
+            while (newPosition < position && (canGoForward(newPosition, true) || forceScroll)) {
                 newPosition++;
             }
         } else if (position < lastPosition) {
             // Go backward
-            while (newPosition > position && canGoBackward(newPosition, true)) {
+            while (newPosition > position && (canGoBackward(newPosition, true) || forceScroll)) {
                 newPosition--;
             }
         } else {
@@ -463,7 +463,13 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     @Override
     public boolean nextSlide() {
         int currentItem = miPager.getCurrentItem();
-        return goToSlide(currentItem + 1);
+        return goToSlide(currentItem + 1, false);
+    }
+
+    @Override
+    public boolean forceNextSlide() {
+        int currentItem = miPager.getCurrentItem();
+        return goToSlide(currentItem + 1, true);
     }
 
     private int nextSlideAuto() {
@@ -498,22 +504,28 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     @Override
     public boolean previousSlide() {
         int currentItem = miPager.getCurrentItem();
-        return goToSlide(currentItem - 1);
+        return goToSlide(currentItem - 1, false);
+    }
+
+    @Override
+    public boolean forcePreviousSlide() {
+        int currentItem = miPager.getCurrentItem();
+        return goToSlide(currentItem - 1, true);
     }
 
     @Override
     public boolean goToLastSlide() {
-        return goToSlide(getCount() - 1);
+        return goToSlide(getCount() - 1, false);
     }
 
     @Override
     public boolean goToFirstSlide() {
-        return goToSlide(0);
+        return goToSlide(0, false);
     }
 
     private void performButtonBackPress() {
         if (buttonBackFunction == BUTTON_BACK_FUNCTION_SKIP) {
-            goToSlide(getCount());
+            goToSlide(getCount(), false);
         } else if (buttonBackFunction == BUTTON_BACK_FUNCTION_BACK) {
             previousSlide();
         }
@@ -1459,7 +1471,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
     private class ButtonCtaClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            goToSlide(getCount());
+            goToSlide(getCount(), false);
         }
     }
 }

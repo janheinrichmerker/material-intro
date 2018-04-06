@@ -26,14 +26,15 @@ package com.heinrichreimersoftware.materialintro.app;
 
 interface IntroNavigation {
     /**
-     * Tries to go to the given position and will stop when {@code canGoForward()} or
-     * {@code canGoBackward()} returns {@code false}.
+     * Tries to go to the given position and will obey {@code canGoForward()} or
+     * {@code canGoBackward()} if {@code forceScroll} is {@code false} returns {@code false}.
      *
      * @param position The position the pager should go to.
+     * @param forceScroll Forces scroll to the specified position
      * @return {@code true} if the pager was able to go the complete way to the given position,
      * {@code false} otherwise.
      */
-    boolean goToSlide(int position);
+    boolean goToSlide(int position, boolean forceScroll);
 
     /**
      * Tries to go to the next slide if {@code canGoForward()} returns {@code true}.
@@ -42,14 +43,28 @@ interface IntroNavigation {
      */
     boolean nextSlide();
 
+    /**
+     * Goes to the next slide even {@code canGoForward()} returns {@code true}.
+     *
+     * @return {@code true} if the pager was able to go to the next slide, {@code false} otherwise.
+     */
+    boolean forceNextSlide();
+
 
     /**
-     * Tries to go to the previous slide if {@code canGoForward()} returns {@code true}.
+     * Tries to go to the previous slide if {@code canGoBackward()} returns {@code true}.
      *
      * @return {@code true} if the pager was able to go to the previous slide, {@code false}
      * otherwise.
      */
     boolean previousSlide();
+
+    /**
+     * Goes to the previous slide even {@code canGoBackward()} returns {@code true}.
+     *
+     * @return {@code true} if the pager was able to go to the previous slide, {@code false} otherwise.
+     */
+    boolean forcePreviousSlide();
 
     /**
      * Tries to go to the last slide and will stop when {@code canGoForward()} returns

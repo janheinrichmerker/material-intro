@@ -58,8 +58,8 @@ public class SlideFragment extends Fragment implements IntroNavigation {
     }
 
     @Override
-    public boolean goToSlide(int position) {
-        return getIntroActivity().goToSlide(position);
+    public boolean goToSlide(int position, boolean forceScroll) {
+        return getIntroActivity().goToSlide(position, forceScroll);
     }
 
     @Override
@@ -68,8 +68,18 @@ public class SlideFragment extends Fragment implements IntroNavigation {
     }
 
     @Override
+    public boolean forceNextSlide() {
+        return getIntroActivity().forceNextSlide();
+    }
+
+    @Override
     public boolean previousSlide() {
         return getIntroActivity().previousSlide();
+    }
+
+    @Override
+    public boolean forcePreviousSlide() {
+        return getIntroActivity().forcePreviousSlide();
     }
 
     @Override
