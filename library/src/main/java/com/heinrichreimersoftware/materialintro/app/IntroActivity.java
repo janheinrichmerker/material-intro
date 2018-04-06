@@ -523,7 +523,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
         if (position >= getCount()) {
             return false;
         }
-        if (position <= 0) {
+        if (position < 0) {
             return true;
         }
 
