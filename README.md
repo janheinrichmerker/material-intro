@@ -100,7 +100,7 @@ The activity must extend [`IntroActivity`](https://github.com/heinrichreimer/mat
 public class MainIntroActivity extends IntroActivity{
     @Override protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-	// You don't need an XML Layout for MainIntroActivity, so remove or avoid using setContentView(R.layout.activity_maininto);
+	// You don't need an XML Layout for MainIntroActivity, so remove or avoid using setContentView(R.layout.activity_mainintro);
 	// Add slides, edit configuration...
     }
 }
