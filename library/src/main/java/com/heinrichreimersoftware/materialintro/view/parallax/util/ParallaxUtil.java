@@ -1,6 +1,6 @@
 package com.heinrichreimersoftware.materialintro.view.parallax.util;
 
-import android.support.annotation.FloatRange;
+import androidx.annotation.FloatRange;
 import android.view.View;
 import android.view.ViewGroup;
 

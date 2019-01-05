@@ -1,8 +1,8 @@
 package com.heinrichreimersoftware.materialintro.view.parallax;
 
 import android.os.Bundle;
-import android.support.annotation.FloatRange;
-import android.support.annotation.Nullable;
+import androidx.annotation.FloatRange;
+import androidx.annotation.Nullable;
 import android.view.View;
 
 import com.heinrichreimersoftware.materialintro.app.SlideFragment;
