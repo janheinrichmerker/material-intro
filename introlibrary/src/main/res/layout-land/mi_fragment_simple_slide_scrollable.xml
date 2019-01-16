@@ -23,7 +23,6 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -31,59 +30,68 @@
         android:layout_height="match_parent"
         android:baselineAligned="false"
         android:clipToPadding="false"
-        android:clipChildren="false"
         android:fitsSystemWindows="false"
         android:padding="@dimen/mi_baseline">
 
-        <ImageView
-            android:id="@id/mi_image"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:adjustViewBounds="true"
-            tools:ignore="ContentDescription"
-            tools:src="@android:drawable/sym_action_call" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@id/mi_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:gravity="center"
+                tools:ignore="ContentDescription"
+                tools:src="@android:drawable/sym_action_call" />
+
+        </FrameLayout>
 
         <androidx.legacy.widget.Space
             android:layout_width="@dimen/mi_baseline"
             android:layout_height="wrap_content" />
 
-        <com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clipChildren="false"
-            android:clipToPadding="false">
+            android:clipChildren="false">
 
-            <TextView
-                android:id="@id/mi_title"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_parallaxFactor="0.5"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                android:fontFamily="sans-serif-medium"
-                tools:ignore="UnusedAttribute"
-                tools:text="Lorem ipsum" />
+                android:layout_gravity="center_vertical"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@id/mi_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline"
-                app:layout_parallaxFactor="0.4"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textSize="15sp"
-                android:fontFamily="sans-serif-medium"
-                tools:ignore="UnusedAttribute"
-                tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …" />
+                <TextView
+                    android:id="@id/mi_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    tools:ignore="UnusedAttribute"
+                    tools:text="Lorem ipsum" />
 
-        </com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout>
+                <TextView
+                    android:id="@id/mi_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mi_baseline"
+                    android:autoLink="web"
+                    android:gravity="center"
+                    android:linksClickable="true"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:lineSpacingMultiplier="1.25"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 

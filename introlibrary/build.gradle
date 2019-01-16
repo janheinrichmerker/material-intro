@@ -1,0 +1,158 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+android {
+  def versionMajor = 1
+  def versionMinor = 7
+  def versionPatch = 0
+  def versionBuild = 0
+  // bump for dogfood builds, public betas, etc.
+
+  android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+      minSdkVersion 15
+      targetSdkVersion 28
+      versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+      versionName "${versionMajor}.${versionMinor}" + (versionPatch == 0 ? "" : ".${versionPatch}")
+    }
+
+    lintOptions {
+      abortOnError false
+    }
+
+    buildTypes {
+      release {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+      }
+    }
+  }
+}
+dependencies {
+  implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+  implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+}
+buildscript {
+  repositories {
+    jcenter()
+    maven {
+      url 'https://maven.google.com/'
+    }
+  }
+  dependencies {
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+  }
+}
+ext {
+  bintrayRepo = 'smarthome' // your repo name
+  bintrayName = 'introlibrary' // has to be same as your library module name
+  publishedGroupId = 'com.heinrichreimersoftware.materialintro' // your module package name
+  libraryName = 'introlibrary'
+  artifact = 'introlibrary' // has to be same as your library module name
+  libraryDescription = 'introlibrary'
+  siteUrl = 'https://github.com/BlackmoonT92/material-intro'
+  gitUrl = 'https://github.com/BlackmoonT92/material-intro.git'
+  libraryVersion = '1.0.0'
+  developerId = 'inscloud2018'
+  developerName = 'Tam Phan'
+  developerEmail = 'tampv92@gmail.com'
+  licenseName = 'The Apache Software License, Version 2.0'
+  licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+  allLicenses = ["Apache-2.0"]
+}
+
+group = publishedGroupId
+version = libraryVersion
+
+install {
+  repositories.mavenInstaller {
+    pom.project {
+      packaging 'aar'
+      groupId publishedGroupId
+      artifactId artifact
+
+      name libraryName
+      description libraryDescription
+      url siteUrl
+
+      licenses {
+        license {
+          name licenseName
+          url licenseUrl
+        }
+      }
+      developers {
+        developer {
+          id developerId
+          name developerName
+          email developerEmail
+        }
+      }
+      scm {
+        connection gitUrl
+        developerConnection gitUrl
+        url siteUrl
+      }
+    }
+  }
+}
+
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from android.sourceSets.main.java.srcDirs
+}
+
+task javadoc(type: Javadoc) {
+  source = android.sourceSets.main.java.srcDirs
+  classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+
+tasks.withType(Javadoc) {
+  options.addStringOption('Xdoclint:none', '-quiet')
+  options.addStringOption('encoding', 'UTF-8')
+  options.addStringOption('charSet', 'UTF-8')
+}
+
+tasks.withType(Javadoc).all {
+  enabled = false
+}
+
+artifacts {
+  archives javadocJar
+  archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+  user = properties.getProperty("bintray.user")
+  key = properties.getProperty("bintray.apikey")
+
+  configurations = ['archives']
+  pkg {
+    repo = bintrayRepo
+    name = bintrayName
+    desc = libraryDescription
+    websiteUrl = siteUrl
+    vcsUrl = gitUrl
+    licenses = allLicenses
+    dryRun = false
+    publish = true
+    override = false
+    publicDownloadNumbers = true
+    version {
+      desc = libraryDescription
+    }
+  }
+}

@@ -22,30 +22,14 @@
   ~ SOFTWARE.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.heinrichreimersoftware.materialintro.demo.FinishActivity">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="?colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            tools:ignore="UnusedAttribute" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_activity_finish"
-            android:layout_margin="@dimen/mi_baseline" />
-
-    </LinearLayout>
-
-</layout>
+<resources>
+    <string name="mi_content_description_skip">Skip</string>
+    <string name="mi_content_description_back">Back</string>
+    <string name="mi_content_description_next">Next</string>
+    <string name="mi_content_description_next_finish">Next/Finish</string>
+    <plurals name="mi_label_grant_permission">
+        <item quantity="one">Allow</item>
+        <item quantity="other">Allow</item>
+    </plurals>
+    <string name="mi_label_button_cta">Get started</string>
+</resources>
