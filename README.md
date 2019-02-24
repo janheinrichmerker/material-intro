@@ -90,7 +90,7 @@ android {
     }
 }
 dependencies {
-    compile 'com.heinrichreimersoftware:material-intro:1.6.2'
+    implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
 }
 ```
 

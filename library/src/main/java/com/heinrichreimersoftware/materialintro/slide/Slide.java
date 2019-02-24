@@ -24,8 +24,8 @@
 
 package com.heinrichreimersoftware.materialintro.slide;
 
-import android.support.annotation.ColorRes;
-import android.support.v4.app.Fragment;
+import androidx.annotation.ColorRes;
+import androidx.fragment.app.Fragment;
 
 public interface Slide {
     Fragment getFragment();

@@ -22,7 +22,7 @@
   ~ SOFTWARE.
   -->
 
-<android.support.constraint.ConstraintLayout android:id="@id/mi_frame"
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@id/mi_frame"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -122,5 +122,5 @@
 
     </TextSwitcher>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -24,7 +24,7 @@
 
 package com.heinrichreimersoftware.materialintro.app;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 import android.view.View;
 
 public interface ButtonCtaFragment {
