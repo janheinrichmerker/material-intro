@@ -69,12 +69,20 @@ public class SwipeBlockableViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return handleTouchEvent(event) && super.onTouchEvent(event);
+        try {
+            return handleTouchEvent(event) && super.onTouchEvent(event);
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return handleTouchEvent(event) && super.onInterceptTouchEvent(event);
+        try {
+            return handleTouchEvent(event) && super.onInterceptTouchEvent(event);
+        } catch (IllegalArgumentException exception) {
+            return false;
+        }
     }
 
     private boolean handleTouchEvent(MotionEvent event) {
