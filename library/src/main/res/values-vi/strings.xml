@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mi_content_description_skip">Bỏ Qua</string>
+    <string name="mi_content_description_back">Trở Lại</string>
+    <string name="mi_content_description_next">Tiếp Tục</string>
+    <string name="mi_content_description_next_finish">Tiếp Tục/Kết Thúc</string>
+    <plurals name="mi_label_grant_permission">
+        <item quantity="one">Xin Quyền Truy Cập</item>
+        <item quantity="other">Xin Quyền Truy Cập</item>
+    </plurals>
+    <string name="mi_label_button_cta">Bắt Đầu</string>
+</resources>
