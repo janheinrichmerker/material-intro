@@ -94,10 +94,11 @@ dependencies {
 ### Requirements:
 The activity must extend [`IntroActivity`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/IntroActivity.java) and have a theme extending `@style/Theme.Intro`:
 ```java
-public class MainIntroActivity extends IntroActivity{
-    @Override protected void onCreate(Bundle savedInstanceState){
+public class MainIntroActivity extends IntroActivity {
+    @Override 
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-	// Add slides, edit configuration...
+	    // Add slides, edit configuration...
     }
 }
 ```
@@ -105,13 +106,14 @@ public class MainIntroActivity extends IntroActivity{
 ```xml
 <manifest ...>
     <application ...>
-        <activity android:name=".MainIntroActivity"
+        <activity 
+            android:name=".MainIntroActivity"
             android:theme="@style/Theme.Intro"/>
     </application>
 </manifest>
 ```
 
-_(Unless mentioned otherwise all of the following method calls should go in the activity's `onCreate()`.)_
+_(Unless mentioned otherwise, all of the following method calls should go in the Activity's `onCreate()`.)_
 
 ## Slides:
 
@@ -196,7 +198,7 @@ setButtonCtaTintMode(BUTTON_CTA_TINT_MODE_BACKGROUND);
 setButtonCtaLabel(R.string.start)
 /**/
 setButtonCtaClickListener(new View.OnClickListener() {
-        
+
 });
 ```
 
@@ -224,7 +226,7 @@ Adjust how long a single slide scroll takes.
 setPageScrollDuration(500);
 ```
 
-(The page scroll duration is dynamically adapted when scrolling more than one position to reflect [**dynamic durations**](https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations) from the [Material design docs](https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations).  
+(The page scroll duration is dynamically adapted when scrolling more than one position to reflect [**dynamic durations**](https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations) from the [Material design docs](https://material.io/guidelines/motion/duration-easing.html#duration-easing-dynamic-durations).
 The exact formula for calculating the scroll duration is `duration * (distance + sqrt(distance)) / 2`.)
 
 ## Navigation:
@@ -234,7 +236,7 @@ The exact formula for calculating the scroll duration is `duration * (distance +
 There are three ways to block navigation for a slide:
 
 1. In a [`SlideFragment`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/SlideFragment.java) (using a [`FragmentSlide`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java)) by overriding `canGoForward()`/`canGoBackward()` methods.
-2. For a `SimpleSlide` by setting `SimpleSlide.Builder#canGoForward(boolean)`/`SimpleSlide.Builder#canGoBackward(boolean)`.  
+2. For a `SimpleSlide` by setting `SimpleSlide.Builder#canGoForward(boolean)`/`SimpleSlide.Builder#canGoBackward(boolean)`.
     (If at least one permission is set to the `SimpleSlide`, navigation is automatically blocked until every permission is granted.)
 3. From your `IntroActivity` by setting a [`NavigationPolicy`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/NavigationPolicy.java):
     ```java
@@ -242,7 +244,7 @@ There are three ways to block navigation for a slide:
         @Override public boolean canGoForward(int position) {
             return true;
         }
-    
+
         @Override public boolean canGoBackward(int position) {
             return false;
         }
@@ -322,7 +324,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 ### Parallax slides:
 
-You can easily achieve a nice looking parallax effect for any slide by using either [`ParallaxFrameLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxFrameLayout.java), [`ParallaxLinearLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxLinearLayout.java) or [`ParallaxRelativeLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxRelativeLayout.java) and defining `layout_parallaxFactor` for its direct childrens.  
+You can easily achieve a nice looking parallax effect for any slide by using either [`ParallaxFrameLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxFrameLayout.java), [`ParallaxLinearLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxLinearLayout.java) or [`ParallaxRelativeLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxRelativeLayout.java) and defining `layout_parallaxFactor` for its direct childrens.
 A higher factor means a stronger parallax effect, `0` means no parallax effect at all.
 
 ```xml
@@ -360,11 +362,11 @@ See the demo app for a sample splash screen implementation:
 ## Apps using this library:
 
 - [**Simply Unroot**](https://play.google.com/store/apps/details?id=de.pinpong.simplyunroot) by @pinpong
-- [**Prodigal Music Player**](https://play.google.com/store/apps/details?id=bob.sun.prodigal) by @SpongeBobSun 
-- [**Puff Password Utility**](https://play.google.com/store/apps/details?id=sun.bob.leela) by @SpongeBobSun  
-- [**QualityGate**](https://play.google.com/store/apps/details?id=com.frontendart.qualitygate.android) by @FrontEndART 
-- [**Monitor**](https://play.google.com/store/apps/details?id=com.danielstone.energyhive) by @daniel-stoneuk 
-- [**Contact Lenses Time**](https://play.google.com/store/apps/details?id=com.brando.lenti) by @ste23droid 
+- [**Prodigal Music Player**](https://play.google.com/store/apps/details?id=bob.sun.prodigal) by @SpongeBobSun
+- [**Puff Password Utility**](https://play.google.com/store/apps/details?id=sun.bob.leela) by @SpongeBobSun
+- [**QualityGate**](https://play.google.com/store/apps/details?id=com.frontendart.qualitygate.android) by @FrontEndART
+- [**Monitor**](https://play.google.com/store/apps/details?id=com.danielstone.energyhive) by @daniel-stoneuk
+- [**Contact Lenses Time**](https://play.google.com/store/apps/details?id=com.brando.lenti) by @ste23droid
 - [**Antidote Danmark**](https://play.google.com/store/apps/details?id=dk.antidotedanmark) by @AntidoteDanmark
 - [**Speed Boost Lite**](https://play.google.com/store/apps/details?id=com.TMillerApps.SpeedBoostLite) by @tjmille2
 
