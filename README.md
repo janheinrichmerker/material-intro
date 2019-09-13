@@ -83,12 +83,6 @@ allprojects {
 
 Add this in your module `build.gradle` file:
 ```gradle
-android {
-    ...
-    dataBinding {
-        enabled = true
-    }
-}
 dependencies {
     implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
 }
