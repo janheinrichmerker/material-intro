@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    compile project(':library')
+    implementation project(':library')
     //Support
     implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
