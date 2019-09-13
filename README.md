@@ -81,10 +81,13 @@ allprojects {
 }
 ```
 
-Add this in your module `build.gradle` file:
+Add this in your module `build.gradle` file: 
+
+![](https://jitpack.io/v/com.heinrichreimersoftware/material-intro.svg)
+
 ```gradle
 dependencies {
-    implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
+    implementation 'com.heinrichreimersoftware:material-intro:x.y.z'
 }
 ```
 
