@@ -83,14 +83,8 @@ allprojects {
 
 Add this in your module `build.gradle` file:
 ```gradle
-android {
-    ...
-    dataBinding {
-        enabled = true
-    }
-}
 dependencies {
-    compile 'com.heinrichreimersoftware:material-intro:1.6.2'
+    implementation 'com.heinrichreimersoftware:material-intro:1.6.2'
 }
 ```
 
@@ -325,7 +319,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 ### Parallax slides:
 
-You can easily acheive a nice looking parallax effect for any slide by using either [`ParallaxFrameLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxFrameLayout.java), [`ParallaxLinearLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxLinearLayout.java) or [`ParallaxRelativeLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxRelativeLayout.java) and defining `layout_parallaxFactor` for its direct childrens.  
+You can easily achieve a nice looking parallax effect for any slide by using either [`ParallaxFrameLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxFrameLayout.java), [`ParallaxLinearLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxLinearLayout.java) or [`ParallaxRelativeLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxRelativeLayout.java) and defining `layout_parallaxFactor` for its direct childrens.  
 A higher factor means a stronger parallax effect, `0` means no parallax effect at all.
 
 ```xml

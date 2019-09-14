@@ -22,108 +22,105 @@
   ~ SOFTWARE.
   -->
 
-<layout xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@id/mi_frame"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@id/mi_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <com.heinrichreimersoftware.materialintro.view.FadeableViewPager
+        android:id="@id/mi_pager"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/mi_baseline_half"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/mi_button_cta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
-        <com.heinrichreimersoftware.materialintro.view.FadeableViewPager
-            android:id="@id/mi_pager"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/mi_baseline_half"
-            app:layout_constraintBottom_toTopOf="@+id/mi_button_cta"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteX="0dp" />
+    <ImageButton
+        android:background="@drawable/mi_button_background"
+        android:contentDescription="@string/mi_content_description_back"
+        android:id="@id/mi_button_back"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/mi_baseline"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/mi_baseline"
+        android:src="@drawable/mi_ic_skip"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="16dp" />
 
-        <ImageButton
-            android:id="@id/mi_button_back"
+    <ImageButton
+        android:background="@drawable/mi_button_background"
+        android:contentDescription="@string/mi_content_description_next"
+        android:id="@id/mi_button_next"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/mi_baseline"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/mi_baseline"
+        android:src="@drawable/mi_ic_next_finish"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteX="312dp" />
+
+    <com.heinrichreimersoftware.materialintro.view.InkPageIndicator
+        android:id="@id/mi_pager_indicator"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/mi_margin_bottom_pager_indicator"
+        android:layout_width="0dp"
+        app:dotDiameter="10dp"
+        app:dotGap="@dimen/mi_baseline_half"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/mi_button_next"
+        app:layout_constraintStart_toEndOf="@id/mi_button_back"
+        tools:layout_editor_absoluteX="8dp" />
+
+    <TextSwitcher
+        android:clipChildren="false"
+        android:id="@id/mi_button_cta"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="48dp"
+        android:layout_marginBottom="@dimen/mi_baseline"
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/mi_pager_indicator"
+        app:layout_constraintEnd_toStartOf="@id/mi_button_next"
+        app:layout_constraintStart_toEndOf="@id/mi_button_back"
+        tools:layout_editor_absoluteX="131dp">
+
+        <Button
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mi_baseline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:padding="@dimen/mi_baseline"
-            android:contentDescription="@string/mi_content_description_back"
-            android:src="@drawable/mi_ic_skip"
-            android:background="@drawable/mi_button_background"
-            tools:layout_editor_absoluteX="16dp" />
+            android:maxLines="1"
+            android:minLines="1"
+            android:paddingBottom="@dimen/mi_baseline_half"
+            android:paddingLeft="@dimen/mi_baseline"
+            android:paddingRight="@dimen/mi_baseline"
+            android:paddingTop="@dimen/mi_baseline_half"
+            android:text="@string/mi_label_button_cta"
+            android:textColor="?android:textColorPrimaryInverse" />
 
-        <ImageButton
-            android:id="@id/mi_button_next"
+        <Button
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/mi_baseline"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:padding="@dimen/mi_baseline"
-            android:contentDescription="@string/mi_content_description_next"
-            android:src="@drawable/mi_ic_next_finish"
-            android:background="@drawable/mi_button_background"
-            tools:layout_editor_absoluteX="312dp" />
+            android:maxLines="1"
+            android:minLines="1"
+            android:paddingBottom="@dimen/mi_baseline_half"
+            android:paddingLeft="@dimen/mi_baseline"
+            android:paddingRight="@dimen/mi_baseline"
+            android:paddingTop="@dimen/mi_baseline_half"
+            android:text="@string/mi_label_button_cta"
+            android:textColor="?android:textColorPrimaryInverse"
+            android:visibility="gone" />
 
-        <com.heinrichreimersoftware.materialintro.view.InkPageIndicator
-            android:id="@id/mi_pager_indicator"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/mi_margin_bottom_pager_indicator"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/mi_button_back"
-            app:layout_constraintEnd_toStartOf="@id/mi_button_next"
-            app:dotDiameter="10dp"
-            app:dotGap="@dimen/mi_baseline_half"
-            tools:layout_editor_absoluteX="8dp" />
+    </TextSwitcher>
 
-        <TextSwitcher
-            android:id="@id/mi_button_cta"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginBottom="@dimen/mi_baseline"
-            app:layout_constraintBottom_toTopOf="@+id/mi_pager_indicator"
-            app:layout_constraintStart_toEndOf="@id/mi_button_back"
-            app:layout_constraintEnd_toStartOf="@id/mi_button_next"
-            android:layout_gravity="center_horizontal"
-            android:clipChildren="false"
-            tools:layout_editor_absoluteX="131dp">
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:paddingTop="@dimen/mi_baseline_half"
-                android:paddingBottom="@dimen/mi_baseline_half"
-                android:paddingLeft="@dimen/mi_baseline"
-                android:paddingRight="@dimen/mi_baseline"
-                android:gravity="center"
-                android:text="@string/mi_label_button_cta"
-                android:textColor="?android:textColorPrimaryInverse"
-                android:maxLines="1"
-                android:minLines="1" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:paddingTop="@dimen/mi_baseline_half"
-                android:paddingBottom="@dimen/mi_baseline_half"
-                android:paddingLeft="@dimen/mi_baseline"
-                android:paddingRight="@dimen/mi_baseline"
-                android:gravity="center"
-                android:text="@string/mi_label_button_cta"
-                android:textColor="?android:textColorPrimaryInverse"
-                android:visibility="gone"
-                android:maxLines="1"
-                android:minLines="1" />
-
-        </TextSwitcher>
-
-    </android.support.constraint.ConstraintLayout>
-
-</layout>

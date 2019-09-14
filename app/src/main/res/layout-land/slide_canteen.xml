@@ -46,7 +46,7 @@
             tools:ignore="ContentDescription"
             tools:src="@android:drawable/sym_action_call" />
 
-        <android.support.v4.widget.Space
+        <androidx.legacy.widget.Space
             android:layout_width="@dimen/mi_baseline"
             android:layout_height="wrap_content" />
 
