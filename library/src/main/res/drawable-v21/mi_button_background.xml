@@ -25,8 +25,7 @@
 <ripple android:color="@color/mi_ripple_color"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="oval">
+        <shape android:shape="oval">
             <solid android:color="@android:color/white" />
         </shape>
     </item>

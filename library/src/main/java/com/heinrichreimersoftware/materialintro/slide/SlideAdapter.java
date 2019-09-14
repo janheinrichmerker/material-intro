@@ -248,9 +248,4 @@ public class SlideAdapter extends FragmentPagerAdapter {
         data = new ArrayList<>(list);
         return oldList;
     }
-
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-    }
 }

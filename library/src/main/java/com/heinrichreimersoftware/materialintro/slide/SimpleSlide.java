@@ -486,9 +486,9 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             View fragment = inflater.inflate(arguments.getInt(ARGUMENT_LAYOUT_RES,
                     R.layout.mi_fragment_simple_slide), container, false);
 
-            titleView = (TextView) fragment.findViewById(R.id.mi_title);
-            descriptionView = (TextView) fragment.findViewById(R.id.mi_description);
-            imageView = (ImageView) fragment.findViewById(R.id.mi_image);
+            titleView = fragment.findViewById(R.id.mi_title);
+            descriptionView = fragment.findViewById(R.id.mi_description);
+            imageView = fragment.findViewById(R.id.mi_image);
 
             long id = arguments.getLong(ARGUMENT_ID);
             CharSequence title = arguments.getCharSequence(ARGUMENT_TITLE);
