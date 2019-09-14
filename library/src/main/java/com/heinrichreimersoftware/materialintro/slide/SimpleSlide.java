@@ -527,7 +527,11 @@ public class SimpleSlide implements Slide, RestorableSlide, ButtonCtaSlide {
             //Image
             if (imageView != null) {
                 if (imageRes != 0) {
-                    imageView.setImageResource(imageRes);
+                    try {
+                        imageView.setImageResource(imageRes);
+                    } catch (OutOfMemoryError oome) {
+                        imageView.setVisibility(View.GONE);
+                    }
                     imageView.setVisibility(View.VISIBLE);
                 } else {
                     imageView.setVisibility(View.GONE);
