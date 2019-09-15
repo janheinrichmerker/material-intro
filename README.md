@@ -369,6 +369,7 @@ See the demo app for a sample splash screen implementation:
 - [**Contact Lenses Time**](https://play.google.com/store/apps/details?id=com.brando.lenti) by @ste23droid
 - [**Antidote Danmark**](https://play.google.com/store/apps/details?id=dk.antidotedanmark) by @AntidoteDanmark
 - [**Speed Boost Lite**](https://play.google.com/store/apps/details?id=com.TMillerApps.SpeedBoostLite) by @tjmille2
+- [**Root Checker**](https://play.google.com/store/apps/details?id=com.joeykrim.rootcheck) by @joeykrim
 
 ## Changes:
 
