@@ -22,58 +22,54 @@
   ~ SOFTWARE.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="false">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:fitsSystemWindows="false">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/mi_baseline">
 
-        <LinearLayout
+        <ImageView
+            android:id="@id/mi_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/mi_baseline"
+            android:adjustViewBounds="true"
+            android:gravity="center"
+            tools:ignore="ContentDescription"
+            tools:src="@android:drawable/sym_action_call" />
+
+        <TextView
+            android:id="@id/mi_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/mi_baseline"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/mi_baseline">
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            tools:ignore="UnusedAttribute"
+            tools:text="Lorem ipsum" />
 
-            <ImageView
-                android:id="@id/mi_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/mi_baseline"
-                android:adjustViewBounds="true"
-                android:gravity="center"
-                tools:ignore="ContentDescription"
-                tools:src="@android:drawable/sym_action_call" />
+        <TextView
+            android:id="@id/mi_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/mi_baseline"
+            android:autoLink="web"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.25"
+            android:linksClickable="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …" />
 
-            <TextView
-                android:id="@id/mi_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-                tools:ignore="UnusedAttribute"
-                tools:text="Lorem ipsum" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@id/mi_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/mi_baseline"
-                android:autoLink="web"
-                android:gravity="center"
-                android:linksClickable="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:lineSpacingMultiplier="1.25"
-                tools:text="Lorem ipsum dolor sit amet, consectetur, adipisci velit, …" />
-
-        </LinearLayout>
-
-    </ScrollView>
-
-</layout>
+</ScrollView>
