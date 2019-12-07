@@ -567,11 +567,16 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                 setResult(RESULT_OK, returnIntent);
             else
                 setResult(RESULT_OK);
+            onIntroFinish();
             finish();
             overridePendingTransition(0, 0);
             return true;
         }
         return false;
+    }
+
+    public void onIntroFinish() {
+
     }
 
     @Nullable
