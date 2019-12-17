@@ -2,11 +2,11 @@
 
 # material-intro
 
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-material--intro-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/3206)
-[![JitPack](https://jitpack.io/v/com.heinrichreimersoftware/material-intro.svg)](https://jitpack.io/#com.heinrichreimersoftware/material-intro)
-[![Downloads](https://jitpack.io/v/com.heinrichreimersoftware/material-intro/month.svg)](https://jitpack.io/#com.heinrichreimersoftware/material-intro)
-[![Build Status](https://img.shields.io/github/workflow/status/heinrichreimer/material-intro/CI?style=flat)](https://github.com/heinrichreimer/material-intro/actions)
-[![License](https://img.shields.io/github/license/heinrichreimer/material-intro.svg)](https://github.com/heinrichreimer/material-intro/blob/master/LICENSE.txt)
+[![Build Status](https://img.shields.io/github/workflow/status/heinrichreimer/material-intro/CI?style=flat-square)](https://github.com/heinrichreimer/material-intro/actions)
+[![JitPack](https://img.shields.io/jitpack/v/github/heinrichreimer/material-intro?style=flat-square)](https://jitpack.io/#com.heinrichreimer/material-intro)
+[![Downloads](https://img.shields.io/jitpack/dm/github/heinrichreimer/material-intro?style=flat-square)](https://jitpack.io/#com.heinrichreimer/material-intro)
+[![License](https://img.shields.io/github/license/heinrichreimer/material-intro?style=flat-square)](https://github.com/heinrichreimer/material-intro/blob/master/LICENSE.txt)
+[![GitHub issues](https://img.shields.io/github/issues/heinrichreimer/material-intro?style=flat-square)](https://github.com/heinrichreimer/material-intro/issues)
 
 A simple material design app intro with cool animations and a fluent API.
 
