@@ -622,7 +622,7 @@ public class InkPageIndicator extends View implements ViewPager.OnPageChangeList
         // retreat animations when it has moved 75% of the way.
         // The retreat animation in turn will kick of reveal anims when the
         // retreat has passed any dots to be revealed
-        if (getVisibility() == VISIBLE)
+        if (getVisibility() == VISIBLE && dotCenterX != null)
             createMoveSelectedAnimator(dotCenterX[now], previousPage, now, steps).start(); // dotCenterX is null when getVisibility() != VISIBLE
     }
 
