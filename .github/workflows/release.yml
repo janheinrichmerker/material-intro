@@ -1,0 +1,43 @@
+name: Create release
+
+on:
+  push:
+    tags: # Push events to new versions, e.g., 1.0, 20.15.10
+      - "[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+-*"
+      - "[0-9]+.[0-9]+.[0-9]+-*"
+
+jobs:
+  build:
+    name: "🚀 Release"
+    runs-on: ubuntu-18.04
+    steps:
+      - name: "📥 Check-out"
+        uses: actions/checkout@v1
+      - name: "🏷️ Get version tag"
+        id: get-version
+        run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
+      - name: "✏️ Generate changelog"
+        id: generate-changelog
+        if: runner.os == 'Linux'
+        uses: heinrichreimer/action-github-changelog-generator@v2
+        with:
+          onlyLastTag: "true"
+          stripHeaders: "true"
+          stripGeneratorNotice: "true"
+      - name: "📤 Upload changelog"
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: "Changelog"
+          path: CHANGELOG.md
+      - name: "🚀 Create GitHub release"
+        id: create-github-release
+        uses: actions/create-release@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ steps.get-version.outputs.tag }}
+          body: ${{ steps.generate-changelog.outputs.changelog }}
+          prerelease: false
