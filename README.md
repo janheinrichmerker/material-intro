@@ -2,7 +2,7 @@
 
 # material-intro
 
-[![Build Status](https://img.shields.io/github/workflow/status/heinrichreimer/material-intro/CI?style=flat-square)](https://github.com/heinrichreimer/material-intro/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/heinrichreimer/material-intro/ci.yml?branch=master&style=flat-square)](https://github.com/heinrichreimer/material-intro/actions/workflows/ci.yml)
 [![JitPack](https://img.shields.io/jitpack/v/github/heinrichreimer/material-intro?style=flat-square)](https://jitpack.io/#com.heinrichreimer/material-intro)
 [![Downloads](https://img.shields.io/jitpack/dm/github/heinrichreimer/material-intro?style=flat-square)](https://jitpack.io/#com.heinrichreimer/material-intro)
 [![License](https://img.shields.io/github/license/heinrichreimer/material-intro?style=flat-square)](https://github.com/heinrichreimer/material-intro/blob/master/LICENSE.txt)
