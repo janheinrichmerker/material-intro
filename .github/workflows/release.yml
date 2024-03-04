@@ -27,7 +27,7 @@ jobs:
           stripHeaders: "true"
           stripGeneratorNotice: "true"
       - name: "📤 Upload changelog"
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4
         with:
           name: "Changelog"
           path: CHANGELOG.md
