@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: "🚀 Release"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: "📥 Check-out"
         uses: actions/checkout@v4
