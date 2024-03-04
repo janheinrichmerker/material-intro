@@ -14,8 +14,9 @@ jobs:
       - name: 🧰 Install JDK
         uses: actions/setup-java@v4
         with:
-          java-version: 11
-          java-package: jdk
+          java-version: "17"
+          distribution: temurin
+          cache: gradle
       - name: 🧰 Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.6
         with:
