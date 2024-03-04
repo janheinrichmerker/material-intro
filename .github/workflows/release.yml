@@ -33,7 +33,7 @@ jobs:
           path: CHANGELOG.md
       - name: "🚀 Create GitHub release"
         id: create-github-release
-        uses: actions/create-release@v1.1.4
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
