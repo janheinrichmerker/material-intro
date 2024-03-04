@@ -2,27 +2,32 @@ name: CI
 on: push
 jobs:
   build:
-    runs-on: macOS-10.14
+    runs-on: ubuntu-latest
     steps:
-      - name: "📥 Check-out"
+      - name: 📥 Check-out
         uses: actions/checkout@v4
-      - name: "🧰 Install JDK"
+      - name: 🧰 Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: 🧰 Install JDK
         uses: actions/setup-java@v4
         with:
           java-version: 1.8
           java-package: jdk
-      - name: "🧰 Install Android SDK"
-        uses: malinskiy/action-android/install-sdk@release/0.0.5
+      - name: 🧰 Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.1.6
         with:
           acceptLicense: yes
-      - name: "🏗 Build"
+      - name: 🏗 Build
         run: ./gradlew assembleDebug
-      - name: "🧪 Android LINT"
+      - name: 🧪 Android LINT
         run: ./gradlew lint
-      - name: "🧪 Unit test"
+      - name: 🧪 Unit test
         run: ./gradlew test
-      - name: "🧪 Integration test"
-        uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
+      - name: 🧪 Integration test
+        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.6
         with:
           cmd: ./gradlew connectedAndroidTest
           api: 25
