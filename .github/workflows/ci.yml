@@ -5,7 +5,7 @@ jobs:
     runs-on: macOS-10.14
     steps:
       - name: "📥 Check-out"
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
       - name: "🧰 Install JDK"
         uses: actions/setup-java@v1
         with:
