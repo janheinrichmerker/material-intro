@@ -9,7 +9,7 @@ val gitVersion: groovy.lang.Closure<String> by extra
 android {
     namespace = "com.heinrichreimersoftware.materialintro.demo"
 
-    compileSdk = 29
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.heinrichreimersoftware.materialintro.demo"
@@ -32,8 +32,8 @@ android {
         }
     }
 
-    dataBinding {
-        enable = true
+    buildFeatures {
+        dataBinding true
     }
 }
 

@@ -6,7 +6,7 @@ plugins {
 android {
     namespace = "com.heinrichreimersoftware.materialintro"
 
-    compileSdk = 29
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 15
