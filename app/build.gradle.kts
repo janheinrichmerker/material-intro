@@ -14,7 +14,6 @@ android {
     defaultConfig {
         applicationId = "com.heinrichreimersoftware.materialintro.demo"
         minSdk = 15
-        targetSdk = 29
         versionCode = 20000
         versionName = gitVersion()
     }
@@ -34,7 +33,7 @@ android {
     }
 
     dataBinding {
-        isEnabled = true
+        enable = true
     }
 }
 

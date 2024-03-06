@@ -3,8 +3,6 @@ plugins {
     id("com.palantir.git-version")
 }
 
-val gitVersion: groovy.lang.Closure<String> by extra
-
 android {
     namespace = "com.heinrichreimersoftware.materialintro"
 
@@ -12,9 +10,6 @@ android {
 
     defaultConfig {
         minSdk = 15
-        targetSdk = 29
-        versionCode = 20000
-        versionName = gitVersion()
     }
 
     lint {
