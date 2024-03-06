@@ -4,6 +4,8 @@ plugins {
     id("com.palantir.git-version")
 }
 
+val gitVersion: groovy.lang.Closure<String> by extra
+
 android {
     namespace = "com.heinrichreimersoftware.materialintro.demo"
 
@@ -17,7 +19,7 @@ android {
         versionName = gitVersion()
     }
 
-    lintOptions {
+    lint {
         abortOnError = false
     }
 
