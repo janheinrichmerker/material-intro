@@ -622,10 +622,7 @@ public class IntroActivity extends AppCompatActivity implements IntroNavigation 
                     colorPrimary = ContextCompat.getColor(IntroActivity.this, getBackground(position));
                 }
             } else {
-                TypedValue typedValue = new TypedValue();
-                TypedArray a = obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorPrimary});
-                colorPrimary = a.getColor(0, 0);
-                a.recycle();
+                colorPrimary = Color.GRAY;
             }
             colorPrimary = ColorUtils.setAlphaComponent(colorPrimary, 0xFF);
 
