@@ -38,7 +38,7 @@ android {
 
 dependencies {
     implementation(project(":library"))
-    implementation("androidx.appcompat:appcompat:1.1.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("com.google.android.material:material:1.0.0")
     implementation("com.google.firebase:firebase-core:16.0.6")
