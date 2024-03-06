@@ -47,7 +47,7 @@ jobs:
         run: ./gradlew test
   gradle-integration-test:
     name: 🧪 Gradle integration test
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
       - name: 📥 Check-out
         uses: actions/checkout@v4
@@ -57,11 +57,6 @@ jobs:
           java-version: 17
           distribution: temurin
           cache: gradle
-      - name: 🧰 Enable KVM
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
       - name: 🧰 Install Android SDK
         uses: malinskiy/action-android/install-sdk@release/0.1.6
         with:
