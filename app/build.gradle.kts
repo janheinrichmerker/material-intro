@@ -14,6 +14,7 @@ android {
     defaultConfig {
         applicationId = "com.heinrichreimersoftware.materialintro.demo"
         minSdk = 15
+        targetSdk = 34
         versionCode = 20000
         versionName = gitVersion()
     }
