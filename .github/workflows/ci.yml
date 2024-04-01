@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Check-out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: 🚀 Create GitHub release
         uses: softprops/action-gh-release@v1
         with:
