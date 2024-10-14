@@ -2,11 +2,11 @@
 
 # material-intro
 
-[![Build Status](https://img.shields.io/github/actions/workflow/status/heinrichreimer/material-intro/ci.yml?branch=master&style=flat-square)](https://github.com/heinrichreimer/material-intro/actions/workflows/ci.yml)
-[![JitPack](https://img.shields.io/jitpack/v/github/heinrichreimer/material-intro?style=flat-square)](https://jitpack.io/#com.heinrichreimer/material-intro)
-[![Downloads](https://img.shields.io/jitpack/dm/github/heinrichreimer/material-intro?style=flat-square)](https://jitpack.io/#com.heinrichreimer/material-intro)
-[![License](https://img.shields.io/github/license/heinrichreimer/material-intro?style=flat-square)](https://github.com/heinrichreimer/material-intro/blob/master/LICENSE.txt)
-[![GitHub issues](https://img.shields.io/github/issues/heinrichreimer/material-intro?style=flat-square)](https://github.com/heinrichreimer/material-intro/issues)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/janheinrichmerker/material-intro/ci.yml?branch=master&style=flat-square)](https://github.com/janheinrichmerker/material-intro/actions/workflows/ci.yml)
+[![JitPack](https://img.shields.io/jitpack/v/github/janheinrichmerker/material-intro?style=flat-square)](https://jitpack.io/#com.janheinrichmerker/material-intro)
+[![Downloads](https://img.shields.io/jitpack/dm/github/janheinrichmerker/material-intro?style=flat-square)](https://jitpack.io/#com.janheinrichmerker/material-intro)
+[![License](https://img.shields.io/github/license/janheinrichmerker/material-intro?style=flat-square)](https://github.com/janheinrichmerker/material-intro/blob/master/LICENSE.txt)
+[![GitHub issues](https://img.shields.io/github/issues/janheinrichmerker/material-intro?style=flat-square)](https://github.com/janheinrichmerker/material-intro/issues)
 
 A simple material design app intro with cool animations and a fluent API.
 
@@ -25,7 +25,7 @@ A demo app is available on Google Play:
 | Simple slide | Custom slide | Fade effect | Permission request |
 |:-:|:-:|:-:|:-:|
 | ![Simple slide](http://i.imgur.com/cLWW5qm.png) | ![Custom slide](http://i.imgur.com/hmhnzUb.png) | ![Fade effect](http://i.imgur.com/7ujB0S4.png) | ![Permission request](http://i.imgur.com/EDNLGy8.png) |
-| [`SimpleSlide.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/SimpleSlide.java) | [`FragmentSlide.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java) | [`IntroActivity.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/IntroActivity.java) | [`SimpleSlide.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/SimpleSlide.java) |
+| [`SimpleSlide.java`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/SimpleSlide.java) | [`FragmentSlide.java`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java) | [`IntroActivity.java`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/IntroActivity.java) | [`SimpleSlide.java`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/SimpleSlide.java) |
 
 ### Features:
 
@@ -92,7 +92,7 @@ dependencies {
 ```
 
 ### Requirements:
-The activity must extend [`IntroActivity`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/IntroActivity.java) and have a theme extending `@style/Theme.Intro`:
+The activity must extend [`IntroActivity`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/IntroActivity.java) and have a theme extending `@style/Theme.Intro`:
 ```java
 public class MainIntroActivity extends IntroActivity {
     @Override 
@@ -119,9 +119,9 @@ _(Unless mentioned otherwise, all of the following method calls should go in the
 
 _material-intro_ has fluent style builders for both a simple text/image slide, as seen in Google's apps, and for slides featuring a custom `Fragment` or layout resource.
 
-Feel free to submit an [issue](https://github.com/heinrichreimer/material-intro/issues/new) or [pull request](https://github.com/HeinrichReimer/material-intro/compare) if you think any slide types are missing.
+Feel free to submit an [issue](https://github.com/janheinrichmerker/material-intro/issues/new) or [pull request](https://github.com/janheinrichmerker/material-intro/compare) if you think any slide types are missing.
 
-### Standard slide ([`SimpleSlide`](https://github.com/HeinrichReimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/SimpleSlide.java)):
+### Standard slide ([`SimpleSlide`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/SimpleSlide.java)):
 
 Standard slide featuring a title, short description and image like Google's intros.
 
@@ -137,7 +137,7 @@ addSlide(new SimpleSlide.Builder()
         .build());
 ```
 
-### Fragment slide ([`FragmentSlide`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java)):
+### Fragment slide ([`FragmentSlide`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java)):
 
 Custom slide containing a `Fragment` or a layout resource.
 
@@ -149,9 +149,9 @@ addSlide(new FragmentSlide.Builder()
         .build());
 ```
 
-(When using `FragmentSlide` with a `Fragment`, you should extend [`SlideFragment`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/SlideFragment.java) to proxy navigation calls to the intro activity.)
+(When using `FragmentSlide` with a `Fragment`, you should extend [`SlideFragment`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/SlideFragment.java) to proxy navigation calls to the intro activity.)
 
-### Custom slide ([`Slide`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/Slide.java)):
+### Custom slide ([`Slide`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/Slide.java)):
 
 Base slide. If you want to modify what's shown in your slide this is the way to go.
 
@@ -235,10 +235,10 @@ The exact formula for calculating the scroll duration is `duration * (distance +
 
 There are three ways to block navigation for a slide:
 
-1. In a [`SlideFragment`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/SlideFragment.java) (using a [`FragmentSlide`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java)) by overriding `canGoForward()`/`canGoBackward()` methods.
+1. In a [`SlideFragment`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/SlideFragment.java) (using a [`FragmentSlide`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/slide/FragmentSlide.java)) by overriding `canGoForward()`/`canGoBackward()` methods.
 2. For a `SimpleSlide` by setting `SimpleSlide.Builder#canGoForward(boolean)`/`SimpleSlide.Builder#canGoBackward(boolean)`.
     (If at least one permission is set to the `SimpleSlide`, navigation is automatically blocked until every permission is granted.)
-3. From your `IntroActivity` by setting a [`NavigationPolicy`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/NavigationPolicy.java):
+3. From your `IntroActivity` by setting a [`NavigationPolicy`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/app/NavigationPolicy.java):
     ```java
     setNavigationPolicy(new NavigationPolicy() {
         @Override public boolean canGoForward(int position) {
@@ -324,7 +324,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 ### Parallax slides:
 
-You can easily achieve a nice looking parallax effect for any slide by using either [`ParallaxFrameLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxFrameLayout.java), [`ParallaxLinearLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxLinearLayout.java) or [`ParallaxRelativeLayout.java`](https://github.com/heinrichreimer/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxRelativeLayout.java) and defining `layout_parallaxFactor` for its direct childrens.
+You can easily achieve a nice looking parallax effect for any slide by using either [`ParallaxFrameLayout.java`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxFrameLayout.java), [`ParallaxLinearLayout.java`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxLinearLayout.java) or [`ParallaxRelativeLayout.java`](https://github.com/janheinrichmerker/material-intro/blob/master/library/src/main/java/com/heinrichreimersoftware/materialintro/view/parallax/ParallaxRelativeLayout.java) and defining `layout_parallaxFactor` for its direct childrens.
 A higher factor means a stronger parallax effect, `0` means no parallax effect at all.
 
 ```xml
@@ -348,16 +348,16 @@ A higher factor means a stronger parallax effect, `0` means no parallax effect a
 </com.heinrichreimersoftware.materialintro.view.parallax.ParallaxLinearLayout>
 ```
 
-Check the ["Canteen"-demo](https://github.com/heinrichreimer/material-intro/blob/master/app/src/main/res/layout/slide_canteen.xml) for a layout example.
+Check the ["Canteen"-demo](https://github.com/janheinrichmerker/material-intro/blob/master/app/src/main/res/layout/slide_canteen.xml) for a layout example.
 
 ### Splash screens:
 
 If you want to show the intro only at the first app start you can use `onActivityResult()` to store a shared preference when the user finished the intro.
 
 See the demo app for a sample splash screen implementation:
-- **[SplashActivity.java](https://github.com/heinrichreimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/SplashActivity.java)**: A fake splash screen
-- **[SplashIntroActivity.java](https://github.com/heinrichreimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/SplashIntroActivity.java)**: The intro started from FinishActivity
-- **[FinishActivity.java](https://github.com/heinrichreimer/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/FinishActivity.java)**: The activity started after the splash screen
+- **[SplashActivity.java](https://github.com/janheinrichmerker/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/SplashActivity.java)**: A fake splash screen
+- **[SplashIntroActivity.java](https://github.com/janheinrichmerker/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/SplashIntroActivity.java)**: The intro started from FinishActivity
+- **[FinishActivity.java](https://github.com/janheinrichmerker/material-intro/blob/master/app/src/main/java/com/heinrichreimersoftware/materialintro/demo/FinishActivity.java)**: The activity started after the splash screen
 
 ## Apps using this library:
 
@@ -373,7 +373,7 @@ See the demo app for a sample splash screen implementation:
 
 ## Changes:
 
-See the [releases section](https://github.com/heinrichreimer/material-intro/releases) for changelogs.
+See the [releases section](https://github.com/janheinrichmerker/material-intro/releases) for changelogs.
 
 ## Open-source libraries:
 

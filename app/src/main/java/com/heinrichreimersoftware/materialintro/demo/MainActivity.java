@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_github) {
             Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://github.com/HeinrichReimer/material-intro"));
+                    Uri.parse("https://github.com/janheinrichmerker/material-intro"));
             startActivity(intent);
             return true;
         }
