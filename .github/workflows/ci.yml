@@ -58,7 +58,7 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: 🧰 Install Android SDK
-        uses: malinskiy/action-android/install-sdk@release/0.1.6
+        uses: malinskiy/action-android/install-sdk@release/0.1.7
         with:
           acceptLicense: yes
       - name: 🧪 Integration test
