@@ -62,7 +62,7 @@ jobs:
         with:
           acceptLicense: yes
       - name: 🧪 Integration test
-        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.6
+        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.7
         with:
           cmd: ./gradlew connectedAndroidTest
           api: 25
